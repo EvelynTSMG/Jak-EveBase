@@ -27,7 +27,49 @@
   ;; ensure orb-placer is spawned/killed as requested, debug menu is updated
   (when *debug-segment*
     (orb-placer-maintenance))
-  (none))
+
+  ;; Update global variables
+  (set! racer?
+    (aif *target*
+      (case (-> it next-state name) (
+          (
+            'target-racing
+            'target-racing-bounce
+            'target-racing-death
+            'target-racing-falling
+            'target-racing-grab
+            'target-racing-hit
+            'target-racing-jump
+            'target-racing-smack
+            'target-racing-start
+          ) #t)
+      )
+    )
+  )
+
+  (set! flutflut?
+    (aif *target*
+      (case (-> it next-state name) (
+          (
+            'target-flut-air-attack
+            'target-flut-air-attack-hit-ground
+            'target-flut-double-jump
+            'target-flut-falling
+            'target-flut-grab
+            'target-flut-hit
+            'target-flut-hit-ground
+            'target-flut-jump
+            'target-flut-running-attack
+            'target-flut-stance
+            'target-flut-start
+            'target-flut-walk
+          ) #t)
+      )
+    )
+  )
+
+  (none)
+)
 
 (defun runs-on-orb-pickup ((parent process-tree))
   (let* ((from-cache? (and parent (type-type? (-> parent type) orb-cache-top))))
