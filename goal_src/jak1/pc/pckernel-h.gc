@@ -210,12 +210,13 @@
    (update-discord-rpc (_type_) none)
    (update-speedrun (_type_) none)
    (update-video-hacks (_type_) object)
-   (reset (_type_ symbol) int)
+   (reset (_type_ symbol) none)
    (reset-audio (_type_ symbol) int)
    (reset-input (_type_ symbol symbol) int)
    (reset-gfx (_type_ symbol) int)
    (reset-ps2 (_type_ symbol) int)
    (reset-misc (_type_ symbol) int)
+   (reset-mod (_type_ symbol) none)
    (reset-camera (_type_ symbol) int)
    (reset-extra (_type_ symbol) int)
    (print-debug-misc (_type_) object)
@@ -308,7 +309,10 @@
   (reset-ps2 obj call-handlers)
   (reset-misc obj call-handlers)
   (reset-extra obj call-handlers)
-  0)
+  (reset-mod obj call-handlers)
+  
+  (none)
+)
 
 (defmethod reset-gfx ((obj pc-settings) (call-handlers symbol))
   "Set the default graphics settings"
@@ -402,6 +406,11 @@
   (reset-camera obj call-handlers)
   (set! (-> obj territory) -1) ;; auto
   0)
+
+(defmethod reset-mod ((settings pc-settings) (call-handlers symbol))
+  "Set the default mod stetings"
+  (none)
+)
 
 (defmethod reset-camera ((obj pc-settings) (call-handlers symbol))
   "Set the original game's camera controls"

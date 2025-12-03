@@ -76,30 +76,43 @@
             :param3 (game-option-menu settings-title))
        (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)))
 
-(define *options*
-  (new 'static
-       'boxed-array
-       :type
-       game-option
-       (new 'static
-            'game-option
-            :option-type (game-option-type menu)
-            :name (text-id game-options)
-            :scale #t
-            :param3 (game-option-menu game-settings))
-       (new 'static
-            'game-option
-            :option-type (game-option-type menu)
-            :name (text-id graphic-options)
-            :scale #t
-            :param3 (game-option-menu graphic-settings))
-       (new 'static
-            'game-option
-            :option-type (game-option-type menu)
-            :name (text-id sound-options)
-            :scale #t
-            :param3 (game-option-menu sound-settings))
-       (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)))
+(define *options* ; title options
+  (new 'static 'boxed-array :type game-option
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id game-options)
+      :scale #t
+      :param3 (game-option-menu game-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id graphic-options)
+      :scale #t
+      :param3 (game-option-menu graphic-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id sound-options)
+      :scale #t
+      :param3 (game-option-menu sound-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id mod-options)
+      :scale #t
+      :param3 (game-option-menu mod-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type button)
+      :name (text-id back)
+      :scale #t
+    )
+  )
+)
 
 (define *main-options-demo*
   (new 'static
@@ -267,7 +280,8 @@
 ;; maps options to a progress screen
 ;; the length matches with `(progress-screen max)`
 (define *options-remap*
-  (new 'static 'boxed-array :type (array game-option) :length 0 :allocated-length (#if (not PC_PORT) 35 71)))
+  (new 'static 'boxed-array :type (array game-option) :length 0 :allocated-length (#if (not PC_PORT) 35 72))
+)
 
 ;; added in PC port
 (defenum level-task-data-index

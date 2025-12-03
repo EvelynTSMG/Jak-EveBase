@@ -730,6 +730,9 @@
   (bosnian #x1120)
   (scene-0 #x1200)
   (scene-255 #x12ff)
+
+
+
   (hint-0 #x1300)
   (hint-511 #x14ff)
   (speedrunner-mode #x1500)
@@ -796,6 +799,23 @@
   (input-opts-controller-led-reflect-heat #x1617)
   (input-opts-controller-pressure-sensitivity #x1618)
   (input-opts-analog-sensitivity #x1619)
+
+  ; mod options
+  (mod-options #x1700)
+
+  (doublejump-ability #x1701)
+  (doublejump-ability-desc #x1702)
+  (doublejump-ability-near-peak #x1703)
+  (doublejump-ability-near-peak-desc #x1704)
+  (doublejump-ability-always #x1705)
+  (doublejump-ability-always-desc #x1706)
+
+  (always-max-jumps #x1707)
+  (always-max-jumps-desc #x1708)
+
+  (skip-cells #x1709)
+  (skip-cells-desc #x170a)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)

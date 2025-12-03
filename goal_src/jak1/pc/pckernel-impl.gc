@@ -69,19 +69,37 @@
    )
   :pack-me)
 
+(deftype mod-settings (basic)
+  (
+    (doublejump-ability symbol) ; 'near-peak or 'always
+    (always-max-jumps?  symbol) ; whether jumps should always be the maximum height (as if X was held)
+    (skip-cells?        symbol) ; whether power cell cutscenes should be automatically skipped
+    ;;[ADD-MOD-OPTION]; Add mod option field here
+  )
+
+  (:methods
+    (handle-input-mod-settings (mod-settings file-stream) none)
+    (handle-output-mod-settings (mod-settings file-stream) none)
+  )
+)
+
 ;; The Jak 1 version of the pc-settings object.
 (deftype pc-settings-jak1 (pc-settings)
-  ((cheats              pc-cheats)
-   (cheats-known        pc-cheats)
-   (skip-movies?        symbol) ;; if on, enable cutscene skipping
-   (subtitles?          symbol) ;; if on, cutscene subtitles will show up
-   (text-language       pc-language) ;; language for game text
-   (subtitle-language   pc-language) ;; language for subtitles
-   (money-starburst?    symbol) ;; add a starburst to the money
-   (extra-hud?          symbol) ;; extra hud elements.
-   (secrets             pc-game-secrets :inline) ;; hidden goodies and additional secrets!
-   (scenes-seen         uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
-   (memcard-play-hints? symbol)))
+  (
+    (cheats              pc-cheats)
+    (cheats-known        pc-cheats)
+    (skip-movies?        symbol) ;; if on, enable cutscene skipping
+    (subtitles?          symbol) ;; if on, cutscene subtitles will show up
+    (text-language       pc-language) ;; language for game text
+    (subtitle-language   pc-language) ;; language for subtitles
+    (money-starburst?    symbol) ;; add a starburst to the money
+    (extra-hud?          symbol) ;; extra hud elements.
+    (mod                 mod-settings :inline)
+    (secrets             pc-game-secrets :inline) ;; hidden goodies and additional secrets!
+    (scenes-seen         uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
+    (memcard-play-hints? symbol)
+   )
+)
 
 (define *pc-settings* (the pc-settings-jak1 #f))
 
@@ -142,6 +160,16 @@
   (set! (-> obj memcard-vibration?) #t)
   (set! (-> obj memcard-play-hints?) #t)
   0)
+
+(defmethod reset-mod ((settings pc-settings-jak1) (call-handlers symbol))
+  "Set the default mod settings"
+  (set! (-> settings mod doublejump-ability) 'near-peak)
+  (set! (-> settings mod always-max-jumps?) #f)
+  (set! (-> settings mod skip-cells?) #f)
+  ;;[ADD-MOD-OPTION]; Add default setting here
+
+  (none)
+)
 
 (defmethod reset-extra ((obj pc-settings-jak1) (call-handlers symbol))
   "Set the default goodies settings"

@@ -621,6 +621,20 @@
   `(set! ,place (- ,place ,amount))
   )
 
+(defmacro inc-wrap! (place length)
+  `(if (< ,place (- ,length 1))
+    (inc! ,place)
+    (set! ,place 0)
+  )
+)
+
+(defmacro dec-wrap! (place length)
+  `(if (> ,place 0)
+    (dec! ,place)
+    (set! ,place (- ,length 1))
+  )
+)
+
 (defmacro 1-! (place)
   `(-! ,place 1)
   )

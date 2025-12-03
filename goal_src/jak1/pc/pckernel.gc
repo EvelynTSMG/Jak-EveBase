@@ -435,6 +435,7 @@
 (defmethod handle-input-settings ((obj pc-settings-jak1) (file file-stream))
   "handle the text parsing input for the 'settings' group"
   ((method-of-type pc-settings handle-input-settings) obj file)
+  ((method-of-type mod-settings handle-input-mod-settings) (-> obj mod) file)
   (case-str *pc-temp-string*
     (("money-starburst?") (set! (-> obj money-starburst?) (file-stream-read-symbol file)))
     (("extra-hud?") (set! (-> obj extra-hud?) (file-stream-read-symbol file)))
@@ -471,6 +472,7 @@
 (defmethod handle-output-settings ((obj pc-settings-jak1) (file file-stream))
   "handle the text writing output for the 'settings' group"
   ((method-of-type pc-settings handle-output-settings) obj file)
+  ((method-of-type mod-settings handle-output-mod-settings) (-> obj mod) file)
   (format file "  (money-starburst? ~A)~%" (-> obj money-starburst?))
   (format file "  (extra-hud? ~A)~%" (-> obj extra-hud?))
   (format file "  (skip-movies? ~A)~%" (-> obj skip-movies?))
@@ -506,6 +508,26 @@
   (format file "      )~%")
   (format file "    )~%")
   0)
+
+(defmethod handle-input-mod-settings ((settings mod-settings) (file file-stream))
+  (case-str *pc-temp-string*
+    (("doublejump-ability") (set! (-> settings doublejump-ability) (file-stream-read-symbol file)))
+    (("always-max-jumps?") (set! (-> settings always-max-jumps?) (file-stream-read-symbol file)))
+    (("skip-cells?") (set! (-> settings skip-cells?) (file-stream-read-symbol file)))
+    ;;[ADD-MOD-OPTION]; Add reading from file here
+  )
+
+  (none)
+)
+
+(defmethod handle-output-mod-settings ((settings mod-settings) (file file-stream))
+  (format file " (doublejump-ability ~A)~%" (-> settings doublejump-ability))
+  (format file " (always-max-jumps? ~A)~%" (-> settings always-max-jumps?))
+  (format file " (skip-cells? ~A)~%" (-> settings skip-cells?))
+  ;;[ADD-MOD-OPTION]; Add writing to file here
+
+  (none)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; PC settings
