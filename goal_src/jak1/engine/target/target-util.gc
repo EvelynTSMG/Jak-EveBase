@@ -7,6 +7,9 @@
 (require "engine/common-obs/process-drawable-h.gc")
 (define-extern target-collide-set! (function symbol float int :behavior target))
 
+(define racer? #f)
+(define flutflut? #f)
+
 ;; DECOMP BEGINS
 
 (defskelgroup *jchar-sg*
