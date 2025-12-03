@@ -209,6 +209,10 @@
 (defmacro seconds-per-frame ()
   `(-> *display* seconds-per-frame))
 
+(defmacro per-second (value)
+  `(* ,value (-> *display* seconds-per-frame))
+)
+
 (defmacro set-time! (time)
   `(set! ,time (current-time)))
 

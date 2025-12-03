@@ -1144,6 +1144,18 @@
        (the float ,x))
   )
 
+
+
+; This is not the right place for it but I don't know *where* that is
+(defmacro delta (x y)
+  `(fabs (- (the int ,x) (the int ,y)))
+)
+
+(defmacro fdelta (x y)
+  "(Absolute) difference between floating points"
+  `(fabs (- (the float ,x) (the float ,y)))
+)
+
 (defmacro sqrtf (x)
   `(sqrtf-no-fabs (fabs ,x))
   )
