@@ -77,8 +77,8 @@
 (defmethod get-art-elem ((this geologist))
   (-> this draw art-group data 5))
 
-(defmethod process-taskable-method-43 ((this geologist))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this geologist))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.8888889 f0-2) (play-ambient (-> this ambient) "GEO-AM01" #f (-> this root trans)))

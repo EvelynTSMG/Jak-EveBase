@@ -28,7 +28,7 @@
    (debug-draw (_type_) none)
    (eval-path-curve-div! (_type_ vector float symbol) vector)
    (get-random-point (_type_ vector) vector)
-   (path-control-method-12 (_type_ vector float) vector)
+   (eval-path-curve-angle (_type_ vector float) vector)
    (eval-path-curve! (_type_ vector float symbol) vector)
    (path-control-method-14 (_type_ vector float) vector)
    (length-as-float (_type_) float)

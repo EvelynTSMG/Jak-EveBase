@@ -86,8 +86,8 @@
 (defmethod get-art-elem ((this bird-lady))
   (-> this draw art-group data 3))
 
-(defmethod process-taskable-method-43 ((this bird-lady))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this bird-lady))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.66 f0-2) (play-ambient (-> this ambient) "BIR-LO02" #f (-> this root trans)))

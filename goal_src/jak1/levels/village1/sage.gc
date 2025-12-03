@@ -332,8 +332,8 @@
     ((1) (-> this draw art-group data 3))
     (else (-> this draw art-group data 4))))
 
-(defmethod process-taskable-method-43 ((this sage))
-  (let ((s5-0 (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)))
+(defmethod do-ambient-talk ((this sage))
+  (let ((s5-0 (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)))
     (when s5-0
       (let ((f0-2 (rand-float-gen)))
         (cond
@@ -360,7 +360,7 @@
                (v1-9 (/ (the-as int (rand-uint31-gen *random-generator*)) 256))
                (v1-10 (the-as number (logior #x3f800000 v1-9))))
           (countdown (gp-1 (+ (the int (* f30-0 (+ -1.0 (the-as float v1-10)))) 5))
-            (process-taskable-method-43 self)
+            (do-ambient-talk self)
             (ja-no-eval :group! (ja-group) :num! (seek!) :frame-num 0.0)
             (until (ja-done? 0)
               (if (and (-> self reminder-played) (< 81920.0 (vector-vector-distance (-> self root trans) (camera-pos))))

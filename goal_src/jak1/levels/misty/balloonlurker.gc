@@ -331,7 +331,7 @@
         (gp-0 (new 'stack-no-clear 'vector)))
     (eval-path-curve-div! (-> self path) s4-0 (the float arg0) 'interp)
     (set! (-> self root-overlay trans quad) (-> s4-0 quad))
-    (path-control-method-12 (-> self path) gp-0 (the float arg0))
+    (eval-path-curve-angle (-> self path) gp-0 (the float arg0))
     (set! (-> gp-0 y) 0.0)
     (vector-normalize! gp-0 1.0)
     (forward-up-nopitch->quaternion (-> self root-overlay quat) gp-0 *up-vector*)))

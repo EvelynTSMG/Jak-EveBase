@@ -169,7 +169,7 @@
   (loop
     (suspend)
     (ja :num! (loop!))
-    (if (= (-> self next-state name) 'idle) (process-taskable-method-43 self)))
+    (if (= (-> self next-state name) 'idle) (do-ambient-talk self)))
   (the-as none 0)
   (none))
 
@@ -679,7 +679,7 @@
     (else (go (method-of-object this idle))))
   (none))
 
-(defmethod process-taskable-method-43 ((this process-taskable))
+(defmethod do-ambient-talk ((this process-taskable))
   (the-as symbol 0))
 
 (defmethod ambient-control-method-9 ((this ambient-control))
@@ -687,16 +687,19 @@
   0
   (none))
 
-(defmethod ambient-control-method-10 ((this ambient-control) (arg0 vector) (arg1 time-frame) (arg2 float) (arg3 process-drawable))
-  (when (< (- (-> *display* game-frame-counter) (-> this last-ambient-time)) arg1)
-    (set! arg0 (the-as vector #f))
-    (goto cfg-6))
-  (vector-for-ambient arg3 arg0)
-  (when (< arg2 (vector-length arg0))
-    (set! arg0 (the-as vector #f))
-    (goto cfg-6))
-  (label cfg-6)
-  arg0)
+(defmethod vector-for-ambient-limited ((this ambient-control) (dst vector) (min-time-since-last time-frame) (max-dist float) (source process-drawable))
+  (when (>= min-time-since-last (- (-> *display* game-frame-counter) (-> this last-ambient-time)))
+    (set! dst (the-as vector #f))
+    (return dst)
+  )
+
+  (vector-for-ambient source dst)
+  (when (< max-dist (vector-length dst))
+    (set! dst (the-as vector #f))
+  )
+
+  dst
+)
 
 (defmethod play-ambient ((this ambient-control) (arg0 string) (arg1 symbol) (arg2 vector))
   (when (and (not (string= arg0 (-> this last-ambient)))

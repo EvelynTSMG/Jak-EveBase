@@ -96,7 +96,7 @@
                              (-> this curve knots)
                              (-> this curve num-knots)))))
 
-(defmethod path-control-method-12 ((this path-control) (arg0 vector) (arg1 float))
+(defmethod eval-path-curve-angle ((this path-control) (arg0 vector) (arg1 float))
   (when (not (logtest? (-> this flags) (path-control-flag not-found)))
     (let ((v1-3 (-> this curve num-cverts))
           (f0-3 (the float (the int arg1))))
@@ -109,7 +109,7 @@
   (vector-normalize! arg0 1.0))
 
 (defmethod path-control-method-14 ((this path-control) (arg0 vector) (arg1 float))
-  (path-control-method-12 this arg0 (* arg1 (the float (+ (-> this curve num-cverts) -1)))))
+  (eval-path-curve-angle this arg0 (* arg1 (the float (+ (-> this curve num-cverts) -1)))))
 
 (defmethod path-control-method-14 ((this curve-control) (arg0 vector) (arg1 float))
   (when (not (logtest? (-> this flags) (path-control-flag not-found)))
@@ -134,7 +134,7 @@
          (vector-! arg0 arg0 s4-0)))))
   (vector-normalize! arg0 1.0))
 
-(defmethod path-control-method-12 ((this curve-control) (arg0 vector) (arg1 float))
+(defmethod eval-path-curve-angle ((this curve-control) (arg0 vector) (arg1 float))
   (path-control-method-14 this arg0 (/ arg1 (the float (+ (-> this curve num-cverts) -1)))))
 
 (defmethod path-control-method-19 ((this path-control))

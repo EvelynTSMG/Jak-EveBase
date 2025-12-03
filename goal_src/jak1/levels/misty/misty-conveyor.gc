@@ -164,7 +164,7 @@
         (let ((s5-0 (eval-path-curve-div! (-> (the-as process-drawable (-> self parent 0)) path) (new-stack-vector0) 0.0 'interp))
               (s4-0 (quaternion-copy! (new-stack-quaternion0) (-> self root quat)))
               (s3-0 (new-stack-quaternion0))
-              (a1-3 (path-control-method-12 (-> (the-as process-drawable (-> self parent 0)) path) (new-stack-vector0) 0.0))
+              (a1-3 (eval-path-curve-angle (-> (the-as process-drawable (-> self parent 0)) path) (new-stack-vector0) 0.0))
               (f30-0 45.0))
           0.0
           0.0
@@ -206,7 +206,7 @@
                   (set! f30-0 sv-96)
                   (set! sv-112 (* sv-96 f28-0))
                   (eval-path-curve-div! (-> (the-as keg-conveyor-paddle (-> self parent 0)) path) (-> self path-position) sv-112 'interp)
-                  (path-control-method-12 (-> (the-as keg-conveyor-paddle (-> self parent 0)) path) gp-0 sv-112)
+                  (eval-path-curve-angle (-> (the-as keg-conveyor-paddle (-> self parent 0)) path) gp-0 sv-112)
                   (seek-toward-heading-vec! (-> self root) gp-0 131072.0 (seconds 0.1))
                   (set! (-> self root trans quad) (-> self path-position quad))
                   (when (= (-> self keg-behavior) 1)
@@ -259,7 +259,7 @@
   :event keg-event-handler
   :code
     (behavior ()
-      (let ((gp-0 (path-control-method-12 (-> (the-as process-drawable (-> self parent 0)) path)
+      (let ((gp-0 (eval-path-curve-angle (-> (the-as process-drawable (-> self parent 0)) path)
                                           (new-stack-vector0)
                                           (the float (+ (-> (the-as process-drawable (-> self parent 0)) path curve num-cverts) -1))))
             (s5-0 (new-stack-vector0))
@@ -325,7 +325,7 @@
   (set! (-> self keg-behavior) arg1)
   (logclear! (-> self mask) (process-mask actor-pause enemy))
   (let ((gp-1 (new-stack-vector0)))
-    (path-control-method-12 (-> (the-as process-drawable (-> self parent 0)) path) gp-1 0.0)
+    (eval-path-curve-angle (-> (the-as process-drawable (-> self parent 0)) path) gp-1 0.0)
     (set-heading-vec! (-> self root) gp-1))
   (set! (-> self sound-id) (new-sound-id))
   (go keg-on-paddle)
@@ -428,7 +428,7 @@
   (set! (-> this pivot) (new 'process 'joint-mod-spinner this 4 (new 'static 'vector :x 1.0 :w 1.0) 65536.0))
   (let ((s5-1 (new-stack-vector0)))
     (let ((s4-0 (new-stack-matrix0)))
-      (path-control-method-12 (-> this path) s5-1 0.0)
+      (eval-path-curve-angle (-> this path) s5-1 0.0)
       (set-heading-vec! (-> this root) s5-1)
       (quaternion->matrix s4-0 (-> this root quat))
       (set-vector! s5-1 -4096.0 -3072.0 -1433.6 1.0)

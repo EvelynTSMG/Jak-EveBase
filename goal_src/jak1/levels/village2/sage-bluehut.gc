@@ -144,8 +144,8 @@
     (return (not (-> (the-as assistant-bluehut gp-1) im-talking))))
   v0-1)
 
-(defmethod process-taskable-method-43 ((this sage-bluehut))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this sage-bluehut))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.8 f0-2) (play-ambient (-> this ambient) "SAGELP20" #f (-> this root trans)))
@@ -169,7 +169,7 @@
                     (v1-15 (/ (the-as int (rand-uint31-gen *random-generator*)) 256))
                     (v1-16 (the-as number (logior #x3f800000 v1-15))))
                (countdown (gp-1 (+ (the int (* f30-0 (+ -1.0 (the-as float v1-16)))) 5))
-                 (process-taskable-method-43 self)
+                 (do-ambient-talk self)
                  (ja-no-eval :group! (ja-group) :num! (seek!) :frame-num 0.0)
                  (until (ja-done? 0)
                    (if (process-taskable-method-45 self) (go-virtual idle))
@@ -182,7 +182,7 @@
                (suspend)
                (ja :num! (seek!))))
             (else
-             (process-taskable-method-43 self)
+             (do-ambient-talk self)
              (if (!= (ja-group) gp-0) (ja-channel-push! 1 (seconds 0.2)))
              (set! (-> self skel root-channel 0 frame-group) (the-as art-joint-anim gp-0))
              (ja-no-eval :group! (ja-group) :num! (seek!) :frame-num 0.0)

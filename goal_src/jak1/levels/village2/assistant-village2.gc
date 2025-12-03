@@ -338,8 +338,8 @@
         (else (return (-> this im-talking))))))
   (the-as symbol 0))
 
-(defmethod process-taskable-method-43 ((this assistant-bluehut))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this assistant-bluehut))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f30-0 (rand-float-gen)))
       (cond
         ((= (get-task-status (game-task village2-levitator)) (task-status invalid)) #f)
@@ -364,7 +364,7 @@
         (let ((f0-9 (rand-float-gen)))
           (cond
             ((< f0-9 0.33333334)
-             (process-taskable-method-43 self)
+             (do-ambient-talk self)
              (ja-no-eval :group! assistant-village2-idle-hut-look-right-ja :num! (seek!) :frame-num 0.0)
              (until (ja-done? 0)
                (suspend)

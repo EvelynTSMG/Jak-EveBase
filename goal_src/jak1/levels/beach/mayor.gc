@@ -589,8 +589,8 @@
     (< (- (-> (target-pos 0) z) (-> this root trans z)) 57344.0)
     (< (- (-> (camera-pos) z) (-> this root trans z)) 57344.0)))
 
-(defmethod process-taskable-method-43 ((this mayor))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this mayor))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.8888889 f0-2)

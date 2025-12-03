@@ -1668,7 +1668,7 @@
       (when (not (or (ja-group? robotboss-blue-roar-ja) (ja-group? robotboss-blue-last-hit-ja))))
       (robotboss-blue-beam 8 #t)
       (robotboss-blue-beam 9 #f)
-      (when (ambient-control-method-10 (-> self ambient) (new 'stack-no-clear 'vector) (seconds 10) (the-as float 327680.0) self)
+      (when (vector-for-ambient-limited (-> self ambient) (new 'stack-no-clear 'vector) (seconds 10) (the-as float 327680.0) self)
         (let ((f0-2 (rand-float-gen)))
           (cond
             ((< 0.8 f0-2) (play-ambient (-> self ambient) "GOL-AM02" #t (the-as vector #f)))

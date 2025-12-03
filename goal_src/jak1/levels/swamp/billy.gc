@@ -682,8 +682,8 @@
             (v1-8 (move-to-point! (-> *target* control) (-> v1-8 extra trans)) (go billy-playing))
             (else))))))
 
-(defmethod process-taskable-method-43 ((this billy))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this billy))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f30-0 (rand-float-gen)))
       (cond
         ((< 0.9411765 f30-0) (play-ambient (-> this ambient) "BIL-AM01" #f (-> this root trans)))
@@ -725,7 +725,7 @@
           (countdown (gp-1 (+ (the int (* f30-0 (+ -1.0 (the-as float v1-10)))) 5))
             (ja-no-eval :group! (ja-group) :num! (seek!) :frame-num 0.0)
             (until (ja-done? 0)
-              (process-taskable-method-43 self)
+              (do-ambient-talk self)
               (suspend)
               (ja :num! (seek!)))))
         (when (ja-group? billy-idle-breath-ja)

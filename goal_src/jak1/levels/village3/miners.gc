@@ -14,7 +14,7 @@
   (loop
     (suspend)
     (ja :num! (loop! 2.0))
-    (if (= (-> self next-state name) 'idle) (process-taskable-method-43 self)))
+    (if (= (-> self next-state name) 'idle) (do-ambient-talk self)))
   0)
 
 (deftype minertall (process-taskable) ())
@@ -331,8 +331,8 @@
 (defmethod get-art-elem ((this minershort))
   (-> this draw art-group data 3))
 
-(defmethod process-taskable-method-43 ((this minershort))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this minershort))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.9655172 f0-2) (play-ambient (-> this ambient) "MIN-LO01" #f (-> this root trans)))

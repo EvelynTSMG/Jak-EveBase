@@ -56,8 +56,8 @@
 (defmethod target-above-threshold? ((this assistant-villagec))
   (the-as symbol (and *target* (< (-> (target-pos 0) z) -14245888.0))))
 
-(defmethod process-taskable-method-43 ((this assistant-villagec))
-  (when (ambient-control-method-10 (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
+(defmethod do-ambient-talk ((this assistant-villagec))
+  (when (vector-for-ambient-limited (-> this ambient) (new 'stack-no-clear 'vector) (seconds 30) 122880.0 this)
     (let ((f0-2 (rand-float-gen)))
       (cond
         ((< 0.85714287 f0-2) (play-ambient (-> this ambient) "ASSTLP31" #f (-> this root trans)))
@@ -84,7 +84,7 @@
     (behavior ()
       (if (!= (ja-group) (get-art-elem self)) (ja-channel-push! 1 (seconds 0.05)))
       (loop
-        (process-taskable-method-43 self)
+        (do-ambient-talk self)
         (ja-no-eval :group! assistant-village3-idle-ja :num! (seek!) :frame-num 0.0)
         (until (ja-done? 0)
           (suspend)

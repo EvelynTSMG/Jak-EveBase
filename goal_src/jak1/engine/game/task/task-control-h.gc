@@ -82,7 +82,7 @@
   :pack-me
   (:methods
    (ambient-control-method-9 (_type_) none)
-   (ambient-control-method-10 (_type_ vector time-frame float process-drawable) vector)
+   (vector-for-ambient-limited (_type_ vector time-frame float process-drawable) vector)
    (play-ambient (_type_ string symbol vector) symbol)))
 
 (deftype process-taskable (process-drawable)
@@ -137,7 +137,7 @@
    (process-taskable-method-40 (_type_ object skeleton-group int int vector int) none)
    (initialize-collision (_type_ int vector) none)
    (process-taskable-method-42 (_type_) none)
-   (process-taskable-method-43 (_type_) symbol)
+   (do-ambient-talk (_type_) symbol)
    (play-reminder (_type_) symbol)
    (process-taskable-method-45 (_type_) symbol)
    (process-taskable-method-46 (_type_) none)
