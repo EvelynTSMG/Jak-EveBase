@@ -257,6 +257,14 @@
   ;;   (ret-value v0-0)
   )
 
+(defun vector-basically= ((a vector) (b vector))
+  (and
+    (or (= (-> a x) (-> b x)) (fequal? (-> a x) (-> b x)))
+    (or (= (-> a y) (-> b y)) (fequal? (-> a y) (-> b y)))
+    (or (= (-> a z) (-> b z)) (fequal? (-> a z) (-> b z)))
+  )
+)
+
 (defun vector-delta ((arg0 vector) (arg1 vector))
   "Sum of the elementwise absolute value of differences"
   (local-vars (v0-0 float))

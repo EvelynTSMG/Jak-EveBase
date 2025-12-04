@@ -25,6 +25,10 @@
   "Get the fractional part of a float"
   (- x (truncate x)))
 
+(defun ceil ((x float))
+  (if (basically-not-zero? (fractional-part x)) (truncate (+ x 1)) (truncate x))
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; bitfield types
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

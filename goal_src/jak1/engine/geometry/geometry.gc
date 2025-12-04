@@ -1040,6 +1040,59 @@
               (set! s0-1 (fmin 1.0 (fmax 0.0 v1-4)))))
           (+ (if (< f22-0 f20-0) f26-0 f24-0) (/ gp-0 f30-0)))))))
 
+(defun bezier-interpolate ((a float) (a-out float) (b-in float) (b float) (t float))
+  ; Formula from Wikipedia article on Bezier curves.
+  (let* (
+        (omt (- 1.0 t))
+        (omt2 (* omt omt))
+        (omt3 (* omt2 omt))
+        (t2 (* t t))
+        (t3 (* t2 t))
+      )
+    (+ (* omt3 a) (* 3.0 t omt2 a-out) (* 3.0 t2 omt b-in) (* t3 b))
+  )
+)
+
+;; Compute a point on a curve using a bezier spline
+;; Params:
+;;   `dst` will be filled with the computated position
+;;   `a`, `a-out`, `b-in`, and `b` are the control points
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   `dst` for chaining
+(defun bezier-interpolate-vector ((dst vector) (a vector) (a-out vector) (b-in vector) (b vector) (t float))
+  (set-vector! dst
+    (bezier-interpolate (-> a x) (-> a-out x) (-> b-in x) (-> b x) t)
+    (bezier-interpolate (-> a y) (-> a-out y) (-> b-in y) (-> b y) t)
+    (bezier-interpolate (-> a z) (-> a-out z) (-> b-in z) (-> b z) t)
+    1.0
+  )
+
+  dst
+)
+
+(defun bezier-derivative ((a float) (a-out float) (b-in float) (b float) (t float))
+  ; Formula from Wikipedia article on Bezier curves.
+  (let* (
+        (omt (- 1.0 t))
+        (omt2 (* omt omt))
+        (t2 (* t t))
+      )
+    (+ (* omt2 3.0 (- a-out a)) (* omt t 6.0 (- b-in a-out)) (* t2 3.0 (- b b-in)))
+  )
+)
+
+(defun bezier-derivative-vector ((dst vector) (a vector) (a-out vector) (b-in vector) (b vector) (t float))
+  (set-vector! dst
+    (bezier-derivative (-> a x) (-> a-out x) (-> b-in x) (-> b x) t)
+    (bezier-derivative (-> a y) (-> a-out y) (-> b-in y) (-> b y) t)
+    (bezier-derivative (-> a z) (-> a-out z) (-> b-in z) (-> b z) t)
+    1.0
+  )
+
+  dst
+)
+
 (defun vector-plane-distance ((arg0 vector) (arg1 plane) (arg2 vector))
   "Unused."
   (vector-dot (vector-! (new 'stack-no-clear 'vector) arg0 (the-as vector (&-> arg1 x))) arg2))

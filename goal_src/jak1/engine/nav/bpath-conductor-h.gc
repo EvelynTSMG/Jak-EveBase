@@ -1,0 +1,180 @@
+(in-package goal)
+(require "engine/geometry/bpath-h.gc")
+
+(deftype bpath-conductor-info (basic) (
+  (debug-draw-radius meters)
+))
+
+(define *bpath-conductor-info* (
+  new 'static 'bpath-conductor-info
+    :debug-draw-radius (meters 0.3)
+))
+
+;; Conductors use this to decide whether to use speed or time to keep sync
+;; When conducting over a single path, `time` or `distance` is better
+;; When conducting over multiple paths, `progress` is better
+(defenum bpath-conduct-mode
+  :type int32
+  (progress)
+  (distance)
+  (time)
+)
+
+;; Conductors use this to decide what to do once it reaches the end of the path
+(defenum bpath-conduct-end-action
+  :type int32
+  (teleport) ;; resets progress to the other end, and can optionally switch paths
+  (reverse) ;; starts moving in reverse once it reaches the end
+  (stop) ;; stops moving at the end of the path
+  (stop-speed) ;; stops moving at the end of the path and sets its speed to 0.0
+)
+
+;; Conductors are analogous to the base game's sync-info
+;; You can ask a conductor to either get a path or automatically update your actor
+(deftype bpath-conductor (process)
+  (
+    (reverse?                     symbol)
+    (end-action bpath-conduct-end-action)
+    (speed                         float) ; per second
+    (progress                      float)
+  )
+
+  (:methods
+    (draw-debug (_type_ bpath) none)
+    (sample! (_type_ vector bpath bpath-conduct-mode float) vector)
+    (sample-tangent! (_type_ vector bpath bpath-conduct-mode float) vector)
+    (sample-normal! (_type_ vector bpath bpath-conduct-mode float) vector)
+    (set-speed (_type_ bpath bpath-conduct-mode float) none)
+  )
+
+  (:state-methods
+    active
+    idle
+  )
+)
+
+(defstate active (bpath-conductor)
+  :virtual #t
+
+  :code (behavior ()
+    (if (-> self reverse?)
+      (-! (-> self progress) (-> self speed))
+      (+! (-> self progress) (-> self speed))
+    )
+
+    ;;TODO: Fix all of this assuming speed <= 1.0
+    ;;TODO: Isolate this into its own method so the sample can adjust for offset properly
+    (case (-> self end-action)
+      (((bpath-conduct-end-action teleport)) ; simple wrap
+        (when (> (-> self progress) 1.0) (-! (-> self progress) 1.0))
+        (when (< (-> self progress) 0.0) (+! (-> self progress) 1.0))
+      )
+      (((bpath-conduct-end-action reverse))
+        (when (> (-> self progress) 1.0)
+          (set! (-> self progress) (- 2.0 (-> self progress))) ; 1.0 - (progress - 1.0) = 2.0 - progress
+          (set! (-> self reverse?) #t)
+        )
+        (when (< (-> self progress) 0.0)
+          (set! (-> self progress) (- (-> self progress))) ; -progress
+          (set! (-> self reverse?) #f)
+        )
+      )
+      (((bpath-conduct-end-action stop))
+        (when (> (-> self progress) 1.0) (set! (-> self progress) 1.0))
+        (when (< (-> self progress) 0.0) (set! (-> self progress) 0.0))
+      )
+      (((bpath-conduct-end-action stop-speed))
+        (when (> (-> self progress) 1.0)
+          (set! (-> self progress) 1.0)
+          (set! (-> self speed) 0.0)
+        )
+        (when (< (-> self progress) 0.0)
+          (set! (-> self progress) 0.0)
+          (set! (-> self speed) 0.0)
+        )
+      )
+    )
+  )
+)
+
+(defstate idle (bpath-conductor)
+  :virtual #t
+
+  :code (behavior ())
+)
+
+(defmethod init-from-entity! ((self bpath-conductor) (e entity-actor))
+  (set! (-> self speed) (res-lump-float e 'speed :default 0.0))
+  (set! (-> self progress) (res-lump-float e 'initial-t :default 0.0))
+  (set! (-> self reverse?) (res-lump-data e 'start-reverse symbol))
+
+  (set! (-> self end-action)
+    (case (res-lump-struct e 'end-action symbol)
+      (('teleport) (bpath-conduct-end-action teleport))
+      (('reverse) (bpath-conduct-end-action reverse))
+      (('stop) (bpath-conduct-end-action stop))
+      (('stop-speed) (bpath-conduct-end-action stop-speed))
+      (else (bpath-conduct-end-action stop))
+    )
+  )
+
+  (if (res-lump-data e 'start-active symbol)
+    (go-virtual active)
+    (go-virtual idle)
+  )
+
+  (none)
+)
+
+(defmethod draw-debug ((self bpath-conductor) (path bpath))
+  (sample! self (-> self entity trans) path (bpath-conduct-mode progress) 0.0)
+
+  ;; (add-debug-text-sphere
+  ;;   #t
+  ;;   (bucket-id debug-no-zbuf)
+  ;;   (-> self entity trans)
+  ;;   (-> *bpath-conductor-info* debug-draw-radius)
+  ;;   (string-format (res-lump-struct (-> self entity) 'name structure))
+  ;;   (new 'static 'rgba :g #xff :b #xff :a #x80)
+  ;; )
+
+  (none)
+)
+
+(defmethod sample! ((self bpath-conductor) (dst vector) (path bpath) (mode bpath-conduct-mode) (offset float))
+  (let ((real-offset
+        (case mode
+          (((bpath-conduct-mode progress)) offset)
+          (((bpath-conduct-mode distance)) (/ offset (-> path length)))
+          (((bpath-conduct-mode time))
+            (if (-> path cycle-length)
+              (/ offset (-> path cycle-length))
+              (begin ; #f
+                (format 0 "[ERROR:bpath-conductor] Path cycle length but used time conduct-mode!")
+                0.0
+              )
+            )
+          )
+        )
+      ))
+  )
+  (sample path dst (+ (-> self progress) offset))
+
+  dst
+)
+
+(defmethod sample-tangent! ((self bpath-conductor) (dst vector) (path bpath) (mode bpath-conduct-mode) (offset float))
+  ;;TODO: Implement sample-tangent!
+  dst
+)
+
+(defmethod sample-normal! ((self bpath-conductor) (dst vector) (path bpath) (mode bpath-conduct-mode) (offset float))
+  ;;TODO: Implement sample-normal!
+  dst
+)
+
+(defmethod set-speed ((self bpath-conductor) (path bpath) (mode bpath-conduct-mode) (speed float))
+  ;;TODO: Implement set-speed
+
+  (none)
+)

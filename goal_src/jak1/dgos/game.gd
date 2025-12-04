@@ -143,6 +143,8 @@
   "progress-h.o"
   "rpc-h.o"
   "path-h.o"
+  "bpath-h.o"
+  "bpath-conductor-h.o"
   "navigate-h.o"
   "load-dgo.o"
   "ramdisk.o"

@@ -1174,8 +1174,15 @@
   `(< (fabs (- ,a ,b))
       ,epsilon))
 
+(defmacro fequal? (a b)
+  `(<
+      (fabs (- ,a ,b))
+      (max 0.00001 (* 0.00001 (fabs ,a)))
+    )
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; user stuf
+;;;; user stuff
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmacro user? (&rest users)

@@ -1,0 +1,535 @@
+(in-package goal)
+
+; This file contains:
+; - default bpath constants
+; - bpath-flags definition
+; - bpath type definition
+; - methods for initializing and sampling the bpath
+; For more complex methods, go to bpath.gc
+
+(deftype bpath-info (basic) (
+  (cache-default-dist   meters)
+  (cache-default-res       int)
+  (debug-knot-radius    meters)
+  (debug-control-radius meters)
+))
+
+(define *bpath-info* (
+  new 'static 'bpath-info
+    :cache-default-dist   (meters     0.25) ; 1/4th of a meter
+    :cache-default-res               32
+    :debug-knot-radius    (meters     0.2)
+    :debug-control-radius (meters     0.1)
+))
+
+(defenum bpath-flags
+  :type uint32
+  :bitfield #t
+  (full-precision 0) ;;! INEFFICIENT
+)
+
+;; A path using bezier curves
+;; Will assume `w` is 1.0 for all points
+(deftype bpath (process)
+  (
+    (flags                bpath-flags)
+    (num-knots                    int)
+    (length                     float)
+    (points              vector-array)
+    (cycle-length               float) ; optional, conductors may complain if missing
+    (rotations          (array float)) ; for normals ;;TODO: Make this optional
+    (cached?                   symbol)
+    (num-cached-points            int)
+    (cached-points       vector-array)
+    (cached-rotations   (array float)) ; for normals ;;TODO: Make this optional
+    (cached-lengths     (array float)) ; synced with cached-points
+  )
+  (:methods
+    (cache (_type_ int float) none)
+    (build-cache (_type_ int float) none)
+    (sample (_type_ vector float) vector)
+    (sample-accurate (_type_ vector float) vector)
+    (sample-cache (_type_ vector float) vector)
+    (sample-rot (_type_ float) float)
+    (sample-rot-accurate (_type_ float) float)
+    (sample-rot-cache (_type_ float) float)
+    (sample-tangent (_type_ vector float) vector)
+    (debug-render (_type_) none)
+  )
+  (:state-methods
+    pathing
+  )
+)
+
+
+(defmethod init-from-entity! ((self bpath) (e entity-actor))
+  (local-vars (tag res-tag))
+  (set! tag (new 'static 'res-tag))
+
+  (let ((cycle-length (res-lump-float (-> self entity) 'cycle-length :default (the-as float #f))))
+    (if cycle-length
+      (set! (-> self cycle-length) (fsec cycle-length))
+      (set! (-> self cycle-length) (the-as float #f))
+    )
+  )
+
+  (let ((lump-points (res-lump-data (-> self entity) 'points (inline-array vector) :tag-ptr (& tag))))
+    (set! (-> self points) (new 'process 'vector-array (the-as int (-> tag elt-count))))
+    (cond
+      (lump-points
+        (dotimes (i (length (-> self points)))
+          (vector-copy! (-> self points data i) (-> lump-points i))
+        )
+      )
+      (else
+        (format 0 "[ERROR] No points data found for bpath")
+      )
+    )
+  )
+
+  (let ((lump-rot (res-lump-data (-> self entity) 'rotations (array float) :tag-ptr (& tag))))
+    (set! (-> self rotations) (new 'process 'boxed-array float (the-as int (-> tag elt-count))))
+    (when lump-rot
+      (dotimes (i (length (-> self rotations)))
+        (set! (-> self rotations i) (-> lump-rot i))
+      )
+    )
+  )
+
+  (set! (-> self num-knots) (/ (+ (length (-> self points)) 2) 3))
+
+  (unless (logtest? (-> self flags) (bpath-flags full-precision))
+    (cache self (the-as int #f) (the-as float #f))
+  )
+
+  (go-virtual pathing)
+
+  (none)
+)
+
+
+(defmethod relocate ((self bpath) (offset int))
+  (if (nonzero? (-> self points)) (&+! (-> self points) offset))
+  (if (nonzero? (-> self rotations)) (&+! (-> self rotations) offset))
+  (if (nonzero? (-> self cached-points)) (&+! (-> self cached-points) offset))
+  (if (nonzero? (-> self cached-rotations)) (&+! (-> self cached-rotations) offset))
+  (if (nonzero? (-> self cached-lengths)) (&+! (-> self cached-lengths) offset))
+
+  (call-parent-method self offset)
+)
+
+
+;; Attempts to cache with the given arguments
+;; If the `res` or `max-len` are `#f`, attempts to cache with the relevant lump data
+;; If the lump data doesn't exist, caches with default values
+;; Params:
+;;   `res` is the amount of points to create a time-table with per cubic bezier
+;;   `max-len` is the maximum distance between cached points
+(defmethod cache ((self bpath) (res int) (max-len float))
+  (when (not res)
+    (set! res
+      (res-lump-value (-> self entity) 'resolution int
+        :default (the uint128 (-> *bpath-info* cache-default-res))
+      )
+    )
+  )
+
+  (when (not max-len)
+    (set! max-len
+      (res-lump-float (-> self entity) 'cache_length
+        :default (-> *bpath-info* cache-default-dist)
+      )
+    )
+  )
+
+  (build-cache self res max-len)
+  (set! (-> self cached?) #t)
+
+  (none)
+)
+
+
+;; Builds the points, lengths, and rotations caches
+;; Params:
+;;   `res` is the amount of points to create a time-table with per cubic bezier
+;;   `max-len` is the maximum distance between cached points
+(defmethod build-cache ((self bpath) (res int) (max-len float))
+  (local-vars (length-table (array float)))
+
+  ; Fair warning, this function isn't nearly as efficient as it could be (I don't think?)
+  ; but also, for the sake of my sanity, I'm not going to optimize it too much
+  (let ((segment-count (* res (- (-> self num-knots) 1))))
+    (set! length-table (new 'process 'boxed-array float segment-count))
+
+    ; Filling the length table
+    (let (
+          (a (new-stack-vector0)) (b (new-stack-vector0))
+          (s 0.0)
+        )
+      (vector-copy! b (-> self points data 0))
+
+      ;;TODO: Make this go through every knot
+      ; Loop:
+      ; a <- b
+      ; b <- next point
+      ; length-table[i] <- dist(a, b)
+      (dotimes (i segment-count)
+        (let ((t (/ (the float (+ i 1)) segment-count)))
+          (vector-copy! a b)
+          (sample-accurate self b t)
+          (+! s (vector-vector-distance a b))
+          (set! (-> length-table i) s)
+        )
+      )
+
+      (set! (-> self length) s)
+    )
+  )
+
+  (format 0 "Total bpath length: ~M~%" (-> self length))
+
+  ;;! This doesn't go through every knot.
+  ;;! It misses them by a small amount, which should be inconsequential
+  ; Filling the cache
+  (let (
+        (point-count (the int (ceil (/ (-> self length) max-len))))
+        (i 0)
+        (la 0.0) (lb 0.0) (tgt-l 0.0)
+        (a (new-stack-vector0)) (b (new-stack-vector0))
+        (ra 0.0) (rb 0.0)
+      )
+    (format 0 "Cache Length: ~D~%" point-count)
+    (set! (-> self num-cached-points) point-count)
+    (set! (-> self cached-points) (new 'process 'vector-array point-count))
+    (set! (-> self cached-rotations) (new 'process 'boxed-array float point-count))
+    (set! (-> self cached-lengths) (new 'process 'boxed-array float point-count))
+
+    (vector-copy! b (-> self points data 0))
+    (vector-copy! (-> self cached-points data 0) b)
+
+    (set! rb (-> self rotations 0))
+    (set! (-> self cached-rotations 0) rb)
+
+    (dotimes (ic (- point-count 1))
+      ; Start at ic = 1 instead of ic = 0
+      ; Because we handled that above
+      (when (= ic 0) (set! ic 1))
+
+      (set! tgt-l (* max-len ic))
+      (when (< (-> length-table i) tgt-l)
+        (until (>= (-> length-table i) tgt-l)
+          (+! i 1)
+        )
+      )
+
+      (vector-copy! a b)
+      (set! ra rb)
+      (set! la lb)
+      (set! lb (-> length-table i))
+
+      (let ((t (/ (-> length-table i) (-> self length))))
+        (sample-accurate self b t)
+        (set! rb (sample-rot-accurate self t))
+
+        (let ((lerp-t (/ (- tgt-l la) (- lb la))))
+          (vector-lerp! (-> self cached-points data ic) a b lerp-t)
+          (set! (-> self cached-rotations data ic) (lerp ra rb lerp-t))
+        )
+
+        (set! (-> self cached-lengths ic) (vector-vector-distance a b))
+      )
+    )
+
+    ; Handle the last point ourselves to make sure it reaches the last knot
+    (set! (-> self cached-lengths (- point-count 1)) (vector-vector-distance b (-> self points data (- (length (-> self points)) 1))))
+    (vector-copy! (-> self cached-points data (- point-count 1)) (-> self points data (- (length (-> self points)) 1)))
+  )
+
+  (none)
+)
+
+
+;; Samples the path.
+;; Automatically chooses between sampling accurately and using cache
+;; depending on whether the `full-precision` flag is set
+;; Params:
+;;   `dst` will be filled with the sampled position
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   `dst` for chaining
+(defmethod sample ((self bpath) (dst vector) (t float))
+  (if (logtest? (-> self flags) (bpath-flags full-precision))
+    (sample-accurate self dst t)
+    (sample-cache self dst t)
+  )
+)
+
+
+;; Samples the path using bezier interpolation
+;; Params:
+;;   `dst` will be filled with the sampled position
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   `dst` for chaining
+(defmethod sample-accurate ((self bpath) (dst vector) (t float))
+  ; Take care of the t = 1.0 case so we don't have to worry about it later
+  (when (= t 1.0)
+    (let* (
+          (idx (* 3 (- (-> self num-knots) 1)))
+          (end-point (-> self points data idx))
+        )
+      (vector-copy! dst end-point)
+
+      (return dst)
+    )
+  )
+
+  (let* (
+        (u   (* t (- (-> self num-knots) 1)))
+        (idx (* 3 (truncate u)))
+        (t   (fractional-part u))
+        (a     (-> self points data idx))
+        (a-out (-> self points data (+ idx 1)))
+        (b-in  (-> self points data (+ idx 2)))
+        (b     (-> self points data (+ idx 3)))
+      )
+    (bezier-interpolate-vector dst a a-out b-in b t)
+  )
+
+  dst
+)
+
+
+;; Samples the path using linear interpolation between cached points
+;; Params:
+;;   `dst` will be filled with the sampled position
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   `dst` for chaining
+(defmethod sample-cache ((self bpath) (dst vector) (t float))
+  (unless (-> self cached?) (cache self (the-as int #f) (the-as float #f)))
+  (when (basically-zero? (- t 1.0))
+    (vector-copy! dst (-> self cached-points data (- (-> self num-cached-points) 1)))
+    (return dst)
+  )
+
+  (let* (
+        (u (* t (-> self num-cached-points)))
+        (idx (the int (truncate u)))
+        (t (fractional-part u))
+        (point-a (-> self cached-points data idx))
+        (point-b (-> self cached-points data (+ idx 1)))
+      )
+    ; linear lerp
+    (vector-lerp! dst point-a point-b t)
+  )
+
+  dst
+)
+
+
+;; Samples the rotation of a point on the path.
+;; Automatically chooses between sampling accurately and using cache
+;; depending on whether the `full-precision` flag is set
+;; Params:
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   Rotation of specified point on the path
+(defmethod sample-rot ((self bpath) (t float))
+  (if (logtest? (-> self flags) (bpath-flags full-precision))
+    (sample-rot-accurate self t)
+    (sample-rot-cache self t)
+  )
+)
+
+
+;; Samples the rotation of a point on the path using bezier interpolation
+;; Params:
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   Rotation of specified point on the path
+(defmethod sample-rot-accurate ((self bpath) (t float))
+  ; Take care of the t = 1.0 case so we don't have to worry about it later
+  (when (= t 1.0)
+    (let ((last-idx (* 3 (- (-> self num-knots) 1))))
+      (return (-> self rotations last-idx))
+    )
+  )
+
+  (let* (
+        (u   (* t (- (-> self num-knots) 1)))
+        (idx (* 3 (truncate u)))
+        (t   (fractional-part u))
+        (a     (-> self rotations idx))
+        (a-out (-> self rotations (+ idx 1)))
+        (b-in  (-> self rotations (+ idx 2)))
+        (b     (-> self rotations (+ idx 3)))
+      )
+    (bezier-interpolate a a-out b-in b t)
+  )
+)
+
+
+;; Samples the rotation of a point on the path using linear interpolation between cached rotations
+;; Params:
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   Rotation of specified point on the path
+(defmethod sample-rot-cache ((self bpath) (t float))
+  (unless (-> self cached?) (cache self (the-as int #f) (the-as float #f)))
+  (when (fequal? t 1.0)
+    (return (-> self cached-rotations (- (-> self num-cached-points) 1)))
+  )
+
+  (let* (
+        (u (* t (-> self num-cached-points)))
+        (idx (the int (truncate u)))
+        (t (fractional-part u))
+        (a (-> self cached-rotations idx))
+        (b (-> self cached-rotations (+ idx 1)))
+      )
+    ; linear lerp
+    (lerp a b t)
+  )
+)
+
+
+;; Samples the tangent of a point on the path
+;; Params:
+;;   `dst` will be filled with the sampled tangent
+;;   `t` is the percentage of the curve the point should be at, and must be between 0.0 and 1.0
+;; Returns:
+;;   `dst` for chaining
+(defmethod sample-tangent ((self bpath) (dst vector) (t float))
+  ; Handle t = 1.0 (must be separate because of how we get our points in other cases)
+  (when (fequal? t 1.0)
+    (let* (
+          (last-idx (* 3 (- (-> self num-knots) 1)))
+          (b     (-> self points data last-idx))
+          (b-in  (-> self points data (- last-idx 1)))
+          (a-out (-> self points data (- last-idx 2)))
+          (a     (-> self points data (- last-idx 3)))
+        )
+      (when (vector-basically= b-in b)
+        (vector-! dst b a)
+        (vector-normalize! dst 1.0)
+        (return dst)
+      )
+    )
+  )
+
+  (let* (
+        (u   (* t (- (-> self num-knots) 1)))
+        (idx (* 3 (truncate u)))
+        (t   (fractional-part u))
+        (a     (-> self points data idx))
+        (a-out (-> self points data (+ idx 1)))
+        (b-in  (-> self points data (+ idx 2)))
+        (b     (-> self points data (+ idx 3)))
+      )
+    ; Handle t = 0.0
+    (when (and (basically-zero? t) (vector-basically= a a-out))
+      (vector-! dst b a)
+      (vector-normalize! dst 1.0)
+      (return dst)
+    )
+
+    (bezier-derivative-vector dst a a-out b-in b t)
+    (vector-normalize! dst 1.0)
+  )
+
+  dst
+)
+
+
+;; Renders the bezier path for debugging
+;; Red lines indicate the cached path (if any)
+;; Blue lines indicate the control handles
+;; Green spheres indicate the knots
+;; Blue spheres indicate the control points
+(defmethod debug-render ((self bpath))
+  ; Render the cached path
+  (when (-> self cached-points)
+    (dotimes (i (- (-> self num-cached-points) 1))
+      (add-debug-line
+          #t
+          (bucket-id debug-no-zbuf)
+          (-> self cached-points data i)
+          (-> self cached-points data (+ i 1))
+          (new 'static 'rgba :r #xff :a #x60)
+          #f
+          (the-as rgba -1)
+        )
+    )
+  )
+
+  ; Render the control handles
+  (dotimes (i (- (-> self num-knots) 1))
+    ; a -> a-out
+    (add-debug-line
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self points data (* i 3))
+        (-> self points data (+ (* i 3) 1))
+        (new 'static 'rgba :b #xff :a #x30)
+        #f
+        (the-as rgba -1)
+      )
+    ; b -> b-in
+    (add-debug-line
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self points data (+ (* i 3) 3))
+        (-> self points data (+ (* i 3) 2))
+        (new 'static 'rgba :b #xff :a #x30)
+        #f
+        (the-as rgba -1)
+      )
+  )
+
+  ; Render the knots and control points
+  (dotimes (i (length (-> self points)))
+    (if (zero? (mod i 3))
+      (add-debug-text-sphere
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self points data i)
+        (-> *bpath-info* debug-knot-radius)
+        (string-format "P~D" i)
+        (new 'static 'rgba :g #xff :a #x30)
+      )
+      (add-debug-text-sphere
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self points data i)
+        (-> *bpath-info* debug-control-radius)
+        (string-format "P~D" i)
+        (new 'static 'rgba :b #xff :a #x60)
+      )
+    )
+  )
+
+  ; Render the name
+  (add-debug-text-sphere
+    #t
+    (bucket-id debug-no-zbuf)
+    (-> self entity trans)
+    (-> *bpath-info* debug-knot-radius)
+    (string-format (res-lump-struct (-> self entity) 'name structure))
+    (new 'static 'rgba :r #xc0 :b #xc0 :a #x00) ; lol
+  )
+
+  (none)
+)
+
+
+(defstate pathing (bpath)
+  :virtual #t
+
+  :code (behavior ()
+    (loop
+      (when *display-path-marks* (debug-render self) )
+      (suspend)
+    )
+  )
+)

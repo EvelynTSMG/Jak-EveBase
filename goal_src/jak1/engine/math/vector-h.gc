@@ -478,6 +478,66 @@
     (.svf dst vf1))
   dst)
 
+(defun vector*f! ((dst vector) (a vector) (b float))
+  (set-vector! dst
+    (* (-> a x) b)
+    (* (-> a y) b)
+    (* (-> a z) b)
+    1.0
+  )
+)
+
+(defmacro vector+ (dst a &rest b)
+  `(vector-copy! ,dst ,a)
+  (if (> (length b) 1)
+    (begin ; #t
+      `(vector+! ,dst ,dst ,@(car b))
+      `(vector+ ,dst ,dst ,@(cdr b))
+    )
+    `(vector+! ,dst ,dst ,@b)
+  )
+)
+
+(defmacro vector+!! (dst &rest with)
+  (if (> (length with) 1)
+    (begin ; #t
+      `(vector+! ,dst ,dst ,@(car with))
+      `(vector+!! ,dst ,@(cdr with))
+    )
+    `(vector+! ,dst ,dst ,@with)
+  )
+)
+
+(defmacro vector-!! (dst &rest with)
+  (if (> (length with) 1)
+    (begin ; #t
+      `(vector-! ,dst ,@(car with))
+      `(vector-!! ,dst ,dst ,@(cdr with))
+    )
+    `(vector-! ,dst ,dst ,@with)
+  )
+)
+
+(defmacro vector*!! (dst &rest with)
+  (if (> (length with) 1)
+    (begin ; #t
+      `(let ((s ,@(car with)))
+        (if (float? s)
+          (vector*f! ,dst ,dst s)
+          (vector*! ,dst ,dst s)
+        )
+        (vector*!! ,dst ,dst ,@(cdr with))
+      )
+    )
+    (begin ; #f
+      `(if (float? ,@with)
+        (vector*f! ,dst ,dst ,@with)
+        (vector*! ,dst ,dst ,@with)
+      )
+    )
+  )
+)
+
 (defun vector-zero! ((dest vector))
   "Set xyzw to 0."
   (declare (inline))

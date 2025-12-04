@@ -4,6 +4,99 @@
 ;; For debug-only additions to the mod-base. Anything defined in this file will be unavailable in retail mode.
 (declare-file (debug))
 
+(define *conductor-pick-menu* (the-as debug-menu #f))
+(define *path-pick-menu* (the-as debug-menu #f))
+
+(define *debug-picked-conductors* '())
+(define *debug-picked-paths* '())
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Extra functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun dm-conductor-pick-func ((e entity) (msg debug-menu-msg))
+  (when (= msg (debug-menu-msg press))
+    (format 0 "Pressed conductor button!~%")
+    (format 0 "Conductor is member-before ~A~%" (member e *debug-picked-conductors*))
+    (if (member e *debug-picked-conductors*)
+      (delete! e *debug-picked-conductors*)
+      (append! *debug-picked-conductors* e)
+    )
+    (format 0 "Conductor is member-after? ~A~%" (member e *debug-picked-conductors*))
+  )
+  (member e *debug-picked-conductors*)
+)
+
+(defun dm-path-pick-func ((e entity) (msg debug-menu-msg))
+  (when (= msg (debug-menu-msg press))
+    (format 0 "Pressed path button!~%")
+    (format 0 "Path is member-before ~A~%" (member e *debug-picked-paths*))
+    (if (member e *debug-picked-paths*)
+      (delete! e *debug-picked-paths*)
+      (append! *debug-picked-paths* e)
+    )
+    (format 0 "Path is member-after? ~A~%" (member e *debug-picked-paths*))
+  )
+  (member e *debug-picked-paths*)
+)
+
+(defun-debug build-bpath-conductor-list ()
+  "Fill the conductor pick menu"
+  ;; clear old list
+  (debug-menu-remove-all-items *conductor-pick-menu*)
+
+  ;; go through active levels
+  (dotimes (level-idx (-> *level* length))
+    (let ((level (-> *level* level level-idx)))
+      (when (= (-> level status) 'active)
+        (let ((actors (-> level bsp actors)))
+          (when (nonzero? actors)
+            (dotimes (actor-idx (-> actors length))
+              (let ((actor (-> actors data actor-idx actor)))
+                (when (type-type? (-> actor etype) bpath-conductor)
+                  (debug-menu-append-item *conductor-pick-menu* (new-dm-flag (res-lump-struct actor 'name string) actor dm-conductor-pick-func))
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (set! (-> *conductor-pick-menu* items) (sort (-> *conductor-pick-menu* items) debug-menu-node<?))
+)
+
+(defun-debug build-bpath-list ()
+  "Fill the conductor pick menu"
+  ;; clear old list
+  (debug-menu-remove-all-items *path-pick-menu*)
+
+  ;; go through active levels
+  (dotimes (level-idx (-> *level* length))
+    (let ((level (-> *level* level level-idx)))
+      (when (= (-> level status) 'active)
+        (let ((actors (-> level bsp actors)))
+          (when (nonzero? actors)
+            (dotimes (actor-idx (-> actors length))
+              (let ((actor (-> actors data actor-idx actor)))
+                (when (type-type? (-> actor etype) bpath)
+                  (debug-menu-append-item *path-pick-menu* (new-dm-flag (res-lump-struct actor 'name string) actor dm-path-pick-func))
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (set! (-> *path-pick-menu* items) (sort (-> *path-pick-menu* items) debug-menu-node<?))
+)
+
+(defun-debug build-bpath-lists ()
+  (build-bpath-list)
+  (build-bpath-conductor-list)
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Additional debug menu(s)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -14,14 +107,81 @@
     (let ((orb-placer-menu (new 'debug 'debug-menu ctx "Orb Placer")))
       (debug-menu-append-item orb-placer-menu (new-dm-bool "Edit Mode?" *orb-placer-enabled?* dm-boolean-toggle-pick-func))
       (debug-menu-append-item orb-placer-menu (new-dm-func "Add Orb" #f orb-placer-add))
+
       (let ((select-orb-menu (new 'debug 'debug-menu ctx "Select Orb")))
         (set! *orb-placer-select-menu* select-orb-menu)
         ;; populated on orb add
-        (debug-menu-append-item orb-placer-menu (new-dm-submenu "Select Orb" select-orb-menu)))
+        (debug-menu-append-item orb-placer-menu (new-dm-submenu "Select Orb" select-orb-menu))
+      )
+
       (debug-menu-append-item orb-placer-menu (new-dm-func "Print Selected Orb Position" #f orb-placer-print-selected))
       (debug-menu-append-item orb-placer-menu (new-dm-func "Print All Orb Positions" #f orb-placer-print-all))
-      (debug-menu-append-item modding-tools-menu (new-dm-submenu "Orb Placer" orb-placer-menu)))
-    (new-dm-submenu "Modding Tools" modding-tools-menu)))
+      (debug-menu-append-item modding-tools-menu (new-dm-submenu "Orb Placer" orb-placer-menu))
+    )
+
+    (new-dm-submenu "Modding Tools" modding-tools-menu)
+  )
+)
+
+(defun-debug debug-menu-make-paths-menu ((ctx debug-menu-context))
+  (let ((paths-menu (new 'debug 'debug-menu ctx "Paths")))
+    (debug-menu-append-item paths-menu (new-dm-bool "Display Path Marks" *display-path-marks* dm-boolean-toggle-pick-func))
+
+    (let ((pick-menu (new 'debug 'debug-menu ctx "Pick conductor menu")))
+      (set! *conductor-pick-menu* pick-menu)
+      (debug-menu-append-item paths-menu (new-dm-submenu "Pick Conductors" pick-menu))
+    )
+
+    (let ((pick-menu (new 'debug 'debug-menu ctx "Pick path menu")))
+      (set! *path-pick-menu* pick-menu)
+      (debug-menu-append-item paths-menu (new-dm-submenu "Pick Paths" pick-menu))
+    )
+
+    (debug-menu-append-item paths-menu (new-dm-func "Refresh" #f build-bpath-lists))
+
+    (new-dm-submenu "Paths" paths-menu)
+  )
+)
 
 (when (-> *debug-menu-context* root-menu)
-  (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-modding-tools-menu *debug-menu-context*)))
+  (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-paths-menu *debug-menu-context*))
+  (debug-menu-append-item (-> *debug-menu-context* root-menu) (debug-menu-make-modding-tools-menu *debug-menu-context*))
+)
+
+(defun-debug debug-runs-every-frame ()
+  (when (and
+        *display-path-marks*
+        *conductor-pick-menu* (> (length (-> *conductor-pick-menu* items)) 0)
+        *path-pick-menu* (> (length (-> *path-pick-menu* items)) 0)
+      )
+    (let ((conductor-list (-> *conductor-pick-menu* items)))
+      (until (= conductor-list '())
+        (let* (
+              (conductor-item (the-as debug-menu-item-flag (car conductor-list)))
+              (conductor (the-as bpath-conductor (process-by-ename (-> conductor-item name))))
+            )
+          (when (-> conductor-item is-on)
+            (let ((path-list (-> *path-pick-menu* items)))
+              (until (= path-list '())
+                (let* (
+                      (path-item (the-as debug-menu-item-flag (car path-list)))
+                      (path (the-as bpath (process-by-ename (-> path-item name))))
+                    )
+                  (when (-> path-item is-on)
+                    (draw-debug conductor path)
+                  )
+                )
+
+                (set! path-list (cdr path-list))
+              )
+            )
+          )
+        )
+
+        (set! conductor-list (cdr conductor-list))
+      )
+    )
+  )
+
+  (none)
+)

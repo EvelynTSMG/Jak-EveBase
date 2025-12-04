@@ -140,6 +140,40 @@
 
   "actors": [
     {
+      "trans": [-7.0, 6.0, 40.0],
+      "etype": "bpath-conductor",
+      "game_task": 0, // Unused
+      "quat": [0, 0, 0, 1], // Unused
+      "bsphere": [-7.0, 6.0, 40.0, 100.0], // Unused?
+      "lump": {
+        "name": "conductor-test",
+        "speed": 0.05,
+        "start-active": true
+      }
+    },
+    {
+      "trans": [-7.0, 6.0, 40.0], // the name is rendered at this position when displaying path marks
+      "etype": "bpath",
+      "game_task": 0,                   // Unused
+      "quat": [0, 0, 0, 1],             // Unused
+      "bsphere": [-5.0, 6.0, 40.0, 100.0], // Unused?
+      "lump": {
+        "name": "bpath-test",
+        "cycle-length": 5.0,
+        "points": ["vector3m",
+          [  0.0,  6.0, 40.0], [  0.0, 11.0, 40.0], [ -5.0, 11.0, 40.0],
+          [ -5.0,  6.0, 40.0], [ -5.0,  1.0, 40.0], [-10.0,  1.0, 40.0],
+          [-10.0,  6.0, 40.0], [-10.0, 11.0, 40.0], [-10.0, 11.0, 45.0],
+          [-10.0,  6.0, 45.0], [-10.0,  1.0, 45.0], [ -5.0,  1.0, 45.0],
+          [ -5.0,  6.0, 45.0], [ -5.0, 11.0, 45.0], [  0.0,  6.0, 45.0],
+          [  0.0,  1.0, 45.0]
+        ],
+        "rotations": ["float",
+          0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+        ]
+      }
+    },
+    {
       "trans": [-21.6238, 20.0496, 17.1191], // translation
       "etype": "fuel-cell", // actor type
       "game_task": "(game-task none)", // associated game task (for powercells, etc)
