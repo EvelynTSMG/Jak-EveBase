@@ -3372,7 +3372,13 @@
               )
 
               ;; if the option has a `on-confirm` function, run it
-              (when (nonzero? (-> options (-> progress option-index) on-confirm))
+              (when (and
+                    (nonzero? (-> options (-> progress option-index) on-confirm))
+                    (or
+                      (neq? (-> options (-> progress option-index) option-type) (game-option-type confirmation))
+                      (-> *progress-state* on-off-backup)
+                    )
+                  )
                 ((-> options (-> progress option-index) on-confirm))
               )
 
