@@ -1790,12 +1790,14 @@
         (set! (-> self control unknown-float81) 1.0))
       (set! (-> self control unknown-uint20) (the-as uint 0))
       (set! (-> self control unknown-int21) 0)
+      (target-collide-set! 'duck (the-as float 1.0))
       0)
   :exit
     (behavior ()
       (when (!= (-> self next-state name) 'target-wheel)
         (set! (-> self control unknown-int50) 0)
         (set-time! (-> self control unknown-dword30)))
+      (target-collide-set! 'normal (the-as float 0.0))
       (target-exit))
   :code
     (behavior ()
@@ -1851,8 +1853,12 @@
   :event target-standard-event-handler
   :enter
     (behavior ((arg0 float) (arg1 float))
-      (set! (-> self control unknown-surface00) *wheel-flip-mods*))
-  :exit target-exit
+      (set! (-> self control unknown-surface00) *wheel-flip-mods*)
+      (target-collide-set! 'duck (the-as float 1.0)))
+  :exit (behavior ()
+    (target-collide-set! 'normal (the-as float 0.0))
+    (target-exit)
+  )
   :trans
     (behavior ()
       (if (and (or (smack-surface? #f) (< (target-move-dist (-> *TARGET-bank* stuck-time)) (-> *TARGET-bank* stuck-distance)))
