@@ -59,11 +59,11 @@
 (define *part-id-table* (new 'global 'boxed-array sparticle-launcher 8192))
 
 ;; All the particle groups.
-(define *part-group-id-table* (new 'global 'boxed-array sparticle-launch-group 1024))
+(define *part-group-table* (new 'global 'boxed-array sparticle-launch-group 1024))
 
 (defun lookup-part-group-by-name ((arg0 string))
   "Find a particle group with the given name. Checks all of them, not very efficient."
-  (let* ((s5-0 *part-group-id-table*)
+  (let* ((s5-0 *part-group-table*)
          (s4-0 (-> s5-0 length)))
     (dotimes (s3-0 s4-0)
       (let ((s2-0 (-> s5-0 s3-0))) (if (and (nonzero? s2-0) (string= arg0 (-> s2-0 name))) (return (the-as basic s2-0))))))
@@ -71,7 +71,7 @@
 
 (defun lookup-part-group-pointer-by-name ((arg0 string))
   "Get a (pointer sparticle-launch-group) for the given name.  Checks all of them, not very efficient."
-  (let* ((s4-0 *part-group-id-table*)
+  (let* ((s4-0 *part-group-table*)
          (s3-0 (-> s4-0 length)))
     (dotimes (gp-0 s3-0)
       (let ((v1-2 (-> s4-0 gp-0)))
@@ -83,14 +83,14 @@
 
 (defun part-group-pointer? ((arg0 pointer))
   "Is the given pointer a pointer that was returned by lookup-part-group-pointer-by-name?"
-  (let ((v1-0 *part-group-id-table*))
+  (let ((v1-0 *part-group-table*))
     ;; og:preserve-this
     ;; just check if we are inside the array.
     (and (>= (the-as int arg0) (the-as int (-> v1-0 data))) (< (the-as int arg0) (the-as int (&-> v1-0 1024))))))
 
 (defun unlink-part-group-by-heap ((arg0 kheap))
   "Find all particle groups that are stored in the specified heap and set them to 0."
-  (let* ((v1-0 *part-group-id-table*)
+  (let* ((v1-0 *part-group-table*)
          (a2-0 (-> v1-0 length))
          (a1-0 (-> arg0 base))
          (a0-1 (-> arg0 top-base)))

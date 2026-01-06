@@ -14,7 +14,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-keg-bounce
-  :id 197
+  :id (part-group-id group-keg-bounce)
   :duration (seconds 0.035)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -118,7 +118,7 @@
        (process-spawn part-tracker
                       :init
                       part-tracker-init
-                      (-> *part-group-id-table* 71)
+                      (-> *part-group-table* (part-group-id group-crate-explode))
                       20
                       #f
                       #f
@@ -238,7 +238,7 @@
                       (process-spawn part-tracker
                                      :init
                                      part-tracker-init
-                                     (-> *part-group-id-table* 197)
+                                     (-> *part-group-table* (part-group-id group-keg-bounce))
                                      -1
                                      keg-bounce-set-particle-rotation-callback
                                      (-> self ppointer)

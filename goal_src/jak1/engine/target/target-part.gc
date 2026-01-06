@@ -144,7 +144,7 @@
   (none))
 
 (defpartgroup group-target-hit
-  :id 1
+  :id (part-group-id group-target-hit)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 12)
@@ -190,7 +190,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-red-eco-strike-ground
-  :id 2
+  :id (part-group-id group-red-eco-strike-ground)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -247,7 +247,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-red-eco-spinkick
-  :id 3
+  :id (part-group-id group-red-eco-spinkick)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -318,14 +318,14 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-spin-hit
-  :id 4
+  :id (part-group-id group-spin-hit)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 65) (sp-item 66)))
 
 (defpartgroup group-punch-hit
-  :id 5
+  :id (part-group-id group-punch-hit)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -373,7 +373,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-smack-surface
-  :id 6
+  :id (part-group-id group-smack-surface)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -485,7 +485,7 @@
    (:flags (bit2 bit3 bit7))))
 
 (defpartgroup group-land-poof-sand
-  :id 8
+  :id (part-group-id group-land-poof-sand)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -560,7 +560,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-land-poof-dirt
-  :id 575
+  :id (part-group-id group-land-poof-dirt)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -635,7 +635,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-land-poof-snow
-  :id 9
+  :id (part-group-id group-land-poof-snow)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -710,14 +710,14 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-land-poof-ice
-  :id 580
+  :id (part-group-id group-land-poof-ice)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 76) (sp-item 77) (sp-item 78)))
 
 (defpartgroup group-land-poof-grass
-  :id 10
+  :id (part-group-id group-land-poof-grass)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -793,7 +793,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-land-poof-wood
-  :id 11
+  :id (part-group-id group-land-poof-wood)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -846,14 +846,14 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-land-poof-crwood
-  :id 12
+  :id (part-group-id group-land-poof-crwood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2.5)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 82) (sp-item 83) (sp-item 84) (sp-item 84)))
 
 (defpartgroup group-land-poof-stone
-  :id 13
+  :id (part-group-id group-land-poof-stone)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -906,7 +906,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-land-poof-pcmetal
-  :id 581
+  :id (part-group-id group-land-poof-pcmetal)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -957,14 +957,14 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-run-poof-stone
-  :id 14
+  :id (part-group-id group-run-poof-stone)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 87)))
 
 (defpartgroup group-just-poof-stone
-  :id 15
+  :id (part-group-id group-just-poof-stone)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -989,21 +989,21 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-run-poof-snow
-  :id 582
+  :id (part-group-id group-run-poof-snow)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2375) (sp-item 2376 :flags (is-3d))))
 
 (defpartgroup group-just-poof-snow
-  :id 583
+  :id (part-group-id group-just-poof-snow)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2375)))
 
 (defpartgroup group-just-footprint-snow
-  :id 584
+  :id (part-group-id group-just-footprint-snow)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1044,28 +1044,28 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-run-poof-ice
-  :id 585
+  :id (part-group-id group-run-poof-ice)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2375)))
 
 (defpartgroup group-just-poof-ice
-  :id 586
+  :id (part-group-id group-just-poof-ice)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2375)))
 
 (defpartgroup group-run-poof-crwood
-  :id 16
+  :id (part-group-id group-run-poof-crwood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 89) (sp-item 89) (sp-item 84)))
 
 (defpartgroup group-just-poof-crwood
-  :id 17
+  :id (part-group-id group-just-poof-crwood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1102,14 +1102,14 @@
   :init-specs ((:fade-a -0.08)))
 
 (defpartgroup group-run-poof-wood
-  :id 18
+  :id (part-group-id group-run-poof-wood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 89)))
 
 (defpartgroup group-just-poof-wood
-  :id 19
+  :id (part-group-id group-just-poof-wood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1134,14 +1134,14 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-run-poof-pcmetal
-  :id 587
+  :id (part-group-id group-run-poof-pcmetal)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2377)))
 
 (defpartgroup group-just-poof-pcmetal
-  :id 588
+  :id (part-group-id group-just-poof-pcmetal)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1166,21 +1166,21 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-run-poof-grass
-  :id 20
+  :id (part-group-id group-run-poof-grass)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 92) (sp-item 93 :flags (is-3d))))
 
 (defpartgroup group-just-poof-grass
-  :id 21
+  :id (part-group-id group-just-poof-grass)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 92)))
 
 (defpartgroup group-just-footprint-grass
-  :id 22
+  :id (part-group-id group-just-footprint-grass)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1221,21 +1221,21 @@
    (:flags (bit2 bit12 bit14))))
 
 (defpartgroup group-run-poof-sand
-  :id 23
+  :id (part-group-id group-run-poof-sand)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 88) (sp-item 94 :flags (is-3d))))
 
 (defpartgroup group-just-poof-sand
-  :id 24
+  :id (part-group-id group-just-poof-sand)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 88)))
 
 (defpartgroup group-just-footprint-sand
-  :id 25
+  :id (part-group-id group-just-footprint-sand)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1276,21 +1276,21 @@
    (:flags (bit2 bit12 bit14))))
 
 (defpartgroup group-run-poof-dirt
-  :id 576
+  :id (part-group-id group-run-poof-dirt)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2378)))
 
 (defpartgroup group-just-poof-dirt
-  :id 577
+  :id (part-group-id group-just-poof-dirt)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2378)))
 
 (defpartgroup group-just-footprint-dirt
-  :id 578
+  :id (part-group-id group-just-footprint-dirt)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1422,7 +1422,7 @@
 (defpart 99)
 
 (defpartgroup group-slide-poof-sand
-  :id 26
+  :id (part-group-id group-slide-poof-sand)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1474,7 +1474,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-slide-poof-dirt
-  :id 579
+  :id (part-group-id group-slide-poof-dirt)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1526,7 +1526,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-slide-poof-grass
-  :id 27
+  :id (part-group-id group-slide-poof-grass)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1579,7 +1579,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-slide-poof-stone
-  :id 28
+  :id (part-group-id group-slide-poof-stone)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1609,7 +1609,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-slide-poof-pcmetal
-  :id 589
+  :id (part-group-id group-slide-poof-pcmetal)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1639,7 +1639,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-slide-poof-snow
-  :id 590
+  :id (part-group-id group-slide-poof-snow)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1669,14 +1669,14 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-slide-poof-ice
-  :id 591
+  :id (part-group-id group-slide-poof-ice)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2383)))
 
 (defpartgroup group-slide-poof-wood
-  :id 29
+  :id (part-group-id group-slide-poof-wood)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1706,7 +1706,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-slide-poof-crwood
-  :id 30
+  :id (part-group-id group-slide-poof-crwood)
   :duration (seconds 0.017)
   :linger-duration (seconds 2.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -1786,7 +1786,7 @@
    (:flags (bit2 bit12 bit14))))
 
 (defpartgroup group-dark-eco-death
-  :id 31
+  :id (part-group-id group-dark-eco-death)
   :duration (seconds 2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 12)
@@ -1829,14 +1829,14 @@
    (sp-item 2097 :period (seconds 2) :length (seconds 0.067))))
 
 (defpartgroup group-lava-death
-  :id 32
+  :id (part-group-id group-lava-death)
   :duration (seconds 0.25)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2003) (sp-item 2004) (sp-item 2005) (sp-item 2006)))
 
 (defpartgroup group-burn-death
-  :id 708
+  :id (part-group-id group-burn-death)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -2014,19 +2014,19 @@
    (:userdata -8192.0)))
 
 (defpartgroup group-part-first-person-hud-left
-  :id 611
+  :id (part-group-id group-part-first-person-hud-left)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2474 :flags (launch-asap))))
 
 (defpartgroup group-part-first-person-hud-right
-  :id 612
+  :id (part-group-id group-part-first-person-hud-right)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2475 :flags (launch-asap))))
 
 (defpartgroup group-part-first-person-hud-selector
-  :id 613
+  :id (part-group-id group-part-first-person-hud-selector)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2476 :flags (launch-asap))))

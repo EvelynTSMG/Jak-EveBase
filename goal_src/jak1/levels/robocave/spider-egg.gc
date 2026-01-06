@@ -88,7 +88,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 324)
+                     (-> *part-group-table* (part-group-id group-spider-egg-hatches))
                      -1
                      #f
                      #f
@@ -129,7 +129,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 325)
+                     (-> *part-group-table* (part-group-id group-spider-egg-explodes))
                      -1
                      #f
                      #f

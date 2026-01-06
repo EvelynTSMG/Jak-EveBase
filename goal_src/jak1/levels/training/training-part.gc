@@ -10,7 +10,7 @@
 
 
 (defpartgroup group-training-geyser-2
-  :id 146
+  :id (part-group-id group-training-geyser-2)
   :flags (always-draw)
   :bounds (static-bspherem 0 32 0 70)
   :parts
@@ -42,7 +42,7 @@
    (sp-item 758 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 16) :length (seconds 3) :offset 3450)))
 
 (defpartgroup group-training-geyser-5
-  :id 147
+  :id (part-group-id group-training-geyser-5)
   :flags (always-draw)
   :bounds (static-bspherem 0 32 0 70)
   :parts
@@ -74,7 +74,7 @@
    (sp-item 758 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 16) :length (seconds 3) :offset 4650)))
 
 (defpartgroup group-training-geyser-6
-  :id 149
+  :id (part-group-id group-training-geyser-6)
   :flags (always-draw)
   :bounds (static-bspherem 0 32 0 70)
   :parts
@@ -98,7 +98,7 @@
    (sp-item 754 :falloff-to (meters 500) :period (seconds 16) :length (seconds 3) :offset 1500)))
 
 (defpartgroup group-training-geyser-4
-  :id 148
+  :id (part-group-id group-training-geyser-4)
   :flags (always-draw)
   :bounds (static-bspherem 0 32 0 70)
   :parts
@@ -384,7 +384,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-training-warpgate
-  :id 150
+  :id (part-group-id group-training-warpgate)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 767 :fade-after (meters 60) :falloff-to (meters 60))
@@ -665,7 +665,7 @@
    (:flags (bit2 bit3 bit7 bit14))))
 
 (defpartgroup group-training-butterflies
-  :id 151
+  :id (part-group-id group-training-butterflies)
   :bounds (static-bspherem 0 0 0 30)
   :parts
   ((sp-item 773
@@ -768,7 +768,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-training-birds
-  :id 152
+  :id (part-group-id group-training-birds)
   :bounds (static-bspherem 0 8 0 45)
   :parts
   ((sp-item 779 :fade-after (meters 120) :flags (bit1 launch-asap) :binding 777)
@@ -862,7 +862,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-training-waterfall-21
-  :id 153
+  :id (part-group-id group-training-waterfall-21)
   :flags (always-draw)
   :bounds (static-bspherem 0 16 0 32)
   :parts
@@ -1045,7 +1045,7 @@
    (:rotate-y (degrees 90))))
 
 (defpartgroup group-training-waterfall-20
-  :id 154
+  :id (part-group-id group-training-waterfall-20)
   :flags (always-draw)
   :bounds (static-bspherem 0 12 0 12)
   :parts

@@ -92,7 +92,7 @@
   :bounds (static-spherem 0 0 0 4))
 
 (defpartgroup group-snow-yellow-eco-room-open
-  :id 510
+  :id (part-group-id group-snow-yellow-eco-room-open)
   :bounds (static-bspherem 0 -6 0 8)
   :parts
   ((sp-item 1990 :fade-after (meters 110))
@@ -102,7 +102,7 @@
    (sp-item 1994 :fade-after (meters 110))))
 
 (defpartgroup group-snow-yellow-eco-room-activate
-  :id 511
+  :id (part-group-id group-snow-yellow-eco-room-activate)
   :duration (seconds 3)
   :bounds (static-bspherem 0 -6 0 8)
   :parts ((sp-item 1994) (sp-item 1994) (sp-item 1995 :flags (bit1) :period (seconds 4) :length (seconds 0.05))))
@@ -271,7 +271,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 511)
+                     (-> *part-group-table* (part-group-id group-snow-yellow-eco-room-activate))
                      -1
                      #f
                      #f
@@ -346,7 +346,7 @@
   (set! (-> this spawn-trans quad) (-> this root trans quad))
   (+! (-> this root trans y) -2662.4)
   (update-transforms! (-> this root))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 510) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-snow-yellow-eco-room-open)) this))
   (set! (-> this sound) (new 'process 'ambient-sound (static-sound-spec "electric-loop" :fo-max 40) (-> this root trans)))
   (cond
     ((task-complete? *game-info* (-> this entity extra perm task)) (go snow-eggtop-idle-down))
@@ -539,7 +539,7 @@
   :longest-edge (meters 12.8))
 
 (defpartgroup group-snow-fort-gate-coming-down
-  :id 512
+  :id (part-group-id group-snow-fort-gate-coming-down)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1896)))
@@ -573,7 +573,7 @@
   :init-specs ((:fade-a -0.21333334)))
 
 (defpartgroup group-snow-fort-gate-hits-bottom
-  :id 513
+  :id (part-group-id group-snow-fort-gate-hits-bottom)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1898)))
@@ -608,7 +608,7 @@
   :init-specs ((:fade-a -0.10666667)))
 
 (defpartgroup group-snow-fort-gate-snowdrops
-  :id 514
+  :id (part-group-id group-snow-fort-gate-snowdrops)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 2271 :fade-after (meters 100) :falloff-to (meters 130) :period (seconds 4) :length (seconds 0.5))
@@ -793,9 +793,9 @@
     (set! (-> this root) s4-0))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *snow-fort-gate-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 512) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 513) this))
-  (set! (-> this part3) (create-launch-control (-> *part-group-id-table* 514) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-snow-fort-gate-coming-down)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-snow-fort-gate-hits-bottom)) this))
+  (set! (-> this part3) (create-launch-control (-> *part-group-table* (part-group-id group-snow-fort-gate-snowdrops)) this))
   (set! (-> this open-trans quad) (-> this root trans quad))
   (set! (-> this closed-trans quad) (-> this open-trans quad))
   (+! (-> this open-trans y) -141312.0)
@@ -832,7 +832,7 @@
   :longest-edge (meters 12.1))
 
 (defpartgroup group-snow-gears-dripping
-  :id 515
+  :id (part-group-id group-snow-gears-dripping)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 -4 0 16)
   :parts ((sp-item 1900) (sp-item 1901)))
@@ -972,7 +972,7 @@
   (set! (-> this root) (new 'process 'trsqv))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *snow-gears-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 515) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-snow-gears-dripping)) this))
   (set! (-> this sound) (new 'process 'ambient-sound (static-sound-spec "snow-engine" :fo-max 300) (-> this root trans)))
   (go snow-gears-idle)
   (none))

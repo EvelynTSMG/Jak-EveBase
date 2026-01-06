@@ -9,7 +9,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-ogreboss-column-break
-  :id 464
+  :id (part-group-id group-ogreboss-column-break)
   :duration (seconds 5)
   :linger-duration (seconds 10)
   :flags (use-local-clock)
@@ -126,7 +126,7 @@
   :init-specs ((:fade-r 0.0) (:fade-g 0.0) (:fade-b 0.0)))
 
 (defpartgroup group-ogreboss-lava-splash
-  :id 465
+  :id (part-group-id group-ogreboss-lava-splash)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -152,7 +152,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-ogre-bridge-splash
-  :id 466
+  :id (part-group-id group-ogre-bridge-splash)
   :duration (seconds 0.25)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -263,7 +263,7 @@
   :init-specs ((:fade-a -0.08)))
 
 (defpartgroup group-ogreboss-boulder-grow
-  :id 468
+  :id (part-group-id group-ogreboss-boulder-grow)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -349,7 +349,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-ogreboss-missile
-  :id 469
+  :id (part-group-id group-ogreboss-missile)
   :bounds (static-bspherem 0 0 0 3)
   :parts ((sp-item 1933) (sp-item 1934)))
 
@@ -403,7 +403,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-ogreboss-pre-missile
-  :id 470
+  :id (part-group-id group-ogreboss-pre-missile)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -446,7 +446,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-ogreboss-missile-impact
-  :id 471
+  :id (part-group-id group-ogreboss-missile-impact)
   :duration (seconds 1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
@@ -457,7 +457,7 @@
    (sp-item 2082 :period (seconds 2) :length (seconds 0.067))))
 
 (defpartgroup group-ogre-lava-lava-20x20
-  :id 472
+  :id (part-group-id group-ogre-lava-lava-20x20)
   :bounds (static-bspherem 0 0 0 14)
   :parts
   ((sp-item 2030 :fade-after (meters 40) :falloff-to (meters 40))

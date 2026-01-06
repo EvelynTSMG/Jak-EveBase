@@ -110,7 +110,7 @@
        :debug-draw-jump #f))
 
 (defpartgroup group-ice-cube-appear1
-  :id 507
+  :id (part-group-id group-ice-cube-appear1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
   :parts
@@ -167,7 +167,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-ice-cube-appear2
-  :id 508
+  :id (part-group-id group-ice-cube-appear2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
   :parts ((sp-item 1889 :fade-after (meters 70) :falloff-to (meters 70))))
@@ -194,7 +194,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-ice-cube-foot-puff
-  :id 567
+  :id (part-group-id group-ice-cube-foot-puff)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -269,7 +269,7 @@
    (:conerot-radius (meters 0.5))))
 
 (defpartgroup group-ice-cube-shatter
-  :id 509
+  :id (part-group-id group-ice-cube-shatter)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
   :parts ((sp-item 1890) (sp-item 1891) (sp-item 1892)))
@@ -502,10 +502,10 @@
   (call-parent-method this offset))
 
 (defmethod init-from-entity! ((this ice-cube) (arg0 entity-actor))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 507) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 508) this))
-  (set! (-> this part3) (create-launch-control (-> *part-group-id-table* 509) this))
-  (set! (-> this part4) (create-launch-control (-> *part-group-id-table* 567) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-ice-cube-appear1)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-ice-cube-appear2)) this))
+  (set! (-> this part3) (create-launch-control (-> *part-group-table* (part-group-id group-ice-cube-shatter)) this))
+  (set! (-> this part4) (create-launch-control (-> *part-group-table* (part-group-id group-ice-cube-foot-puff)) this))
   (initialize-collision this)
   (nav-enemy-method-48 this)
   (let ((s4-0 (-> this path curve num-cverts)))

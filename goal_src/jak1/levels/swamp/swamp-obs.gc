@@ -16,7 +16,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-swamp-spike-up
-  :id 289
+  :id (part-group-id group-swamp-spike-up)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
@@ -102,7 +102,7 @@
    (:rotate-y (degrees -179.3918))))
 
 (defpartgroup group-swamp-spike-down
-  :id 290
+  :id (part-group-id group-swamp-spike-down)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
@@ -185,7 +185,7 @@
                  (process-spawn part-tracker
                                 :init
                                 part-tracker-init
-                                (-> *part-group-id-table* 289)
+                                (-> *part-group-table* (part-group-id group-swamp-spike-up))
                                 -1
                                 swamp-spike-set-particle-rotation-callback
                                 (-> self ppointer)
@@ -207,7 +207,7 @@
                  (process-spawn part-tracker
                                 :init
                                 part-tracker-init
-                                (-> *part-group-id-table* 290)
+                                (-> *part-group-table* (part-group-id group-swamp-spike-down))
                                 -1
                                 swamp-spike-set-particle-rotation-callback
                                 (-> self ppointer)
@@ -236,7 +236,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 290)
+                     (-> *part-group-table* (part-group-id group-swamp-spike-down))
                      -1
                      swamp-spike-set-particle-rotation-callback
                      (-> self ppointer)
@@ -412,7 +412,7 @@
 
 
 (defpartgroup group-swamp-rock-explosion
-  :id 291
+  :id (part-group-id group-swamp-rock-explosion)
   :duration (seconds 1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
@@ -498,7 +498,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 291)
+                     (-> *part-group-table* (part-group-id group-swamp-rock-explosion))
                      -1
                      #f
                      #f
@@ -541,7 +541,7 @@
     (vector-float*! (-> this root scale) *identity-vector* f30-0))
   (initialize-skeleton this *swamp-rock-sg* '())
   (nav-mesh-connect this (-> this root) (the-as nav-control #f))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 291) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-swamp-rock-explosion)) this))
   (go swamp-rock-idle)
   (none))
 
@@ -566,7 +566,7 @@
   (set! (-> self root trans quad) (-> arg0 quad))
   (initialize-skeleton self *swamp-rock-sg* '())
   (nav-mesh-connect self (-> self root) (the-as nav-control #f))
-  (set! (-> self part) (create-launch-control (-> *part-group-id-table* 291) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-swamp-rock-explosion)) self))
   (go swamp-rock-idle)
   (none))
 

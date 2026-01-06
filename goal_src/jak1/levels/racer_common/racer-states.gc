@@ -630,7 +630,7 @@
          (process-spawn part-tracker
                         :init
                         part-tracker-init
-                        (-> *part-group-id-table* 116)
+                        (-> *part-group-table* (part-group-id group-racer-explode))
                         -1
                         #f
                         #f
@@ -708,7 +708,7 @@
          (process-spawn part-tracker
                         :init
                         part-tracker-init
-                        (-> *part-group-id-table* 32)
+                        (-> *part-group-table* (part-group-id group-lava-death))
                         -1
                         #f
                         #f

@@ -52,7 +52,7 @@
   :bounds (static-spherem 0 1 0 2))
 
 (defpartgroup group-spider-egg-hatches
-  :id 324
+  :id (part-group-id group-spider-egg-hatches)
   :duration (seconds 0.017)
   :linger-duration (seconds 3)
   :flags (use-local-clock)
@@ -112,7 +112,7 @@
   :init-specs ((:fade-a -0.21333334)))
 
 (defpartgroup group-spider-egg-explodes
-  :id 325
+  :id (part-group-id group-spider-egg-explodes)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.25)
   :flags (use-local-clock)
@@ -262,7 +262,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 324)
+                     (-> *part-group-table* (part-group-id group-spider-egg-hatches))
                      -1
                      #f
                      #f
@@ -293,7 +293,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 325)
+                     (-> *part-group-table* (part-group-id group-spider-egg-explodes))
                      -1
                      #f
                      #f
@@ -322,7 +322,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 325)
+                     (-> *part-group-table* (part-group-id group-spider-egg-explodes))
                      -1
                      #f
                      #f

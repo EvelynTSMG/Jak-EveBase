@@ -38,7 +38,7 @@
             (new 'static 'ripple-wave))))
 
 (defpartgroup group-sunken-water-deadly-water
-  :id 446
+  :id (part-group-id group-sunken-water-deadly-water)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1736 :fade-after (meters 50))))

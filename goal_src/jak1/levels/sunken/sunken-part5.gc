@@ -8,7 +8,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-sunken-heatpipe-227
-  :id 421
+  :id (part-group-id group-sunken-heatpipe-227)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1669 :fade-after (meters 80) :falloff-to (meters 80) :binding 1668)
@@ -98,7 +98,7 @@
    (:rotate-y (degrees -131))))
 
 (defpartgroup group-sunken-heatpipe-238
-  :id 422
+  :id (part-group-id group-sunken-heatpipe-238)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1672 :fade-after (meters 80) :falloff-to (meters 80) :binding 1671)
@@ -188,7 +188,7 @@
    (:rotate-y (degrees -100.00001))))
 
 (defpartgroup group-sunken-heatpipe-239
-  :id 423
+  :id (part-group-id group-sunken-heatpipe-239)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1675 :fade-after (meters 80) :falloff-to (meters 80) :binding 1674)
@@ -278,7 +278,7 @@
    (:rotate-y (degrees -124.99999))))
 
 (defpartgroup group-sunken-heatpipe-240
-  :id 424
+  :id (part-group-id group-sunken-heatpipe-240)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1678 :fade-after (meters 80) :falloff-to (meters 80) :binding 1677)
@@ -368,7 +368,7 @@
    (:rotate-y (degrees -93))))
 
 (defpartgroup group-sunken-heatpipe-241
-  :id 425
+  :id (part-group-id group-sunken-heatpipe-241)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1681 :fade-after (meters 80) :falloff-to (meters 80) :binding 1680)
@@ -458,7 +458,7 @@
    (:rotate-y (degrees -110))))
 
 (defpartgroup group-sunken-heatpipe-242
-  :id 426
+  :id (part-group-id group-sunken-heatpipe-242)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1684 :fade-after (meters 80) :falloff-to (meters 80) :binding 1683)
@@ -548,7 +548,7 @@
    (:rotate-y (degrees -135))))
 
 (defpartgroup group-sunken-heatpipe-243
-  :id 427
+  :id (part-group-id group-sunken-heatpipe-243)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1687 :fade-after (meters 80) :falloff-to (meters 80) :binding 1686)
@@ -638,7 +638,7 @@
    (:rotate-y (degrees -147))))
 
 (defpartgroup group-sunken-heatpipe-278
-  :id 428
+  :id (part-group-id group-sunken-heatpipe-278)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1690 :fade-after (meters 80) :falloff-to (meters 80) :binding 1689)
@@ -728,7 +728,7 @@
    (:rotate-y (degrees -165))))
 
 (defpartgroup group-sunken-heatpipe-251
-  :id 429
+  :id (part-group-id group-sunken-heatpipe-251)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1693 :fade-after (meters 80) :falloff-to (meters 80) :binding 1692)
@@ -818,7 +818,7 @@
    (:rotate-y (degrees -136))))
 
 (defpartgroup group-sunken-heatpipe-254
-  :id 430
+  :id (part-group-id group-sunken-heatpipe-254)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1696 :fade-after (meters 80) :falloff-to (meters 80) :binding 1695)
@@ -908,7 +908,7 @@
    (:rotate-y (degrees -185))))
 
 (defpartgroup group-sunken-heatpipe-264
-  :id 431
+  :id (part-group-id group-sunken-heatpipe-264)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1699 :fade-after (meters 80) :falloff-to (meters 80) :binding 1698)
@@ -998,7 +998,7 @@
    (:rotate-y (degrees -203))))
 
 (defpartgroup group-sunken-heatpipe-265
-  :id 432
+  :id (part-group-id group-sunken-heatpipe-265)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1702 :fade-after (meters 80) :falloff-to (meters 80) :binding 1701)
@@ -1088,7 +1088,7 @@
    (:rotate-y (degrees -217))))
 
 (defpartgroup group-sunken-heatpipe-266
-  :id 433
+  :id (part-group-id group-sunken-heatpipe-266)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1705 :fade-after (meters 80) :falloff-to (meters 80) :binding 1704)
@@ -1178,7 +1178,7 @@
    (:rotate-y (degrees -243))))
 
 (defpartgroup group-sunken-heatpipe-267
-  :id 434
+  :id (part-group-id group-sunken-heatpipe-267)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1708 :fade-after (meters 80) :falloff-to (meters 80) :binding 1707)
@@ -1268,7 +1268,7 @@
    (:rotate-y (degrees -267))))
 
 (defpartgroup group-sunken-heatpipe-268
-  :id 435
+  :id (part-group-id group-sunken-heatpipe-268)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1711 :fade-after (meters 80) :falloff-to (meters 80) :binding 1710)

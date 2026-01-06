@@ -780,7 +780,7 @@
 ;; used for the flashing auto-save icon.
 
 (defpartgroup group-part-save-icon
-  :id 656
+  :id (part-group-id group-part-save-icon)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 2662)))
@@ -908,7 +908,7 @@
   (set! (-> self result) (mc-status-code ok))
   (set! (-> self save) #f)
   (set! (-> self notify) (process->handle notify-proc))
-  (set! (-> self part) (create-launch-control (-> *part-group-id-table* 656) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-part-save-icon)) self))
   (set! (-> self part matrix) (sprite-allocate-user-hvdf))
   (cond
     ((= desired-mode 'auto-save)

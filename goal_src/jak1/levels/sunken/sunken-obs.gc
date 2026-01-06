@@ -25,7 +25,7 @@
   :bounds (static-spherem 0 0 0 14))
 
 (defpartgroup group-side-to-side-plat
-  :id 436
+  :id (part-group-id group-side-to-side-plat)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -101,7 +101,7 @@
   (none))
 
 (defmethod baseplat-method-25 ((this side-to-side-plat))
-  (let ((v0-0 (create-launch-control (-> *part-group-id-table* 436) this)))
+  (let ((v0-0 (create-launch-control (-> *part-group-table* (part-group-id group-side-to-side-plat)) this)))
     (set! (-> this part) v0-0)
     (the-as sparticle-launch-group v0-0)))
 

@@ -10,7 +10,7 @@
 
 
 (defpartgroup group-village1-butterflies
-  :id 127
+  :id (part-group-id group-village1-butterflies)
   :bounds (static-bspherem 0 0 0 30)
   :parts
   ((sp-item 380
@@ -113,7 +113,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-village1-moth
-  :id 128
+  :id (part-group-id group-village1-moth)
   :bounds (static-bspherem 0 0 0 3)
   :parts
   ((sp-item 386
@@ -184,7 +184,7 @@
    (:flags (bit2 bit3 bit9 bit12))))
 
 (defpartgroup group-village1-hummingbird
-  :id 129
+  :id (part-group-id group-village1-hummingbird)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 390
@@ -494,7 +494,7 @@
    (:flags (bit2))))
 
 (defpartgroup group-village1-pot
-  :id 130
+  :id (part-group-id group-village1-pot)
   :bounds (static-bspherem 0 2.5 0 2.5)
   :parts
   ((sp-item 405 :fade-after (meters 50) :falloff-to (meters 60))
@@ -503,7 +503,7 @@
    (sp-item 409 :fade-after (meters 60) :falloff-to (meters 80))))
 
 (defpartgroup group-village1-mayor-fire
-  :id 131
+  :id (part-group-id group-village1-mayor-fire)
   :bounds (static-bspherem 0 2.5 0 2.5)
   :parts
   ((sp-item 410 :fade-after (meters 50) :falloff-to (meters 80))
@@ -697,7 +697,7 @@
   :init-specs ((:fade-b -1.3653333)))
 
 (defpartgroup group-village1-sagehut-seagulls
-  :id 132
+  :id (part-group-id group-village1-sagehut-seagulls)
   :bounds (static-bspherem 0 8 0 45)
   :parts
   ((sp-item 415 :fade-after (meters 120) :flags (bit1 launch-asap) :binding 416)
@@ -832,7 +832,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-village1-butterfly-sitting
-  :id 133
+  :id (part-group-id group-village1-butterfly-sitting)
   :bounds (static-bspherem 0 0.2 0 0.5)
   :parts
   ((sp-item 420 :fade-after (meters 60) :flags (is-3d bit1) :period (seconds 2) :length (seconds 0.017))
@@ -883,7 +883,7 @@
   :init-specs ((:rotvel-x (degrees 0.31666666))))
 
 (defpartgroup group-village1-fountain
-  :id 134
+  :id (part-group-id group-village1-fountain)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 424 :fade-after (meters 150) :falloff-to (meters 150))
@@ -1151,7 +1151,7 @@
   (none))
 
 (defpartgroup group-village1-bird-lady-birds
-  :id 135
+  :id (part-group-id group-village1-bird-lady-birds)
   :bounds (static-bspherem 0 0 6 18)
   :parts
   ((sp-item 436 :fade-after (meters 40) :period (seconds 3) :length (seconds 0.017) :binding 437)

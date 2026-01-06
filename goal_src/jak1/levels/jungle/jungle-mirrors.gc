@@ -13,7 +13,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-jungle-binoculars
-  :id 176
+  :id (part-group-id group-jungle-binoculars)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts
@@ -374,7 +374,7 @@
    (:flags (bit2 bit9))))
 
 (defpartgroup group-jungle-binoculars-aligned
-  :id 689
+  :id (part-group-id group-jungle-binoculars-aligned)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2840) (sp-item 2863) (sp-item 2864) (sp-item 2865)))
 
@@ -1324,8 +1324,8 @@
   (set! (-> this link) (new 'process 'actor-link-info this))
   (periscope-find-next)
   (initialize-skeleton this *periscope-base-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 176) this))
-  (set! (-> this part-aligned) (create-launch-control (-> *part-group-id-table* 689) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-jungle-binoculars)) this))
+  (set! (-> this part-aligned) (create-launch-control (-> *part-group-table* (part-group-id group-jungle-binoculars-aligned)) this))
   (set! (-> this grips) (new 'process 'joint-mod-set-world this 4 #t))
   (transformq-copy! (-> this grips transform) (the-as transformq (-> this root trans)))
   (periscope-find-reflection-angles)

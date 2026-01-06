@@ -77,7 +77,7 @@
             :fade-dist 245760.0)))
 
 (defpartgroup group-driller-lurker-drilling-debris
-  :id 331
+  :id (part-group-id group-driller-lurker-drilling-debris)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -725,7 +725,7 @@
         (new 'process 'ambient-sound (static-sound-spec "drill-idle" :fo-max 40) (-> this root-overeride trans)))
   (set! (-> this sound2)
         (new 'process 'ambient-sound (static-sound-spec "drill-idle2" :fo-max 60) (-> this root-overeride trans)))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 331) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-driller-lurker-drilling-debris)) this))
   (let ((f0-34 (path-distance (-> this path)))) (set! (-> this path-units-per-meter) (/ 4096.0 f0-34)))
   (set! (-> this path-dir) 1.0)
   (set! (-> this path-u) 0.0)

@@ -138,97 +138,97 @@
   (none))
 
 (defpartgroup group-part-progress-hud-previous
-  :id 85
+  :id (part-group-id group-part-progress-hud-previous)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 332 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-next
-  :id 86
+  :id (part-group-id group-part-progress-hud-next)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 333 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-selector
-  :id 87
+  :id (part-group-id group-part-progress-hud-selector)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 334 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-left
-  :id 88
+  :id (part-group-id group-part-progress-hud-left)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 335 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-right
-  :id 89
+  :id (part-group-id group-part-progress-hud-right)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 336 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-tint
-  :id 90
+  :id (part-group-id group-part-progress-hud-tint)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 337 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-cell
-  :id 91
+  :id (part-group-id group-part-progress-card-cell)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2190 :flags (launch-asap)) (sp-item 2191 :flags (launch-asap)) (sp-item 2192 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-x
-  :id 570
+  :id (part-group-id group-part-progress-button-x)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2336 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-square
-  :id 571
+  :id (part-group-id group-part-progress-button-square)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2337 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-triangle
-  :id 572
+  :id (part-group-id group-part-progress-button-triangle)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2338 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-circle
-  :id 573
+  :id (part-group-id group-part-progress-button-circle)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2339 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-01
-  :id 92
+  :id (part-group-id group-part-progress-card-slot-01)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2142 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-02
-  :id 93
+  :id (part-group-id group-part-progress-card-slot-02)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2143 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-03
-  :id 94
+  :id (part-group-id group-part-progress-card-slot-03)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2144 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-04
-  :id 95
+  :id (part-group-id group-part-progress-card-slot-04)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2145 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-power-cell-center
-  :id 96
+  :id (part-group-id group-part-progress-hud-power-cell-center)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 338 :flags (launch-asap))))
@@ -647,7 +647,7 @@
    (:func 'fuel-cell-progress-hud-orbit-callback)))
 
 (defpartgroup group-part-progress-hud-power-cell-whole
-  :id 97
+  :id (part-group-id group-part-progress-hud-power-cell-whole)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts
@@ -661,7 +661,7 @@
    (sp-item 342 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-buzzer
-  :id 98
+  :id (part-group-id group-part-progress-buzzer)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1982 :flags (launch-asap) :binding 1981) (sp-item 1981 :flags (start-dead launch-asap))))
@@ -699,7 +699,7 @@
    (:flags (bit2 bit7 bit9 bit13))))
 
 (defpartgroup group-part-progress-orb
-  :id 99
+  :id (part-group-id group-part-progress-orb)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1983 :flags (launch-asap))))
@@ -718,7 +718,7 @@
    (:flags (bit2 bit9 bit13))))
 
 (defpartgroup group-part-progress-buzzer-small
-  :id 100
+  :id (part-group-id group-part-progress-buzzer-small)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1985 :flags (launch-asap) :binding 1984) (sp-item 1984 :flags (start-dead launch-asap))))
@@ -757,7 +757,7 @@
    (:func 'part-progress-hud-buzzer-func)))
 
 (defpartgroup group-part-progress-orb-small
-  :id 101
+  :id (part-group-id group-part-progress-orb-small)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1986 :flags (launch-asap))))
@@ -777,7 +777,7 @@
    (:func 'part-progress-hud-orb-func)))
 
 (defpartgroup group-part-progress-save-icon
-  :id 615
+  :id (part-group-id group-part-progress-save-icon)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 2478 :flags (launch-asap))))
@@ -800,7 +800,7 @@
   `(when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((part-nb (-> this nb-of-particles)))
       (set! (-> this particles part-nb) (new 'static 'hud-particle))
-      (set! (-> this particles part-nb part) (create-launch-control (-> *part-group-id-table* ,part) this))
+      (set! (-> this particles part-nb part) (create-launch-control (-> *part-group-table* ,part) this))
       (set! (-> this particles part-nb init-pos x) ,x)
       (set! (-> this particles part-nb init-pos y) ,y)
       (set! (-> this particles part-nb init-pos z) ,z)

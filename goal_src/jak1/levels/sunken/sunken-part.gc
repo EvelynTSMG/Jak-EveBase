@@ -12,7 +12,7 @@
 
 
 (defpartgroup group-sunken-heatpipe-183
-  :id 332
+  :id (part-group-id group-sunken-heatpipe-183)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1420 :fade-after (meters 80) :falloff-to (meters 80) :binding 1419)
@@ -103,7 +103,7 @@
    (:conerot-radius (meters 0) (meters 5))))
 
 (defpartgroup group-sunken-tunnel-bubbles-27
-  :id 333
+  :id (part-group-id group-sunken-tunnel-bubbles-27)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1425
@@ -398,7 +398,7 @@
   :init-specs ((:fade-a -0.14222223)))
 
 (defpartgroup group-sunken-tunnel-bubbles-32
-  :id 334
+  :id (part-group-id group-sunken-tunnel-bubbles-32)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1436
@@ -595,7 +595,7 @@
    (:rotate-y (degrees -23.000002))))
 
 (defpartgroup group-sunken-tunnel-bubbles-33
-  :id 335
+  :id (part-group-id group-sunken-tunnel-bubbles-33)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1440
@@ -792,7 +792,7 @@
    (:rotate-y (degrees 26.000002))))
 
 (defpartgroup group-sunken-tunnel-bubbles-199
-  :id 336
+  :id (part-group-id group-sunken-tunnel-bubbles-199)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1444
@@ -989,7 +989,7 @@
    (:rotate-y (degrees 26.000002))))
 
 (defpartgroup group-sunken-tunnel-bubbles-281
-  :id 337
+  :id (part-group-id group-sunken-tunnel-bubbles-281)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1448
@@ -1186,7 +1186,7 @@
    (:rotate-y (degrees 90))))
 
 (defpartgroup group-sunken-tunnel-bubbles-202
-  :id 338
+  :id (part-group-id group-sunken-tunnel-bubbles-202)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1452
@@ -1383,7 +1383,7 @@
    (:rotate-y (degrees -5))))
 
 (defpartgroup group-sunken-window-bubbles-35
-  :id 339
+  :id (part-group-id group-sunken-window-bubbles-35)
   :bounds (static-bspherem 0 8 0 32)
   :parts
   ((sp-item 1456
@@ -1483,7 +1483,7 @@
    (:rotate-y (degrees -65) (degrees 30))))
 
 (defpartgroup group-sunken-helix-bubbles-398
-  :id 340
+  :id (part-group-id group-sunken-helix-bubbles-398)
   :bounds (static-bspherem 0 4 0 40)
   :parts ((sp-item 1458 :fade-after (meters 100) :falloff-to (meters 100))))
 
@@ -1515,7 +1515,7 @@
   :init-specs ((:fade-a -0.10666667)))
 
 (defpartgroup group-sunken-helix-bubbles-397
-  :id 341
+  :id (part-group-id group-sunken-helix-bubbles-397)
   :bounds (static-bspherem 0 4 0 40)
   :parts ((sp-item 1461 :fade-after (meters 100) :falloff-to (meters 100))))
 
@@ -1541,7 +1541,7 @@
    (:rotate-y (degrees -67.5) 7 (degrees 45))))
 
 (defpartgroup group-sunken-heatpipe-355
-  :id 342
+  :id (part-group-id group-sunken-heatpipe-355)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1463 :fade-after (meters 80) :falloff-to (meters 80) :binding 1462)
@@ -1631,7 +1631,7 @@
    (:rotate-y (degrees 145))))
 
 (defpartgroup group-sunken-heatpipe-361
-  :id 343
+  :id (part-group-id group-sunken-heatpipe-361)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1466 :fade-after (meters 80) :falloff-to (meters 80) :binding 1465)
@@ -1721,7 +1721,7 @@
    (:rotate-y (degrees 220))))
 
 (defpartgroup group-sunken-heatpipe-360
-  :id 344
+  :id (part-group-id group-sunken-heatpipe-360)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1469 :fade-after (meters 80) :falloff-to (meters 80) :binding 1468)
@@ -1811,7 +1811,7 @@
    (:rotate-y (degrees 400.00003))))
 
 (defpartgroup group-sunken-heatpipe-377
-  :id 345
+  :id (part-group-id group-sunken-heatpipe-377)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1472 :fade-after (meters 80) :falloff-to (meters 80) :binding 1471)
@@ -1901,7 +1901,7 @@
    (:rotate-y (degrees 375.00003))))
 
 (defpartgroup group-sunken-heatpipe-376
-  :id 346
+  :id (part-group-id group-sunken-heatpipe-376)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1475 :fade-after (meters 80) :falloff-to (meters 80) :binding 1474)
@@ -1991,7 +1991,7 @@
    (:rotate-y (degrees 195))))
 
 (defpartgroup group-sunken-heatpipe-375
-  :id 347
+  :id (part-group-id group-sunken-heatpipe-375)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1478 :fade-after (meters 80) :falloff-to (meters 80) :binding 1477)
@@ -2081,7 +2081,7 @@
    (:rotate-y (degrees 392))))
 
 (defpartgroup group-sunken-heatpipe-374
-  :id 348
+  :id (part-group-id group-sunken-heatpipe-374)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1481 :fade-after (meters 80) :falloff-to (meters 80) :binding 1480)
@@ -2171,7 +2171,7 @@
    (:rotate-y (degrees 212))))
 
 (defpartgroup group-sunken-heatpipe-363
-  :id 349
+  :id (part-group-id group-sunken-heatpipe-363)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1484 :fade-after (meters 80) :falloff-to (meters 80) :binding 1483)
@@ -2261,7 +2261,7 @@
    (:rotate-y (degrees -63))))
 
 (defpartgroup group-sunken-heatpipe-362
-  :id 350
+  :id (part-group-id group-sunken-heatpipe-362)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1487 :fade-after (meters 80) :falloff-to (meters 80) :binding 1486)
@@ -2351,7 +2351,7 @@
    (:rotate-y (degrees 124.99999))))
 
 (defpartgroup group-sunken-heatpipe-364
-  :id 351
+  :id (part-group-id group-sunken-heatpipe-364)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1490 :fade-after (meters 80) :falloff-to (meters 80) :binding 1489)
@@ -2441,7 +2441,7 @@
    (:rotate-y (degrees 62))))
 
 (defpartgroup group-sunken-heatpipe-365
-  :id 352
+  :id (part-group-id group-sunken-heatpipe-365)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1493 :fade-after (meters 80) :falloff-to (meters 80) :binding 1492)

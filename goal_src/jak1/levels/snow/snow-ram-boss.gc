@@ -169,7 +169,7 @@
        :debug-draw-jump #f))
 
 (defpartgroup group-ram-boss-proj-grow
-  :id 521
+  :id (part-group-id group-ram-boss-proj-grow)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1904) (sp-item 1905) (sp-item 2487)))
@@ -232,7 +232,7 @@
    (:conerot-radius (meters 0.15))))
 
 (defpartgroup group-ram-boss-proj-fly
-  :id 522
+  :id (part-group-id group-ram-boss-proj-fly)
   :duration (seconds 1)
   :bounds (static-bspherem 0 0 0 3)
   :parts
@@ -351,7 +351,7 @@
    (:conerot-radius (meters 0) (meters 0.4))))
 
 (defpartgroup group-ram-boss-proj-hit
-  :id 523
+  :id (part-group-id group-ram-boss-proj-hit)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
@@ -420,7 +420,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-ram-boss-proj-die
-  :id 524
+  :id (part-group-id group-ram-boss-proj-die)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
@@ -495,8 +495,8 @@
 
 (defmethod projectile-method-27 ((this ram-boss-proj))
   (set! (-> this charge-sound-id) (new 'static 'sound-id))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 521) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 522) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-ram-boss-proj-grow)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-ram-boss-proj-fly)) this))
   (set! (-> this launched?) #f)
   (set! (-> this growth) 0.0)
   (set! (-> this max-speed) 40960.0)
@@ -594,7 +594,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 523)
+                     (-> *part-group-table* (part-group-id group-ram-boss-proj-hit))
                      -1
                      #f
                      #f
@@ -614,7 +614,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 524)
+                     (-> *part-group-table* (part-group-id group-ram-boss-proj-die))
                      -1
                      #f
                      #f
@@ -627,7 +627,7 @@
       (go-virtual projectile-die)))
 
 (defpartgroup group-ram-boss-shield-on-fire
-  :id 525
+  :id (part-group-id group-ram-boss-shield-on-fire)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1919)))
@@ -656,7 +656,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-ram-boss-foot-puff
-  :id 574
+  :id (part-group-id group-ram-boss-foot-puff)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
@@ -887,8 +887,8 @@
   (set! (-> this draw origin-joint-index) (the-as uint 3))
   (init-defaults! this *ram-boss-nav-enemy-info*)
   (logclear! (-> this enemy-info options) (fact-options has-power-cell))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 525) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 574) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-ram-boss-shield-on-fire)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-ram-boss-foot-puff)) this))
   (set! (-> this shield-jmod) (new 'process 'joint-mod-set-local this 32 #f #f #t))
   (set! (-> this shield-jmod enable) #f)
   (set! (-> this has-shield?) #t)

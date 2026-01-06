@@ -27,19 +27,19 @@
   (none))
 
 (defpartgroup group-part-hud-racer-speed-dial
-  :id 108
+  :id (part-group-id group-part-hud-racer-speed-dial)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 740 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-racer-speed
-  :id 109
+  :id (part-group-id group-part-hud-racer-speed)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 741 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-racer-speed-front
-  :id 110
+  :id (part-group-id group-part-hud-racer-speed-front)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 1999 :flags (launch-asap))))
@@ -137,25 +137,25 @@
   (none))
 
 (defpartgroup group-part-hud-racer-heat-backing
-  :id 111
+  :id (part-group-id group-part-hud-racer-heat-backing)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 737 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-racer-heat-dial
-  :id 112
+  :id (part-group-id group-part-hud-racer-heat-dial)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 738 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-racer-heat
-  :id 113
+  :id (part-group-id group-part-hud-racer-heat)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 739 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-racer-heat-slice
-  :id 114
+  :id (part-group-id group-part-hud-racer-heat-slice)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 2010 :flags (launch-asap)) (sp-item 2011 :flags (launch-asap)) (sp-item 2012 :flags (launch-asap))))
@@ -257,7 +257,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-id-table* 111) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-heat-backing)) this))
       (set! (-> this particles s5-0 init-pos x) 13.0)
       (set! (-> this particles s5-0 init-pos y) 370.0)
       (set! (-> this particles s5-0 init-pos z) 10.0)
@@ -266,7 +266,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-1 (-> this nb-of-particles)))
       (set! (-> this particles s5-1) (new 'static 'hud-particle))
-      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-id-table* 112) this))
+      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-heat-dial)) this))
       (set! (-> this particles s5-1 init-pos x) 70.0)
       (set! (-> this particles s5-1 init-pos y) 370.0)
       (set! (-> this particles s5-1 init-pos z) 6.0)
@@ -275,7 +275,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-2 (-> this nb-of-particles)))
       (set! (-> this particles s5-2) (new 'static 'hud-particle))
-      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-id-table* 113) this))
+      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-heat)) this))
       (set! (-> this particles s5-2 init-pos x) 20.0)
       (set! (-> this particles s5-2 init-pos y) 370.0)
       (set! (-> this particles s5-2 init-pos z) 1.0)
@@ -284,7 +284,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-3 (-> this nb-of-particles)))
       (set! (-> this particles s5-3) (new 'static 'hud-particle))
-      (set! (-> this particles s5-3 part) (create-launch-control (-> *part-group-id-table* 114) this))
+      (set! (-> this particles s5-3 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-heat-slice)) this))
       (set! (-> this particles s5-3 init-pos x) 70.0)
       (set! (-> this particles s5-3 init-pos y) 370.0)
       (set! (-> this particles s5-3 init-pos z) 7.0)
@@ -310,7 +310,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-id-table* 108) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-speed-dial)) this))
       (set! (-> this particles s5-0 init-pos x) 433.0)
       (set! (-> this particles s5-0 init-pos y) 370.0)
       (set! (-> this particles s5-0 init-pos z) 3.0)
@@ -319,7 +319,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-1 (-> this nb-of-particles)))
       (set! (-> this particles s5-1) (new 'static 'hud-particle))
-      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-id-table* 109) this))
+      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-speed)) this))
       (set! (-> this particles s5-1 init-pos x) 378.0)
       (set! (-> this particles s5-1 init-pos y) 370.0)
       (set! (-> this particles s5-1 init-pos z) 5.0)
@@ -328,7 +328,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-2 (-> this nb-of-particles)))
       (set! (-> this particles s5-2) (new 'static 'hud-particle))
-      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-id-table* 110) this))
+      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-racer-speed-front)) this))
       (set! (-> this particles s5-2 init-pos x) 415.0)
       (set! (-> this particles s5-2 init-pos y) 370.0)
       (set! (-> this particles s5-2 init-pos z) 1.0)
@@ -371,7 +371,7 @@
     (none)))
 
 (defpartgroup group-racer-trans-pad
-  :id 115
+  :id (part-group-id group-racer-trans-pad)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 742 :fade-after (meters 160))
@@ -823,7 +823,7 @@
   :init-specs ((:fade-r -0.2) (:fade-g 0.0) (:fade-b 0.0) (:fade-a -0.21333334)))
 
 (defpartgroup group-racer-explode
-  :id 116
+  :id (part-group-id group-racer-explode)
   :duration (seconds 1)
   :linger-duration (seconds 10)
   :flags (use-local-clock)

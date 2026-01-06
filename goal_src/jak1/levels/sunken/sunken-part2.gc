@@ -8,7 +8,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-sunken-window-bubbles-34
-  :id 353
+  :id (part-group-id group-sunken-window-bubbles-34)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1495
@@ -108,7 +108,7 @@
    (:rotate-y (degrees 7.0000005) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-36
-  :id 354
+  :id (part-group-id group-sunken-window-bubbles-36)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1497
@@ -208,7 +208,7 @@
    (:rotate-y (degrees 160) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-30
-  :id 355
+  :id (part-group-id group-sunken-window-bubbles-30)
   :bounds (static-bspherem 0 4 0 30)
   :parts
   ((sp-item 1499
@@ -308,7 +308,7 @@
    (:rotate-y (degrees -20) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-31
-  :id 356
+  :id (part-group-id group-sunken-window-bubbles-31)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1501
@@ -408,7 +408,7 @@
    (:rotate-y (degrees -120) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-29
-  :id 357
+  :id (part-group-id group-sunken-window-bubbles-29)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1503
@@ -508,7 +508,7 @@
    (:rotate-y (degrees 160) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-159
-  :id 358
+  :id (part-group-id group-sunken-window-bubbles-159)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1505
@@ -608,7 +608,7 @@
    (:rotate-y (degrees 60) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-161
-  :id 359
+  :id (part-group-id group-sunken-window-bubbles-161)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1507
@@ -708,7 +708,7 @@
    (:rotate-y (degrees 70) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-204
-  :id 360
+  :id (part-group-id group-sunken-window-bubbles-204)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1509
@@ -808,7 +808,7 @@
    (:rotate-y (degrees 30) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-205
-  :id 361
+  :id (part-group-id group-sunken-window-bubbles-205)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1511
@@ -908,7 +908,7 @@
    (:rotate-y (degrees 130) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-203
-  :id 362
+  :id (part-group-id group-sunken-window-bubbles-203)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1513
@@ -1008,7 +1008,7 @@
    (:rotate-y (degrees 80) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-42
-  :id 363
+  :id (part-group-id group-sunken-window-bubbles-42)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1515
@@ -1108,7 +1108,7 @@
    (:rotate-y (degrees 195))))
 
 (defpartgroup group-sunken-window-bubbles-41
-  :id 364
+  :id (part-group-id group-sunken-window-bubbles-41)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1517
@@ -1208,7 +1208,7 @@
    (:rotate-y (degrees -70) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-206
-  :id 365
+  :id (part-group-id group-sunken-window-bubbles-206)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1519
@@ -1308,7 +1308,7 @@
    (:rotate-y (degrees 170) (degrees 30))))
 
 (defpartgroup group-sunken-window-bubbles-201
-  :id 366
+  :id (part-group-id group-sunken-window-bubbles-201)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1521
@@ -1408,7 +1408,7 @@
    (:rotate-y (degrees -40) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-3
-  :id 367
+  :id (part-group-id group-sunken-window-bubbles-3)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1523
@@ -1508,7 +1508,7 @@
    (:rotate-y (degrees 160) (degrees 50.000004))))
 
 (defpartgroup group-sunken-window-bubbles-2
-  :id 368
+  :id (part-group-id group-sunken-window-bubbles-2)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1525
@@ -1608,7 +1608,7 @@
    (:rotate-y (degrees 249.99998) (degrees 50.000004))))
 
 (defpartgroup group-sunken-heatpipe-382
-  :id 369
+  :id (part-group-id group-sunken-heatpipe-382)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1528 :fade-after (meters 80) :falloff-to (meters 80) :binding 1527)
@@ -1698,7 +1698,7 @@
    (:rotate-y (degrees 50.000004))))
 
 (defpartgroup group-sunken-heatpipe-381
-  :id 370
+  :id (part-group-id group-sunken-heatpipe-381)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1531 :fade-after (meters 80) :falloff-to (meters 80) :binding 1530)
@@ -1788,7 +1788,7 @@
    (:rotate-y (degrees 80))))
 
 (defpartgroup group-sunken-heatpipe-380
-  :id 371
+  :id (part-group-id group-sunken-heatpipe-380)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1534 :fade-after (meters 80) :falloff-to (meters 80) :binding 1533)
@@ -1878,7 +1878,7 @@
    (:rotate-y (degrees 47.5))))
 
 (defpartgroup group-sunken-heatpipe-379
-  :id 372
+  :id (part-group-id group-sunken-heatpipe-379)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1537 :fade-after (meters 80) :falloff-to (meters 80) :binding 1536)
@@ -1968,7 +1968,7 @@
    (:rotate-y (degrees 70))))
 
 (defpartgroup group-sunken-heatpipe-378
-  :id 373
+  :id (part-group-id group-sunken-heatpipe-378)
   :bounds (static-bspherem 0 1 0 3.5)
   :parts
   ((sp-item 1540 :fade-after (meters 80) :falloff-to (meters 80) :binding 1539)
@@ -2058,7 +2058,7 @@
    (:rotate-y (degrees 23.000002))))
 
 (defpartgroup group-sunken-window-bubbles-402
-  :id 374
+  :id (part-group-id group-sunken-window-bubbles-402)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1542
@@ -2158,7 +2158,7 @@
    (:rotate-y (degrees 190) (degrees 40))))
 
 (defpartgroup group-sunken-window-bubbles-401
-  :id 375
+  :id (part-group-id group-sunken-window-bubbles-401)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1544
@@ -2258,7 +2258,7 @@
    (:rotate-y (degrees 105) (degrees 40))))
 
 (defpartgroup group-sunken-window-bubbles-400
-  :id 376
+  :id (part-group-id group-sunken-window-bubbles-400)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1546
@@ -2358,7 +2358,7 @@
    (:rotate-y (degrees 20) (degrees 40))))
 
 (defpartgroup group-sunken-window-bubbles-399
-  :id 377
+  :id (part-group-id group-sunken-window-bubbles-399)
   :bounds (static-bspherem 0 4 0 32)
   :parts
   ((sp-item 1548

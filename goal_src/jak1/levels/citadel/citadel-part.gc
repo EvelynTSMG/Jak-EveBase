@@ -10,7 +10,7 @@
 
 
 (defpartgroup group-firehose-blast-smoke
-  :id 685
+  :id (part-group-id group-firehose-blast-smoke)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 -8 0 8)
   :parts ((sp-item 2879) (sp-item 2880)))
@@ -127,7 +127,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-citb-generator-mushroom-on
-  :id 599
+  :id (part-group-id group-citb-generator-mushroom-on)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 12.5)
   :parts
@@ -156,7 +156,7 @@
    (sp-item 2407 :flags (bit1 start-dead launch-asap))))
 
 (defpartgroup group-citb-generator-on
-  :id 600
+  :id (part-group-id group-citb-generator-on)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 12.5)
   :parts
@@ -347,7 +347,7 @@
   :init-specs ((:fade-a -0.8)))
 
 (defpartgroup group-citb-generator-break
-  :id 598
+  :id (part-group-id group-citb-generator-break)
   :duration (seconds 2)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -454,7 +454,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-citb-generator-off
-  :id 597
+  :id (part-group-id group-citb-generator-off)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts
@@ -557,7 +557,7 @@
     (none)))
 
 (defpartgroup group-citb-robotboss-shield
-  :id 601
+  :id (part-group-id group-citb-robotboss-shield)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 23 0 34)
   :parts ((sp-item 2420 :fade-after (meters 220) :falloff-to (meters 250) :flags (is-3d))))
@@ -589,7 +589,7 @@
   :init-specs ((:g 0.0 32.0) (:a 64.0) (:fade-a -0.85333335)))
 
 (defpartgroup group-citb-coil-glow
-  :id 596
+  :id (part-group-id group-citb-coil-glow)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 3 0 4)
   :parts
@@ -841,7 +841,7 @@
    (:next-launcher 146)))
 
 (defpartgroup group-citb-coil-off
-  :id 602
+  :id (part-group-id group-citb-coil-off)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 6 0 8)
   :parts
@@ -915,7 +915,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-citb-blue-sage-beam
-  :id 603
+  :id (part-group-id group-citb-blue-sage-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts
@@ -946,7 +946,7 @@
    (sp-item 2450)))
 
 (defpartgroup group-citb-blue-sage-beam-impact
-  :id 607
+  :id (part-group-id group-citb-blue-sage-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2451 :flags (is-3d))))
@@ -1098,7 +1098,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-citb-red-sage-beam
-  :id 604
+  :id (part-group-id group-citb-red-sage-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 23 0 34)
   :parts
@@ -1129,7 +1129,7 @@
    (sp-item 2457)))
 
 (defpartgroup group-citb-red-sage-beam-impact
-  :id 608
+  :id (part-group-id group-citb-red-sage-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2458 :flags (is-3d))))
@@ -1266,7 +1266,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-citb-yellow-sage-beam
-  :id 605
+  :id (part-group-id group-citb-yellow-sage-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts
@@ -1301,7 +1301,7 @@
    (sp-item 2464)))
 
 (defpartgroup group-citb-yellow-sage-beam-impact
-  :id 609
+  :id (part-group-id group-citb-yellow-sage-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2465 :flags (is-3d))))
@@ -1435,7 +1435,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-citb-green-sage-beam
-  :id 606
+  :id (part-group-id group-citb-green-sage-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts
@@ -1470,7 +1470,7 @@
    (sp-item 2471)))
 
 (defpartgroup group-citb-green-sage-beam-impact
-  :id 610
+  :id (part-group-id group-citb-green-sage-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2472 :flags (is-3d))))
@@ -1617,7 +1617,7 @@
    (:flags (bit2 bit3 bit14 left-multiply-quat))))
 
 (defpartgroup group-citadel-warpgate
-  :id 662
+  :id (part-group-id group-citadel-warpgate)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 2689 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1898,7 +1898,7 @@
    (:flags (bit2 bit3 bit7 bit14))))
 
 (defpartgroup group-part-citadel-torch
-  :id 683
+  :id (part-group-id group-part-citadel-torch)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 2832 :fade-after (meters 180) :falloff-to (meters 200))

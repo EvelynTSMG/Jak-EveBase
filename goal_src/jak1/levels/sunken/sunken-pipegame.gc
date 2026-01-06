@@ -47,7 +47,7 @@
 
 
 (defpartgroup group-pipegame-jar-suck0
-  :id 448
+  :id (part-group-id group-pipegame-jar-suck0)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1741) (sp-item 1742) (sp-item 1743) (sp-item 1744 :flags (is-3d))))
@@ -126,7 +126,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-pipegame-jar-suck1
-  :id 449
+  :id (part-group-id group-pipegame-jar-suck1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1746) (sp-item 1742) (sp-item 1747) (sp-item 1748 :flags (is-3d))))
@@ -184,7 +184,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-pipegame-jar-suck2
-  :id 450
+  :id (part-group-id group-pipegame-jar-suck2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1749) (sp-item 1742) (sp-item 1750) (sp-item 1751 :flags (is-3d))))
@@ -242,7 +242,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-pipegame-blow0
-  :id 451
+  :id (part-group-id group-pipegame-blow0)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1752) (sp-item 1753) (sp-item 1754) (sp-item 1755 :flags (is-3d))))
@@ -322,7 +322,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-pipegame-blow1
-  :id 452
+  :id (part-group-id group-pipegame-blow1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1757) (sp-item 1753) (sp-item 1758) (sp-item 1759 :flags (is-3d))))
@@ -381,7 +381,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-pipegame-blow2
-  :id 453
+  :id (part-group-id group-pipegame-blow2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1760) (sp-item 1753) (sp-item 1761) (sp-item 1762 :flags (is-3d))))
@@ -762,8 +762,8 @@
              (set! (-> s0-0 pipe-travel-time-to-far) (seconds 8.5))
              (set! (-> s0-0 pipe-travel-time-to-jar) (seconds 2.5))
              (set-vector! s4-0 -30720.0 1146.88 5120.0 1.0)
-             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-id-table* 448) this))
-             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-id-table* 451) this))
+             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-jar-suck0)) this))
+             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-blow0)) this))
              (+! (-> s0-0 jar-pos y) 11673.6)
              (+! (-> s0-0 far-pos y) 11673.6)
              (when (not s1-1)
@@ -776,8 +776,8 @@
              (set! (-> s0-0 pipe-travel-time-to-far) (seconds 5.5))
              (set! (-> s0-0 pipe-travel-time-to-jar) (seconds 2.5))
              (set-vector! s4-0 0.0 1146.88 5120.0 1.0)
-             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-id-table* 449) this))
-             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-id-table* 452) this))
+             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-jar-suck1)) this))
+             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-blow1)) this))
              (+! (-> s0-0 jar-pos y) 7168.0)
              (+! (-> s0-0 far-pos y) 7168.0)
              (+! (-> s0-0 blown-out-far-part-pos y) 4096.0)
@@ -793,8 +793,8 @@
              (set! (-> s0-0 pipe-travel-time-to-far) (seconds 4.5))
              (set! (-> s0-0 pipe-travel-time-to-jar) (seconds 2.5))
              (set-vector! s4-0 30720.0 1146.88 5120.0 1.0)
-             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-id-table* 450) this))
-             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-id-table* 453) this))
+             (set! (-> s0-0 sucked-up-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-jar-suck2)) this))
+             (set! (-> s0-0 blown-out-part) (create-launch-control (-> *part-group-table* (part-group-id group-pipegame-blow2)) this))
              (+! (-> s0-0 jar-pos y) 7168.0)
              (+! (-> s0-0 far-pos y) 7168.0)
              (+! (-> s0-0 blown-out-far-part-pos y) 4096.0)

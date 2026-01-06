@@ -6,7 +6,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-2d-credits-mist
-  :id 682
+  :id (part-group-id group-2d-credits-mist)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts
@@ -118,7 +118,7 @@
   :init-specs ((:fade-a -0.21333334)))
 
 (defpartgroup group-target-white-eco-ground
-  :id 699
+  :id (part-group-id group-target-white-eco-ground)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -259,7 +259,7 @@
   :init-specs ((:fade-a -0.18)))
 
 (defpartgroup group-target-white-eco-joints
-  :id 700
+  :id (part-group-id group-target-white-eco-joints)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -363,7 +363,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-target-white-eco-hand-glow
-  :id 701
+  :id (part-group-id group-target-white-eco-hand-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -392,7 +392,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-target-white-eco-hand-shot
-  :id 702
+  :id (part-group-id group-target-white-eco-hand-shot)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -437,7 +437,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-robotboss-joints
-  :id 703
+  :id (part-group-id group-robotboss-joints)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -516,7 +516,7 @@
    (:conerot-radius (meters 2) (meters 4))))
 
 (defpartgroup group-robotboss-explode
-  :id 696
+  :id (part-group-id group-robotboss-explode)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -723,7 +723,7 @@
    (:conerot-radius (meters 0) (meters 32))))
 
 (defpartgroup group-robotboss-splash
-  :id 704
+  :id (part-group-id group-robotboss-splash)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -780,7 +780,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-bigdoor-open
-  :id 698
+  :id (part-group-id group-bigdoor-open)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -997,7 +997,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-2d-big-door-whiteout
-  :id 706
+  :id (part-group-id group-2d-big-door-whiteout)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts ((sp-item 2965)))

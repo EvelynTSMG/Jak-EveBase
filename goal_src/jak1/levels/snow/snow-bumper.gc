@@ -31,7 +31,7 @@
   :bounds (static-spherem 0 2.2 0 3.4))
 
 (defpartgroup group-snow-bumper-idle
-  :id 519
+  :id (part-group-id group-snow-bumper-idle)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1893 :fade-after (meters 90) :falloff-to (meters 90) :period (seconds 0.085) :length (seconds 0.035))))
@@ -60,7 +60,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-snow-bumper-shove
-  :id 520
+  :id (part-group-id group-snow-bumper-shove)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1895)))
@@ -268,8 +268,8 @@
     (set! (-> this root) s4-0))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *snow-bumper-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 519) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 520) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-snow-bumper-idle)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-snow-bumper-shove)) this))
   (nav-mesh-connect this (-> this root) (the-as nav-control #f))
   (set! (-> this link) (new 'process 'actor-link-info this))
   (set! (-> this bumper-id) (+ (actor-count-before (-> this link)) 1))

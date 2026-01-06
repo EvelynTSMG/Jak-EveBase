@@ -23,7 +23,7 @@
   :bounds (static-spherem 0 -4.5 0 4.5))
 
 (defpartgroup group-jungle-blue-eco-room-open
-  :id 189
+  :id (part-group-id group-jungle-blue-eco-room-open)
   :bounds (static-bspherem 0 -6 0 8)
   :parts
   ((sp-item 899 :fade-after (meters 110))
@@ -33,7 +33,7 @@
    (sp-item 903 :fade-after (meters 110))))
 
 (defpartgroup group-jungle-blue-eco-room-activate
-  :id 190
+  :id (part-group-id group-jungle-blue-eco-room-activate)
   :duration (seconds 3)
   :bounds (static-bspherem 0 -6 0 8)
   :parts ((sp-item 903) (sp-item 903) (sp-item 904 :flags (bit1) :period (seconds 4) :length (seconds 0.05))))
@@ -190,7 +190,7 @@
         (process-spawn part-tracker
                        :init
                        part-tracker-init
-                       (-> *part-group-id-table* 190)
+                       (-> *part-group-table* (part-group-id group-jungle-blue-eco-room-activate))
                        -1
                        #f
                        #f
@@ -256,7 +256,7 @@
   (initialize-skeleton this *eggtop-sg* '())
   (logior! (-> this skel status) (janim-status inited))
   (update-transforms! (-> this root))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 189) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-jungle-blue-eco-room-open)) this))
   (set! (-> this sound-id) (new-sound-id))
   (cond
     ((task-complete? *game-info* (-> this entity extra perm task)) (go eggtop-close #t))

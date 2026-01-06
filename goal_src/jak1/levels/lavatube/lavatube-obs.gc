@@ -99,7 +99,7 @@
   (none))
 
 (defpartgroup group-darkecobarrel-hit
-  :id 540
+  :id (part-group-id group-darkecobarrel-hit)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 1932 :period (seconds 0.05) :length (seconds 0.017))))
@@ -129,7 +129,7 @@
    (:flags (bit2 bit14))))
 
 (defpartgroup group-darkecobarrel-explode
-  :id 541
+  :id (part-group-id group-darkecobarrel-explode)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -410,7 +410,7 @@
       (let ((gp-1 (new 'stack-no-clear 'vector)))
         (set! (-> gp-1 quad) (-> self root trans quad))
         (+! (-> gp-1 y) -49152.0)
-        (process-spawn part-tracker :init part-tracker-init (-> *part-group-id-table* 541) 600 #f #f #f gp-1 :to *entity-pool*))
+        (process-spawn part-tracker :init part-tracker-init (-> *part-group-table* (part-group-id group-darkecobarrel-explode)) 600 #f #f #f gp-1 :to *entity-pool*))
       (suspend)
       (set-time! (-> self state-time))
       (until (time-elapsed? (-> self state-time) (seconds 1))
@@ -504,7 +504,7 @@
     (backup-collide-with-as s2-0)
     (set! (-> self root) s2-0))
   (darkecobarrel-base-init arg0)
-  (set! (-> self part) (create-launch-control (-> *part-group-id-table* 540) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-darkecobarrel-hit)) self))
   (set! (-> self speed) arg1)
   (set! (-> self start-time) arg2)
   (set! (-> self sync) arg3)
@@ -664,7 +664,7 @@
 
 
 (defpartgroup group-chainmine-explode
-  :id 542
+  :id (part-group-id group-chainmine-explode)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -796,7 +796,7 @@
       (let ((gp-1 (new 'stack-no-clear 'vector)))
         (set! (-> gp-1 quad) (-> self root trans quad))
         (+! (-> gp-1 y) -73728.0)
-        (process-spawn part-tracker :init part-tracker-init (-> *part-group-id-table* 542) 600 #f #f #f gp-1 :to *entity-pool*))
+        (process-spawn part-tracker :init part-tracker-init (-> *part-group-table* (part-group-id group-chainmine-explode)) 600 #f #f #f gp-1 :to *entity-pool*))
       (suspend)
       (set-time! (-> self state-time))
       (until (time-elapsed? (-> self state-time) (seconds 1))
@@ -859,7 +859,7 @@
 
 
 (defpartgroup group-lavaballoon
-  :id 543
+  :id (part-group-id group-lavaballoon)
   :duration (seconds 0.017)
   :bounds (static-bspherem 0 0 0 15)
   :parts ((sp-item 1987) (sp-item 1988) (sp-item 1989)))
@@ -932,7 +932,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 543)
+                     (-> *part-group-table* (part-group-id group-lavaballoon))
                      -1
                      #f
                      #f
@@ -977,7 +977,7 @@
     (set! (-> this root) s4-0))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *lavaballoon-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 543) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-lavaballoon)) this))
   (set! (-> this root pause-adjust-distance) 122880.0)
   (set! (-> this path) (new 'process 'path-control this 'path 0.0))
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))

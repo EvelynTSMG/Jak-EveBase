@@ -108,7 +108,7 @@
 (define *spawn-part-test* #t)
 
 (defun dm-part-pick-func ((id int) (msg debug-menu-msg))
-  (if (zero? (-> *part-group-id-table* id)) (return 'invalid))
+  (if (zero? (-> *part-group-table* id)) (return 'invalid))
   (when (= msg (debug-menu-msg press))
     (set! *part-tester-id* id)
     (if *spawn-part-test* (start-part)))
@@ -116,8 +116,8 @@
 
 (defun build-particles-list ()
   (debug-menu-remove-all-items *part-pick-menu*)
-  (dotimes (i (-> *part-group-id-table* length))
-    (let ((part (-> *part-group-id-table* i)))
+  (dotimes (i (-> *part-group-table* length))
+    (let ((part (-> *part-group-table* i)))
       (when (and (nonzero? part))
         (debug-menu-append-item *part-pick-menu* (new-dm-flag (-> part name) i dm-part-pick-func)))))
   (set! (-> *part-pick-menu* items) (sort (-> *part-pick-menu* items) debug-menu-node<?)))

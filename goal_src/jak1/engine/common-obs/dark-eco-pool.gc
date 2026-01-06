@@ -122,7 +122,7 @@
   (none))
 
 (defpartgroup group-dark-eco-nasty
-  :id 444
+  :id (part-group-id group-dark-eco-nasty)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2020 :fade-after (meters 50))))
@@ -150,7 +150,7 @@
   :init-specs ((:r 255.0) (:g 128.0 128.0) (:b 0.0) (:fade-a -1.28)))
 
 (defpartgroup group-dark-eco-pool-nasty
-  :id 445
+  :id (part-group-id group-dark-eco-pool-nasty)
   :duration (seconds 2)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -326,7 +326,7 @@
                 (process-spawn part-tracker
                                :init
                                part-tracker-init
-                               (-> *part-group-id-table* 445)
+                               (-> *part-group-table* (part-group-id group-dark-eco-pool-nasty))
                                -1
                                #f
                                #f

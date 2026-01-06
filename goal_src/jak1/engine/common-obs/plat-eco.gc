@@ -190,7 +190,7 @@
     (setup-lods! (-> this lit-look) s5-1 (-> this draw art-group) (-> this entity)))
   (logclear! (-> this mask) (process-mask actor-pause))
   (update-transforms! (-> this root))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 107) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-standard-plat)) this))
   (set! (-> this path) (new 'process 'curve-control this 'path -1000000000.0))
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this fact) (new 'process 'fact-info this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))

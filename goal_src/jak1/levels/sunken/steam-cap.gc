@@ -32,7 +32,7 @@
 
 
 (defpartgroup group-steam-cap-sides
-  :id 441
+  :id (part-group-id group-steam-cap-sides)
   :bounds (static-bspherem 0 0 0 10)
   :parts
   ((sp-item 1718 :fade-after (meters 100) :falloff-to (meters 160) :period (seconds 0.6) :length (seconds 0.25))
@@ -240,7 +240,7 @@
   :init-specs ((:fade-a -0.21333334)))
 
 (defpartgroup group-steam-cap-plume
-  :id 442
+  :id (part-group-id group-steam-cap-plume)
   :bounds (static-bspherem 0 0 0 32)
   :parts
   ((sp-item 1727 :fade-after (meters 120) :falloff-to (meters 160))
@@ -249,7 +249,7 @@
    (sp-item 1730 :fade-after (meters 60) :falloff-to (meters 60) :flags (start-dead))))
 
 (defpartgroup group-steam-cap-plume-spread
-  :id 443
+  :id (part-group-id group-steam-cap-plume-spread)
   :bounds (static-bspherem 0 0 0 32)
   :parts
   ((sp-item 1731 :fade-after (meters 120) :falloff-to (meters 160))
@@ -591,9 +591,9 @@
   (set! (-> this down quad) (-> this root trans quad))
   (set! (-> this up quad) (-> this root trans quad))
   (+! (-> this up y) 40960.0)
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 441) this))
-  (set! (-> this part2) (create-launch-control (-> *part-group-id-table* 442) this))
-  (set! (-> this part3) (create-launch-control (-> *part-group-id-table* 443) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-steam-cap-sides)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-steam-cap-plume)) this))
+  (set! (-> this part3) (create-launch-control (-> *part-group-table* (part-group-id group-steam-cap-plume-spread)) this))
   (vector-reset! (-> this root transv))
   (let ((s5-1 (new 'stack-no-clear 'vector))
         (f30-1 0.0))

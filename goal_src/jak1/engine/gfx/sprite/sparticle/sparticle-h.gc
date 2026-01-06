@@ -92,7 +92,7 @@
 ;; TODO - for shadow
 (define-extern *part-id-table* (array sparticle-launcher))
 
-(define-extern *part-group-id-table* (array sparticle-launch-group))
+(define-extern *part-group-table* (array sparticle-launch-group))
 
 ;; TODO - for basically everything particle related
 (define-extern *sp-particle-system-2d* sparticle-system)

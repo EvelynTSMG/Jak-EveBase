@@ -7,7 +7,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-balloonlurker-pilot-death
-  :id 203
+  :id (part-group-id group-balloonlurker-pilot-death)
   :duration (seconds 0.017)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -31,7 +31,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-balloonlurker-mine-explosion
-  :id 204
+  :id (part-group-id group-balloonlurker-mine-explosion)
   :duration (seconds 2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
@@ -548,7 +548,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 204)
+                     (-> *part-group-table* (part-group-id group-balloonlurker-mine-explosion))
                      -1
                      #f
                      #f
@@ -643,7 +643,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 203)
+                     (-> *part-group-table* (part-group-id group-balloonlurker-pilot-death))
                      -1
                      #f
                      #f

@@ -9,40 +9,40 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-swamp-rat-nest-a-explosion
-  :id 292
+  :id (part-group-id group-swamp-rat-nest-a-explosion)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1334) (sp-item 1335) (sp-item 1336) (sp-item 1337) (sp-item 1338) (sp-item 1339)))
 
 (defpartgroup group-swamp-rat-nest-b-explosion
-  :id 293
+  :id (part-group-id group-swamp-rat-nest-b-explosion)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1342) (sp-item 1339) (sp-item 1337) (sp-item 1334)))
 
 (defpartgroup group-swamp-rat-nest-c-explosion
-  :id 294
+  :id (part-group-id group-swamp-rat-nest-c-explosion)
   :duration (seconds 0.017)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1335) (sp-item 1339) (sp-item 1337) (sp-item 1334)))
 
 (defpartgroup group-swamp-rat-nest-a-puff
-  :id 295
+  :id (part-group-id group-swamp-rat-nest-a-puff)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1346) (sp-item 1347) (sp-item 1348)))
 
 (defpartgroup group-swamp-rat-nest-b-puff
-  :id 296
+  :id (part-group-id group-swamp-rat-nest-b-puff)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1350) (sp-item 1351)))
 
 (defpartgroup group-swamp-rat-nest-c-puff
-  :id 297
+  :id (part-group-id group-swamp-rat-nest-c-puff)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1353) (sp-item 1354)))
@@ -940,8 +940,8 @@ swamp-rat-nest-default-event-handler
         (set! a0-1 (cdr a0-1))
         (set! a1-0 (car a0-1))))
     (set! (-> this spawn-joint-count) v1-0))
-  (set! (-> this death-part) (-> *part-group-id-table* 292))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 295) this))
+  (set! (-> this death-part) (-> *part-group-table* (part-group-id group-swamp-rat-nest-a-explosion)))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-swamp-rat-nest-a-puff)) this))
   (let ((v0-1 6)) (set! (-> this particle-spawn-joint) v0-1) v0-1))
 
 (defmethod swamp-rat-nest-dummy-method-21 ((this swamp-rat-nest-dummy-b))
@@ -955,8 +955,8 @@ swamp-rat-nest-default-event-handler
         (set! a0-1 (cdr a0-1))
         (set! a1-0 (car a0-1))))
     (set! (-> this spawn-joint-count) v1-0))
-  (set! (-> this death-part) (-> *part-group-id-table* 293))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 296) this))
+  (set! (-> this death-part) (-> *part-group-table* (part-group-id group-swamp-rat-nest-b-explosion)))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-swamp-rat-nest-b-puff)) this))
   (let ((v0-1 9)) (set! (-> this particle-spawn-joint) v0-1) v0-1))
 
 (defmethod swamp-rat-nest-dummy-method-21 ((this swamp-rat-nest-dummy-c))
@@ -970,6 +970,6 @@ swamp-rat-nest-default-event-handler
         (set! a0-1 (cdr a0-1))
         (set! a1-0 (car a0-1))))
     (set! (-> this spawn-joint-count) v1-0))
-  (set! (-> this death-part) (-> *part-group-id-table* 294))
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 297) this))
+  (set! (-> this death-part) (-> *part-group-table* (part-group-id group-swamp-rat-nest-c-explosion)))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-swamp-rat-nest-c-puff)) this))
   (let ((v0-1 5)) (set! (-> this particle-spawn-joint) v0-1) v0-1))

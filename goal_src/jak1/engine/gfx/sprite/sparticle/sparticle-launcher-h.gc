@@ -21,7 +21,7 @@
 
 ;; A sparticle-launch-group is a description of a particle effect.
 ;; It can contain multiple types of particles.
-;; The `*part-group-id-table*` array stores a reference to every launch-group, indexed by group id.
+;; The `*part-group-table*` array stores a reference to every launch-group, indexed by group id.
 ;; Each launch-group is just a list of sparticle-launchers, stored as an index
 
 ;; A launcher is a single particle effect.
@@ -248,7 +248,7 @@
   "define a new part group. defines a constant with the name of the group with the ID as its value"
   `(begin
     (defconstant ,name ,id)
-    (set! (-> *part-group-id-table* ,id)
+    (set! (-> *part-group-table* ,id)
           (new 'static
                'sparticle-launch-group
                :duration ,duration
@@ -261,7 +261,7 @@
                (new 'static 'inline-array sparticle-group-item ,(length parts) ,@parts)))))
 
 (defmacro get-part-group (id)
-  `(-> *part-group-id-table* ,id))
+  `(-> *part-group-table* ,id))
 
 (desfun param-float? (p)
   (or (float? p) (and (pair? p) (eq? 'meters (car p))) (and (pair? p) (eq? 'degrees (car p)))))

@@ -13,7 +13,7 @@
 
 
 (defpartgroup group-balloon
-  :id 227
+  :id (part-group-id group-balloon)
   :duration (seconds 0.017)
   :bounds (static-bspherem 0 0 0 15)
   :parts ((sp-item 1006) (sp-item 1007) (sp-item 1008)))
@@ -85,7 +85,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 227)
+                     (-> *part-group-table* (part-group-id group-balloon))
                      -1
                      #f
                      #f
@@ -125,7 +125,7 @@
     (set! (-> this root) s4-0))
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *balloon-sg* '())
-  (set! (-> this part) (create-launch-control (-> *part-group-id-table* 227) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-balloon)) this))
   (go balloon-idle)
   (none))
 
@@ -282,7 +282,7 @@
 
 
 (defpartgroup group-dark-cluster-explosion
-  :id 228
+  :id (part-group-id group-dark-cluster-explosion)
   :duration (seconds 2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 12)
@@ -470,7 +470,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 228)
+                     (-> *part-group-table* (part-group-id group-dark-cluster-explosion))
                      -1
                      #f
                      #f

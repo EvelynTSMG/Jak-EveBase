@@ -71,7 +71,7 @@
    (:flags (bit2 bit9 bit13))))
 
 (defpartgroup group-part-screen1
-  :id 707
+  :id (part-group-id group-part-screen1)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2966 :flags (launch-asap)) (sp-item 2967 :flags (launch-asap)) (sp-item 2968 :flags (launch-asap))))

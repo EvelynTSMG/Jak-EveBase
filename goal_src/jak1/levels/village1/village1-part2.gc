@@ -6,7 +6,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-village1-sagehut-rings
-  :id 136
+  :id (part-group-id group-village1-sagehut-rings)
   :bounds (static-bspherem 7 4 -4.5 12)
   :parts
   ((sp-item 480 :fade-after (meters 60) :flags (is-3d))
@@ -376,7 +376,7 @@
    (sp-item 487 :fade-after (meters 50) :flags (start-dead launch-asap) :period (seconds 4) :length (seconds 0.017))))
 
 (defpartgroup group-village1-sagehut-rings-2
-  :id 137
+  :id (part-group-id group-village1-sagehut-rings-2)
   :bounds (static-bspherem 7 4 -4.5 12)
   :parts
   ((sp-item 488 :fade-after (meters 50) :binding 489)
@@ -744,7 +744,7 @@
    (sp-item 493 :fade-after (meters 50) :flags (start-dead launch-asap) :period (seconds 4) :length (seconds 0.017))))
 
 (defpartgroup group-village1-sagehut-rings-3
-  :id 138
+  :id (part-group-id group-village1-sagehut-rings-3)
   :bounds (static-bspherem 7 4 -4.5 12)
   :parts
   ((sp-item 494 :fade-after (meters 50) :binding 495)
@@ -1468,7 +1468,7 @@
    (:flags (bit2 bit3 bit7 bit14))))
 
 (defpartgroup group-village1-sagehut-drips
-  :id 139
+  :id (part-group-id group-village1-sagehut-drips)
   :bounds (static-bspherem 7 4 -4.5 12)
   :parts
   ((sp-item 500 :fade-after (meters 40) :period (seconds 2.245) :length (seconds 0.017))
@@ -1584,7 +1584,7 @@
   (none))
 
 (defpartgroup group-village1-sagehut-warpgate
-  :id 140
+  :id (part-group-id group-village1-sagehut-warpgate)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 1970 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1865,7 +1865,7 @@
    (:flags (bit2 bit3 bit7 bit14))))
 
 (defpartgroup group-village1-misty-fog
-  :id 141
+  :id (part-group-id group-village1-misty-fog)
   :flags (always-draw)
   :bounds (static-bspherem 0 10 0 260)
   :parts ((sp-item 511)))
@@ -1899,7 +1899,7 @@
   :init-specs ((:fade-a -0.10666667)))
 
 (defpartgroup group-village1-training-spouts
-  :id 684
+  :id (part-group-id group-village1-training-spouts)
   :flags (always-draw)
   :bounds (static-bspherem 0 10 0 12)
   :parts
@@ -2079,7 +2079,7 @@
   :init-specs ((:fade-a -0.03678161)))
 
 (defpartgroup group-village1-trans-pad
-  :id 142
+  :id (part-group-id group-village1-trans-pad)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 514 :fade-after (meters 160))

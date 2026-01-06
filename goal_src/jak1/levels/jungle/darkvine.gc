@@ -41,7 +41,7 @@
   :bounds (static-spherem 0 2 0 3.5))
 
 (defpartgroup group-darkvine-puffs
-  :id 175
+  :id (part-group-id group-darkvine-puffs)
   :duration (seconds 0.5)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 2 0 3)
@@ -172,7 +172,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-id-table* 175)
+                     (-> *part-group-table* (part-group-id group-darkvine-puffs))
                      -1
                      #f
                      #f

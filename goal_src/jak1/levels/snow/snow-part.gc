@@ -14,7 +14,7 @@
 
 
 (defpartgroup group-snow-snowdrops1
-  :id 528
+  :id (part-group-id group-snow-snowdrops1)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924 :fade-after (meters 100) :falloff-to (meters 130) :period (seconds 9) :length (seconds 0.5))
@@ -34,7 +34,7 @@
    (sp-item 1926 :fade-after (meters 80) :falloff-to (meters 80) :period (seconds 9) :length (seconds 0.035))))
 
 (defpartgroup group-snow-snowdrops2
-  :id 529
+  :id (part-group-id group-snow-snowdrops2)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924
@@ -129,7 +129,7 @@
             :offset 900)))
 
 (defpartgroup group-snow-snowdrops3
-  :id 530
+  :id (part-group-id group-snow-snowdrops3)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924
@@ -224,7 +224,7 @@
             :offset 1800)))
 
 (defpartgroup group-snow-snowdrops4
-  :id 531
+  :id (part-group-id group-snow-snowdrops4)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924
@@ -319,7 +319,7 @@
             :offset 300)))
 
 (defpartgroup group-snow-snowdrops5
-  :id 532
+  :id (part-group-id group-snow-snowdrops5)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924
@@ -414,7 +414,7 @@
             :offset 1200)))
 
 (defpartgroup group-snow-snowdrops6
-  :id 533
+  :id (part-group-id group-snow-snowdrops6)
   :bounds (static-bspherem 0 -16 0 32)
   :parts
   ((sp-item 1924
@@ -574,7 +574,7 @@
    (:flags (bit2 bit12))))
 
 (defpartgroup group-part-snow-torch
-  :id 534
+  :id (part-group-id group-part-snow-torch)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 2041 :fade-after (meters 200) :falloff-to (meters 220))
@@ -725,7 +725,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-snow-mountain-snow
-  :id 535
+  :id (part-group-id group-snow-mountain-snow)
   :bounds (static-bspherem 0 -16 -32 80)
   :parts ((sp-item 2093)))
 
@@ -758,7 +758,7 @@
   :init-specs ((:fade-a -0.035555556)))
 
 (defpartgroup group-snow-door-torch
-  :id 536
+  :id (part-group-id group-snow-door-torch)
   :bounds (static-bspherem 0 5 0 6)
   :parts
   ((sp-item 2113 :fade-after (meters 240) :falloff-to (meters 240))
@@ -1009,7 +1009,7 @@
    (:conerot-radius (meters 0) (meters 0.5))))
 
 (defpartgroup group-snow-birds
-  :id 537
+  :id (part-group-id group-snow-birds)
   :bounds (static-bspherem 0 8 0 45)
   :parts
   ((sp-item 2245 :fade-after (meters 120) :flags (bit1 launch-asap) :binding 2243)

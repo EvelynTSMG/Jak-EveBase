@@ -97,7 +97,7 @@
        :debug-draw-jump #f))
 
 (defpartgroup group-yeti-slave-appear1
-  :id 538
+  :id (part-group-id group-yeti-slave-appear1)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
   :parts
@@ -154,7 +154,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-yeti-slave-appear2
-  :id 539
+  :id (part-group-id group-yeti-slave-appear2)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)
   :parts ((sp-item 1930 :fade-after (meters 70) :falloff-to (meters 70))))
@@ -441,8 +441,8 @@
   (call-parent-method this offset))
 
 (defbehavior yeti-slave-init-by-other yeti-slave ((arg0 entity) (arg1 yeti) (arg2 vector) (arg3 vector) (arg4 symbol))
-  (set! (-> self part) (create-launch-control (-> *part-group-id-table* 538) self))
-  (set! (-> self part2) (create-launch-control (-> *part-group-id-table* 539) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-yeti-slave-appear1)) self))
+  (set! (-> self part2) (create-launch-control (-> *part-group-table* (part-group-id group-yeti-slave-appear2)) self))
   (initialize-collision self)
   (set! (-> self collide-info trans quad) (-> arg2 quad))
   (vector-identity! (-> self collide-info scale))
