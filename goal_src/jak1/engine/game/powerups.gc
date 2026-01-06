@@ -123,7 +123,7 @@
    (:flags (bit0 bit2 bit3))))
 
 (defpartgroup group-blue-hit-ground-effect
-  :id (part-group-id group-blue-hit-ground-effect)
+  :id (part-group-id blue-hit-ground-effect)
   :duration (seconds 0.017)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)

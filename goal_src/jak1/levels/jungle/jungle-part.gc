@@ -523,7 +523,7 @@
    (:rotate-y (degrees 135))))
 
 (defpartgroup group-jungle-waterfall-1
-  :id (part-group-id group-jungle-waterfall-1)
+  :id (part-group-id jungle-waterfall-1)
   :flags (always-draw)
   :bounds (static-bspherem 0 25 0 100)
   :parts
@@ -536,7 +536,7 @@
    (sp-item 836 :fade-after (meters 70) :falloff-to (meters 70))))
 
 (defpartgroup group-jungle-waterfall-2
-  :id (part-group-id group-jungle-waterfall-2)
+  :id (part-group-id jungle-waterfall-2)
   :flags (always-draw)
   :bounds (static-bspherem 2 9 4 90)
   :parts
@@ -549,7 +549,7 @@
    (sp-item 840 :fade-after (meters 90))))
 
 (defpartgroup group-jungle-waterfall-3
-  :id (part-group-id group-jungle-waterfall-3)
+  :id (part-group-id jungle-waterfall-3)
   :flags (always-draw)
   :bounds (static-bspherem 0 8 0 90)
   :parts
@@ -562,7 +562,7 @@
    (sp-item 845 :fade-after (meters 90))))
 
 (defpartgroup group-jungle-waterfall-4
-  :id (part-group-id group-jungle-waterfall-4)
+  :id (part-group-id jungle-waterfall-4)
   :flags (always-draw)
   :bounds (static-bspherem 0 10 8 90)
   :parts
@@ -717,14 +717,14 @@
   :init-specs ((:fade-a -0.02)))
 
 (defpartgroup group-jungle-dapple-light-1
-  :id (part-group-id group-jungle-dapple-light-1)
+  :id (part-group-id jungle-dapple-light-1)
   :bounds (static-bspherem 0 0 0 55)
   :parts
   ((sp-item 864 :hour-mask #b111111100000000000111111)
    (sp-item 853 :fade-after (meters 130) :falloff-to (meters 160) :hour-mask #b11111111111000000)))
 
 (defpartgroup group-jungle-tower-spewer
-  :id (part-group-id group-jungle-tower-spewer)
+  :id (part-group-id jungle-tower-spewer)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 866 :fade-after (meters 100) :falloff-to (meters 100))
@@ -822,7 +822,7 @@
   :init-specs ((:fade-a -0.53333336)))
 
 (defpartgroup group-jungle-lurkermachine-3
-  :id (part-group-id group-jungle-lurkermachine-3)
+  :id (part-group-id jungle-lurkermachine-3)
   :bounds (static-bspherem 0 6 6 16)
   :parts
   ((sp-item 872 :fade-after (meters 140) :falloff-to (meters 160) :period (seconds 1) :length (seconds 0.86))
@@ -1601,7 +1601,7 @@
    (:rotate-y (degrees 35))))
 
 (defpartgroup group-jungle-lurkermachine-1
-  :id (part-group-id group-jungle-lurkermachine-1)
+  :id (part-group-id jungle-lurkermachine-1)
   :bounds (static-bspherem 0 10 0 12)
   :parts
   ((sp-item 896 :fade-after (meters 140) :falloff-to (meters 160) :period (seconds 1) :length (seconds 0.86))

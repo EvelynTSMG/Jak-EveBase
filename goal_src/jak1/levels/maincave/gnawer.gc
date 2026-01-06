@@ -118,7 +118,7 @@
        (new 'static 'gnawer-segment-info :num-joints 1 :joint-index (new 'static 'array int8 8 30 0 0 0 0 0 0 0))))
 
 (defpartgroup group-gnawer-loses-segment
-  :id (part-group-id group-gnawer-loses-segment)
+  :id (part-group-id gnawer-loses-segment)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -254,7 +254,7 @@
    (:flags (bit2))))
 
 (defpartgroup group-gnawer-crumbs
-  :id (part-group-id group-gnawer-crumbs)
+  :id (part-group-id gnawer-crumbs)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2141 :fade-after (meters 60) :falloff-to (meters 60))))
@@ -1043,7 +1043,7 @@
   (set! (-> this path) (new 'process 'curve-control this 'path -1000000000.0))
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (if (< (-> this path curve num-cverts) 2) (go process-drawable-art-error "bad path"))
-  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-gnawer-crumbs)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id gnawer-crumbs)) this))
   (set! (-> this total-money) 0)
   (set! (-> this money-mask) (the-as uint 0))
   (set! sv-32 (new 'static 'res-tag))
@@ -1061,7 +1061,7 @@
              (let ((a3-15 (-> a0-49 a1-30))) (set! v1-100 (logior v1-100 (ash 1 a3-15)))))
            (set! (-> this money-mask) (the-as uint v1-100))))
         (else (go process-drawable-art-error "bad actor params")))))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-gnawer-loses-segment)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id gnawer-loses-segment)) this))
   (set! (-> this sound)
         (new 'process 'ambient-sound (static-sound-spec "gnawer-crawl" :fo-min 30 :fo-max 30) (-> this root trans)))
   (set! (-> this sound2) (new 'process 'ambient-sound (static-sound-spec "gnawer-chew" :fo-max 40) (-> this root trans)))

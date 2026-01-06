@@ -58,7 +58,7 @@
 
 
 (defpartgroup group-square-platform-breach-splash
-  :id (part-group-id group-square-platform-breach-splash)
+  :id (part-group-id square-platform-breach-splash)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2222 :flags (is-3d)) (sp-item 2315 :flags (is-3d))))
@@ -113,7 +113,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-square-platform-submerge-bubbles
-  :id (part-group-id group-square-platform-submerge-bubbles)
+  :id (part-group-id square-platform-submerge-bubbles)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2223)))
@@ -144,7 +144,7 @@
   :init-specs ((:fade-a 0.0)))
 
 (defpartgroup group-square-platform-submerge-splash
-  :id (part-group-id group-square-platform-submerge-splash)
+  :id (part-group-id square-platform-submerge-splash)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2222 :flags (is-3d)) (sp-item 2315 :flags (is-3d))))
@@ -332,9 +332,9 @@
       (+! (-> this up-pos y) f0-10)))
   (set! (-> this basetrans quad) (-> this down-pos quad))
   (set! (-> this root trans quad) (-> this basetrans quad))
-  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id group-square-platform-breach-splash)) this))
-  (set! (-> this part3) (create-launch-control (-> *part-group-table* (part-group-id group-square-platform-submerge-bubbles)) this))
-  (set! (-> this part4) (create-launch-control (-> *part-group-table* (part-group-id group-square-platform-submerge-splash)) this))
+  (set! (-> this part2) (create-launch-control (-> *part-group-table* (part-group-id square-platform-breach-splash)) this))
+  (set! (-> this part3) (create-launch-control (-> *part-group-table* (part-group-id square-platform-submerge-bubbles)) this))
+  (set! (-> this part4) (create-launch-control (-> *part-group-table* (part-group-id square-platform-submerge-splash)) this))
   (set! (-> this water-entity) (entity-actor-lookup arg0 'alt-actor 0))
   (ja-post)
   (update-transforms! (-> this root))

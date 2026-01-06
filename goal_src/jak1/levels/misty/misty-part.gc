@@ -63,7 +63,7 @@
    (:conerot-radius (meters 0.25))))
 
 (defpartgroup group-misty-ship-steam
-  :id (part-group-id group-misty-ship-steam)
+  :id (part-group-id misty-ship-steam)
   :bounds (static-bspherem 0 0.5 0 4.5)
   :parts
   ((sp-item 972 :fade-after (meters 175) :falloff-to (meters 175) :period (seconds 5) :length (seconds 1))
@@ -72,7 +72,7 @@
    (sp-item 973 :fade-after (meters 125) :falloff-to (meters 125) :period (seconds 0.6) :length (seconds 0.15))))
 
 (defpartgroup group-part-misty-torch
-  :id (part-group-id group-part-misty-torch)
+  :id (part-group-id part-misty-torch)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 974 :fade-after (meters 180) :falloff-to (meters 200))
@@ -223,7 +223,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-misty-fog
-  :id (part-group-id group-misty-fog)
+  :id (part-group-id misty-fog)
   :bounds (static-bspherem 64 7 0 96)
   :parts ((sp-item 982 :flags (is-3d))))
 
@@ -261,7 +261,7 @@
   :init-specs ((:fade-a -0.21333334)))
 
 (defpartgroup group-misty-lurkermachine-vent-316
-  :id (part-group-id group-misty-lurkermachine-vent-316)
+  :id (part-group-id misty-lurkermachine-vent-316)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 985 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -295,7 +295,7 @@
    (:rotate-y (degrees 70))))
 
 (defpartgroup group-misty-lurkermachine-vent-313
-  :id (part-group-id group-misty-lurkermachine-vent-313)
+  :id (part-group-id misty-lurkermachine-vent-313)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 986 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -329,7 +329,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-misty-lurkermachine-vent-308
-  :id (part-group-id group-misty-lurkermachine-vent-308)
+  :id (part-group-id misty-lurkermachine-vent-308)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 987 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -363,7 +363,7 @@
    (:rotate-y (degrees 80))))
 
 (defpartgroup group-misty-lurkermachine-vent-307
-  :id (part-group-id group-misty-lurkermachine-vent-307)
+  :id (part-group-id misty-lurkermachine-vent-307)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 988 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -397,7 +397,7 @@
    (:rotate-y (degrees 120))))
 
 (defpartgroup group-misty-lurkermachine-vent-305
-  :id (part-group-id group-misty-lurkermachine-vent-305)
+  :id (part-group-id misty-lurkermachine-vent-305)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 989 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -431,7 +431,7 @@
    (:rotate-y (degrees -20))))
 
 (defpartgroup group-misty-lurkermachine-vent-309
-  :id (part-group-id group-misty-lurkermachine-vent-309)
+  :id (part-group-id misty-lurkermachine-vent-309)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 990 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -465,7 +465,7 @@
    (:rotate-y (degrees 150))))
 
 (defpartgroup group-misty-lurkermachine-vent-2
-  :id (part-group-id group-misty-lurkermachine-vent-2)
+  :id (part-group-id misty-lurkermachine-vent-2)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 991 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -499,7 +499,7 @@
    (:rotate-y (degrees 50.000004))))
 
 (defpartgroup group-misty-lurkermachine-vent-328
-  :id (part-group-id group-misty-lurkermachine-vent-328)
+  :id (part-group-id misty-lurkermachine-vent-328)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 992 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -533,7 +533,7 @@
    (:rotate-y (degrees 150))))
 
 (defpartgroup group-misty-lurkermachine-vent-325
-  :id (part-group-id group-misty-lurkermachine-vent-325)
+  :id (part-group-id misty-lurkermachine-vent-325)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 993 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -567,7 +567,7 @@
    (:rotate-y (degrees -50.000004))))
 
 (defpartgroup group-misty-lurkermachine-vent-320
-  :id (part-group-id group-misty-lurkermachine-vent-320)
+  :id (part-group-id misty-lurkermachine-vent-320)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 994 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -601,7 +601,7 @@
    (:rotate-y (degrees 50.000004))))
 
 (defpartgroup group-misty-lurkermachine-vent-324
-  :id (part-group-id group-misty-lurkermachine-vent-324)
+  :id (part-group-id misty-lurkermachine-vent-324)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 995 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -635,7 +635,7 @@
    (:rotate-y (degrees 220))))
 
 (defpartgroup group-misty-fort-steam
-  :id (part-group-id group-misty-fort-steam)
+  :id (part-group-id misty-fort-steam)
   :bounds (static-bspherem 0 0.5 0 4.5)
   :parts
   ((sp-item 996 :fade-after (meters 175) :falloff-to (meters 175) :period (seconds 5) :length (seconds 1))
@@ -644,7 +644,7 @@
    (sp-item 997 :fade-after (meters 125) :falloff-to (meters 125) :period (seconds 0.6) :length (seconds 0.15))))
 
 (defpartgroup group-misty-fort-steam2
-  :id (part-group-id group-misty-fort-steam2)
+  :id (part-group-id misty-fort-steam2)
   :bounds (static-bspherem 0 0.5 0 4.5)
   :parts
   ((sp-item 996 :fade-after (meters 175) :falloff-to (meters 175) :period (seconds 4.1) :length (seconds 1))
@@ -653,7 +653,7 @@
    (sp-item 997 :fade-after (meters 125) :falloff-to (meters 125) :period (seconds 0.7) :length (seconds 0.15))))
 
 (defpartgroup group-misty-fort-steam3
-  :id (part-group-id group-misty-fort-steam3)
+  :id (part-group-id misty-fort-steam3)
   :bounds (static-bspherem 0 0.5 0 4.5)
   :parts
   ((sp-item 996 :fade-after (meters 175) :falloff-to (meters 175) :period (seconds 6) :length (seconds 1))
@@ -662,7 +662,7 @@
    (sp-item 997 :fade-after (meters 125) :falloff-to (meters 125) :period (seconds 0.8) :length (seconds 0.15))))
 
 (defpartgroup group-misty-fort-steam4
-  :id (part-group-id group-misty-fort-steam4)
+  :id (part-group-id misty-fort-steam4)
   :bounds (static-bspherem 0 0.5 0 4.5)
   :parts
   ((sp-item 996 :fade-after (meters 175) :falloff-to (meters 175) :period (seconds 5.2) :length (seconds 1))
@@ -721,7 +721,7 @@
    (:conerot-radius (meters 0.25))))
 
 (defpartgroup group-misty-lurkermachine-spout-314
-  :id (part-group-id group-misty-lurkermachine-spout-314)
+  :id (part-group-id misty-lurkermachine-spout-314)
   :bounds (static-bspherem 0 0 0 6)
   :parts
   ((sp-item 998 :fade-after (meters 100) :falloff-to (meters 120) :period (seconds 4.2) :length (seconds 0.25))
@@ -773,7 +773,7 @@
    (:rotate-y (degrees 35))))
 
 (defpartgroup group-misty-lurkermachine-spout-310
-  :id (part-group-id group-misty-lurkermachine-spout-310)
+  :id (part-group-id misty-lurkermachine-spout-310)
   :bounds (static-bspherem 0 0 0 6)
   :parts
   ((sp-item 1000 :fade-after (meters 100) :falloff-to (meters 120) :period (seconds 4.2) :length (seconds 0.25))
@@ -827,7 +827,7 @@
    (:rotate-y (degrees 35))))
 
 (defpartgroup group-misty-lurkermachine-spout-311
-  :id (part-group-id group-misty-lurkermachine-spout-311)
+  :id (part-group-id misty-lurkermachine-spout-311)
   :bounds (static-bspherem 0 0 0 6)
   :parts
   ((sp-item 1002 :fade-after (meters 100) :falloff-to (meters 120) :period (seconds 4.2) :length (seconds 0.25))
@@ -881,7 +881,7 @@
    (:rotate-y (degrees 35))))
 
 (defpartgroup group-misty-lurkermachine-spout-312
-  :id (part-group-id group-misty-lurkermachine-spout-312)
+  :id (part-group-id misty-lurkermachine-spout-312)
   :bounds (static-bspherem 0 0 0 6)
   :parts
   ((sp-item 1004 :fade-after (meters 100) :falloff-to (meters 120) :period (seconds 4.2) :length (seconds 0.25))

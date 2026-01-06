@@ -12,7 +12,7 @@
 (declare-file (debug))
 
 (defpartgroup group-part-tester
-  :id (part-group-id group-part-tester)
+  :id (part-group-id part-tester)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 56) (sp-item 57)))
 
@@ -50,7 +50,7 @@
         ;; notes:
         ;;  - particles that use aux list won't work (warp parts)
         ;;  - some particles may have callbacks that won't work yet
-        (let ((gp-1 (-> *part-group-table* (part-group-id group-part-tester))))
+        (let ((gp-1 (-> *part-group-table* (part-group-id part-tester))))
           (#when PC_PORT
             (if (nonzero? (-> *part-group-table* *part-tester-id*)) (set! gp-1 (-> *part-group-table* *part-tester-id*))))
           (let ((s5-1 (-> self root trans)))

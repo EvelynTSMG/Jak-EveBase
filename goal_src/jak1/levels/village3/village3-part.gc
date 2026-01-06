@@ -13,7 +13,7 @@
 
 
 (defpartgroup group-village3-candle
-  :id (part-group-id group-village3-candle)
+  :id (part-group-id village3-candle)
   :bounds (static-bspherem 0 10 0 12)
   :parts
   ((sp-item 1797 :fade-after (meters 60) :falloff-to (meters 60))
@@ -62,77 +62,77 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-village3-sulphur-05
-  :id (part-group-id group-village3-sulphur-05)
+  :id (part-group-id village3-sulphur-05)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1799 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-06
-  :id (part-group-id group-village3-sulphur-06)
+  :id (part-group-id village3-sulphur-06)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1801 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-07
-  :id (part-group-id group-village3-sulphur-07)
+  :id (part-group-id village3-sulphur-07)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1802 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-08
-  :id (part-group-id group-village3-sulphur-08)
+  :id (part-group-id village3-sulphur-08)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1803 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-09
-  :id (part-group-id group-village3-sulphur-09)
+  :id (part-group-id village3-sulphur-09)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1804 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-10
-  :id (part-group-id group-village3-sulphur-10)
+  :id (part-group-id village3-sulphur-10)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1805 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-11
-  :id (part-group-id group-village3-sulphur-11)
+  :id (part-group-id village3-sulphur-11)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1806 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-12
-  :id (part-group-id group-village3-sulphur-12)
+  :id (part-group-id village3-sulphur-12)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1807 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-13
-  :id (part-group-id group-village3-sulphur-13)
+  :id (part-group-id village3-sulphur-13)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1808 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-14
-  :id (part-group-id group-village3-sulphur-14)
+  :id (part-group-id village3-sulphur-14)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1809 :fade-after (meters 180) :falloff-to (meters 180))
    (sp-item 1800 :fade-after (meters 180) :falloff-to (meters 180))))
 
 (defpartgroup group-village3-sulphur-15
-  :id (part-group-id group-village3-sulphur-15)
+  :id (part-group-id village3-sulphur-15)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1810 :fade-after (meters 180) :falloff-to (meters 180))
@@ -472,7 +472,7 @@
    (:next-launcher 1811)))
 
 (defpartgroup group-village3-minor-fire
-  :id (part-group-id group-village3-minor-fire)
+  :id (part-group-id village3-minor-fire)
   :bounds (static-bspherem 0 2.5 0 2.5)
   :parts
   ((sp-item 2358 :fade-after (meters 50) :falloff-to (meters 80))
@@ -667,7 +667,7 @@
   :init-specs ((:fade-b -1.3653333)))
 
 (defpartgroup group-spewing-volcano-36
-  :id (part-group-id group-spewing-volcano-36)
+  :id (part-group-id spewing-volcano-36)
   :bounds (static-bspherem 0 3 0 14)
   :parts
   ((sp-item 1823 :falloff-to (meters 300) :period (seconds 8) :length (seconds 4) :offset 300)
@@ -718,7 +718,7 @@
    (sp-item 1836 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 8) :length (seconds 2) :offset 60)))
 
 (defpartgroup group-spewing-volcano-37
-  :id (part-group-id group-spewing-volcano-37)
+  :id (part-group-id spewing-volcano-37)
   :bounds (static-bspherem 0 3 0 14)
   :parts
   ((sp-item 1823 :falloff-to (meters 300) :period (seconds 8) :length (seconds 4) :offset 1500)
@@ -1169,7 +1169,7 @@
    (:conerot-y (degrees 0) (degrees 36))))
 
 (defpartgroup group-village3-steam-puff-31
-  :id (part-group-id group-village3-steam-puff-31)
+  :id (part-group-id village3-steam-puff-31)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1842 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 3) :length (seconds 0.42))
@@ -1179,7 +1179,7 @@
    (sp-item 1846 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5.7) :length (seconds 0.345))))
 
 (defpartgroup group-village3-steam-puff-22
-  :id (part-group-id group-village3-steam-puff-22)
+  :id (part-group-id village3-steam-puff-22)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1842 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4.1) :length (seconds 0.52))
@@ -1189,7 +1189,7 @@
    (sp-item 1846 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5.1) :length (seconds 0.645))))
 
 (defpartgroup group-village3-steam-puff-23
-  :id (part-group-id group-village3-steam-puff-23)
+  :id (part-group-id village3-steam-puff-23)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1842 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4) :length (seconds 0.42))
@@ -1324,7 +1324,7 @@
    (:conerot-radius (meters 0.4))))
 
 (defpartgroup group-village3-bottom-puff-25
-  :id (part-group-id group-village3-bottom-puff-25)
+  :id (part-group-id village3-bottom-puff-25)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 3) :length (seconds 0.42))
@@ -1334,7 +1334,7 @@
    (sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5.7) :length (seconds 0.345))))
 
 (defpartgroup group-village3-bottom-puff-27
-  :id (part-group-id group-village3-bottom-puff-27)
+  :id (part-group-id village3-bottom-puff-27)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4) :length (seconds 0.42))
@@ -1344,7 +1344,7 @@
    (sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4.7) :length (seconds 0.345))))
 
 (defpartgroup group-village3-bottom-puff-28
-  :id (part-group-id group-village3-bottom-puff-28)
+  :id (part-group-id village3-bottom-puff-28)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5) :length (seconds 0.42))
@@ -1354,7 +1354,7 @@
    (sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4.2) :length (seconds 0.345))))
 
 (defpartgroup group-village3-bottom-puff-29
-  :id (part-group-id group-village3-bottom-puff-29)
+  :id (part-group-id village3-bottom-puff-29)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5) :length (seconds 0.42))
@@ -1364,7 +1364,7 @@
    (sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 4.1) :length (seconds 0.345))))
 
 (defpartgroup group-village3-bottom-puff-30
-  :id (part-group-id group-village3-bottom-puff-30)
+  :id (part-group-id village3-bottom-puff-30)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1847 :fade-after (meters 100) :falloff-to (meters 100) :period (seconds 5) :length (seconds 0.42))
@@ -1400,7 +1400,7 @@
    (:conerot-radius (meters 1))))
 
 (defpartgroup group-village3-lava-lava-20x20
-  :id (part-group-id group-village3-lava-lava-20x20)
+  :id (part-group-id village3-lava-lava-20x20)
   :bounds (static-bspherem 0 0 0 14)
   :parts
   ((sp-item 1850 :fade-after (meters 40) :falloff-to (meters 40))
@@ -1566,7 +1566,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-village3-sagehut-warpgate
-  :id (part-group-id group-village3-sagehut-warpgate)
+  :id (part-group-id village3-sagehut-warpgate)
   :bounds (static-bspherem 0 0 0 6)
   :parts
   ((sp-item 1861 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1833,7 +1833,7 @@
    (:flags (bit2 bit3 bit7))))
 
 (defpartgroup group-village3-sagehut-boiling
-  :id (part-group-id group-village3-sagehut-boiling)
+  :id (part-group-id village3-sagehut-boiling)
   :bounds (static-bspherem 0 0 0 6)
   :parts ((sp-item 1864 :fade-after (meters 60) :flags (is-3d)) (sp-item 1865 :fade-after (meters 60) :flags (is-3d))))
 
@@ -1885,7 +1885,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-village3-sagehut-steam
-  :id (part-group-id group-village3-sagehut-steam)
+  :id (part-group-id village3-sagehut-steam)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1867 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 4) :length (seconds 0.42))
@@ -1920,7 +1920,7 @@
    (:conerot-radius (meters -0.3))))
 
 (defpartgroup group-village3-sagehut-understeam
-  :id (part-group-id group-village3-sagehut-understeam)
+  :id (part-group-id village3-sagehut-understeam)
   :bounds (static-bspherem 0 -3 0 8)
   :parts
   ((sp-item 1868 :fade-after (meters 200) :falloff-to (meters 200) :period (seconds 4) :length (seconds 0.42))

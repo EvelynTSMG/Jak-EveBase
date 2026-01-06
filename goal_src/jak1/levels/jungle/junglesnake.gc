@@ -14,7 +14,7 @@
   :longest-edge (meters 2.5))
 
 (defpartgroup group-junglesnake-dropping-down
-  :id (part-group-id group-junglesnake-dropping-down)
+  :id (part-group-id junglesnake-dropping-down)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 -12 0 14)
   :parts ((sp-item 799 :period (seconds 1) :length (seconds 0.5))))
@@ -546,7 +546,7 @@ junglesnake-default-event-handler
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *junglesnake-sg* '())
   (set! (-> this fact) (new 'process 'fact-info-enemy this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-junglesnake-dropping-down)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id junglesnake-dropping-down)) this))
   (set! (-> this is-lethal?) #f)
   (set! (-> this ry) (y-angle (-> this root)))
   (set! (-> this des-ry) (-> this ry))

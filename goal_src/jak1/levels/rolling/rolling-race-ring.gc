@@ -22,7 +22,7 @@
 
 
 (defpartgroup group-rolling-ring
-  :id (part-group-id group-rolling-ring)
+  :id (part-group-id rolling-ring)
   :linger-duration (seconds 0)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -103,7 +103,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-rolling-spawn-ring
-  :id (part-group-id group-rolling-spawn-ring)
+  :id (part-group-id rolling-spawn-ring)
   :duration (seconds 0.017)
   :linger-duration (seconds 0.47)
   :bounds (static-bspherem 0 0 0 8)
@@ -189,7 +189,7 @@
   :init-specs ((:r 128.0 1 127.0) (:g 0.0) (:b 128.0 1 127.0) (:a 32.0 32.0) (:next-time (seconds 0.017)) (:next-launcher 1782)))
 
 (defpartgroup group-rolling-explode-ring
-  :id (part-group-id group-rolling-explode-ring)
+  :id (part-group-id rolling-explode-ring)
   :duration (seconds 0.017)
   :linger-duration (seconds 0.5)
   :bounds (static-bspherem 0 0 0 8)
@@ -250,7 +250,7 @@
   (none))
 
 (defpartgroup group-rolling-ring-blue
-  :id (part-group-id group-rolling-ring-blue)
+  :id (part-group-id rolling-ring-blue)
   :linger-duration (seconds 0)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -331,7 +331,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-rolling-spawn-ring-blue
-  :id (part-group-id group-rolling-spawn-ring-blue)
+  :id (part-group-id rolling-spawn-ring-blue)
   :duration (seconds 0.017)
   :linger-duration (seconds 0.47)
   :bounds (static-bspherem 0 0 0 8)
@@ -417,7 +417,7 @@
   :init-specs ((:r 0.0) (:g 128.0 1 127.0) (:b 128.0 1 127.0) (:a 32.0 32.0) (:next-time (seconds 0.017)) (:next-launcher 1794)))
 
 (defpartgroup group-rolling-explode-ring-blue
-  :id (part-group-id group-rolling-explode-ring-blue)
+  :id (part-group-id rolling-explode-ring-blue)
   :duration (seconds 0.017)
   :linger-duration (seconds 0.5)
   :bounds (static-bspherem 0 0 0 8)
@@ -503,7 +503,7 @@
                     (ppointer->handle (process-spawn part-tracker
                                                      :init
                                                      part-tracker-init
-                                                     (-> *part-group-table* (part-group-id group-rolling-ring-blue))
+                                                     (-> *part-group-table* (part-group-id rolling-ring-blue))
                                                      -1
                                                      race-ring-blue-set-particle-rotation-callback
                                                      (-> self ppointer)
@@ -518,7 +518,7 @@
                     (ppointer->handle (process-spawn part-tracker
                                                      :init
                                                      part-tracker-init
-                                                     (-> *part-group-table* (part-group-id group-rolling-ring))
+                                                     (-> *part-group-table* (part-group-id rolling-ring))
                                                      -1
                                                      race-ring-set-particle-rotation-callback
                                                      (-> self ppointer)
@@ -542,7 +542,7 @@
               (ppointer->handle (process-spawn part-tracker
                                                :init
                                                part-tracker-init
-                                               (-> *part-group-table* (part-group-id group-rolling-spawn-ring-blue))
+                                               (-> *part-group-table* (part-group-id rolling-spawn-ring-blue))
                                                -1
                                                race-ring-blue-set-particle-rotation-callback
                                                (-> self ppointer)
@@ -554,7 +554,7 @@
               (ppointer->handle (process-spawn part-tracker
                                                :init
                                                part-tracker-init
-                                               (-> *part-group-table* (part-group-id group-rolling-spawn-ring))
+                                               (-> *part-group-table* (part-group-id rolling-spawn-ring))
                                                -1
                                                race-ring-set-particle-rotation-callback
                                                (-> self ppointer)
@@ -574,7 +574,7 @@
               (ppointer->handle (process-spawn part-tracker
                                                :init
                                                part-tracker-init
-                                               (-> *part-group-table* (part-group-id group-rolling-explode-ring-blue))
+                                               (-> *part-group-table* (part-group-id rolling-explode-ring-blue))
                                                -1
                                                race-ring-blue-set-particle-rotation-callback
                                                (-> self ppointer)
@@ -586,7 +586,7 @@
               (ppointer->handle (process-spawn part-tracker
                                                :init
                                                part-tracker-init
-                                               (-> *part-group-table* (part-group-id group-rolling-explode-ring))
+                                               (-> *part-group-table* (part-group-id rolling-explode-ring))
                                                -1
                                                race-ring-set-particle-rotation-callback
                                                (-> self ppointer)
@@ -610,7 +610,7 @@
                (ppointer->handle (process-spawn part-tracker
                                                 :init
                                                 part-tracker-init
-                                                (-> *part-group-table* (part-group-id group-rolling-ring-blue))
+                                                (-> *part-group-table* (part-group-id rolling-ring-blue))
                                                 -1
                                                 race-ring-blue-set-particle-rotation-callback
                                                 (-> self ppointer)
@@ -624,7 +624,7 @@
                (ppointer->handle (process-spawn part-tracker
                                                 :init
                                                 part-tracker-init
-                                                (-> *part-group-table* (part-group-id group-rolling-ring))
+                                                (-> *part-group-table* (part-group-id rolling-ring))
                                                 -1
                                                 race-ring-set-particle-rotation-callback
                                                 (-> self ppointer)

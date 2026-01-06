@@ -221,7 +221,7 @@
   :init-specs ((:fade-a -0.7111111)))
 
 (defpartgroup group-part-water-splash
-  :id (part-group-id group-part-water-splash)
+  :id (part-group-id part-water-splash)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 -12 0 14)
@@ -258,7 +258,7 @@
    (sp-item 133 :flags (start-dead) :period (seconds 3) :length (seconds 0.4) :offset 840)))
 
 (defpartgroup group-part-water-splash-small
-  :id (part-group-id group-part-water-splash-small)
+  :id (part-group-id part-water-splash-small)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 -12 0 14)
@@ -892,7 +892,7 @@
   (process-spawn part-tracker
                  :init
                  part-tracker-init
-                 (if (zero? arg2) (-> *part-group-table* (part-group-id group-part-water-splash-small)) (-> *part-group-table* (part-group-id group-part-water-splash)))
+                 (if (zero? arg2) (-> *part-group-table* (part-group-id part-water-splash-small)) (-> *part-group-table* (part-group-id part-water-splash)))
                  -1
                  part-water-splash-callback
                  arg0

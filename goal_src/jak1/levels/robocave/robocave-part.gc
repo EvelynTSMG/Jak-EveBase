@@ -12,7 +12,7 @@
 
 
 (defpartgroup group-part-robocave-torch
-  :id (part-group-id group-part-robocave-torch)
+  :id (part-group-id part-robocave-torch)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 729 :fade-after (meters 150) :falloff-to (meters 180))

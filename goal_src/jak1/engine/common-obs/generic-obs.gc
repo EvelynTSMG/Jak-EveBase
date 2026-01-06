@@ -835,7 +835,7 @@
 
 
 (defpartgroup group-beach-launcher
-  :id (part-group-id group-beach-launcher)
+  :id (part-group-id beach-launcher)
   :bounds (static-bspherem 0 3 0 5)
   :parts
   ((sp-item 45 :fade-after (meters 100) :falloff-to (meters 100))
@@ -953,7 +953,7 @@
   :init-specs ((:fade-a -0.18)))
 
 (defpartgroup group-jungle-launcher
-  :id (part-group-id group-jungle-launcher)
+  :id (part-group-id jungle-launcher)
   :bounds (static-bspherem 0 3 0 5)
   :parts
   ((sp-item 45 :fade-after (meters 100) :falloff-to (meters 100))
@@ -1025,7 +1025,7 @@
    (:rotate-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-swamp-launcher
-  :id (part-group-id group-swamp-launcher)
+  :id (part-group-id swamp-launcher)
   :bounds (static-bspherem 0 3 0 5)
   :parts
   ((sp-item 45 :fade-after (meters 100) :falloff-to (meters 100))
@@ -1260,9 +1260,9 @@
     (let ((v1-18 (-> this entity extra level name)))
       (set! (-> this part)
             (create-launch-control (cond
-                                     ((= v1-18 'beach) (-> *part-group-table* (part-group-id group-beach-launcher)))
-                                     ((= v1-18 'swamp) (-> *part-group-table* (part-group-id group-swamp-launcher)))
-                                     (else (-> *part-group-table* (part-group-id group-jungle-launcher))))
+                                     ((= v1-18 'beach) (-> *part-group-table* (part-group-id beach-launcher)))
+                                     ((= v1-18 'swamp) (-> *part-group-table* (part-group-id swamp-launcher)))
+                                     (else (-> *part-group-table* (part-group-id jungle-launcher))))
                                    this)))
     (let ((v1-24 (logand (the-as int s4-1) 255)))
       (cond
@@ -1298,9 +1298,9 @@
   (let ((v1-23 (-> self entity extra level name)))
     (set! (-> self part)
           (create-launch-control (cond
-                                   ((= v1-23 'beach) (-> *part-group-table* (part-group-id group-beach-launcher)))
-                                   ((= v1-23 'swamp) (-> *part-group-table* (part-group-id group-swamp-launcher)))
-                                   (else (-> *part-group-table* (part-group-id group-jungle-launcher))))
+                                   ((= v1-23 'beach) (-> *part-group-table* (part-group-id beach-launcher)))
+                                   ((= v1-23 'swamp) (-> *part-group-table* (part-group-id swamp-launcher)))
+                                   (else (-> *part-group-table* (part-group-id jungle-launcher))))
                                  self)))
   (case (logand arg2 255)
     ((1) (set! (-> self camera) cam-launcher-longfall))

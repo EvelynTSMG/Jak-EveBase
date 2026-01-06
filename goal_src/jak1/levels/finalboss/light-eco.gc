@@ -58,7 +58,7 @@
   :bounds (static-spherem 0 0 0 1.5))
 
 (defpartgroup group-light-eco-mother-growing
-  :id (part-group-id group-light-eco-mother-growing)
+  :id (part-group-id light-eco-mother-growing)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 32)
   :parts ((sp-item 2902) (sp-item 2900) (sp-item 2897) (sp-item 2898)))
@@ -205,13 +205,13 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-light-eco-mother
-  :id (part-group-id group-light-eco-mother)
+  :id (part-group-id light-eco-mother)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 32)
   :parts ((sp-item 2902) (sp-item 2900) (sp-item 2897) (sp-item 2898)))
 
 (defpartgroup group-light-eco-child
-  :id (part-group-id group-light-eco-child)
+  :id (part-group-id light-eco-child)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 4)
   :parts ((sp-item 2906) (sp-item 2907)))
@@ -455,7 +455,7 @@
   (ja-channel-set! 1)
   (ja-no-eval :num! (seek!))
   (ja :group! light-eco-small-idle-ja :num! min)
-  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-light-eco-child)) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id light-eco-child)) self))
   (transform-post)
   (go light-eco-child-appear)
   (none))
@@ -590,8 +590,8 @@
   (ja-channel-set! 1)
   (ja-no-eval :num! (seek!))
   (ja :group! light-eco-big-idle-ja :num! min)
-  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-light-eco-mother)) self))
-  (set! (-> self part2) (create-launch-control (-> *part-group-table* (part-group-id group-light-eco-mother-growing)) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id light-eco-mother)) self))
+  (set! (-> self part2) (create-launch-control (-> *part-group-table* (part-group-id light-eco-mother-growing)) self))
   (set! (-> self sound)
         (new 'process 'ambient-sound (static-sound-spec "white-eco-lp" :fo-min 300 :fo-max 400) (-> self root trans)))
   (ja-post)

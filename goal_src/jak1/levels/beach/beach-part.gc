@@ -107,7 +107,7 @@
    (:rotate-y (degrees 37))))
 
 (defpartgroup group-beach-grotto-2
-  :id (part-group-id group-beach-grotto-2)
+  :id (part-group-id beach-grotto-2)
   :bounds (static-bspherem 0 -5 0 15)
   :parts ((sp-item 671 :fade-after (meters 80) :falloff-to (meters 80))))
 
@@ -247,7 +247,7 @@
    (:rotate-y (degrees -124.99999))))
 
 (defpartgroup group-beach-waterfall
-  :id (part-group-id group-beach-waterfall)
+  :id (part-group-id beach-waterfall)
   :flags (always-draw unknown-bit-01)
   :bounds (static-bspherem 0 55 0 55)
   :parts
@@ -261,42 +261,42 @@
    (sp-item 674 :fade-after (meters 90) :falloff-to (meters 90))))
 
 (defpartgroup group-beach-24
-  :id (part-group-id group-beach-24)
+  :id (part-group-id beach-24)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 678 :fade-after (meters 50) :period (seconds 8) :length (seconds 5) :offset 1200)))
 
 (defpartgroup group-beach-23
-  :id (part-group-id group-beach-23)
+  :id (part-group-id beach-23)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 679 :fade-after (meters 50) :period (seconds 8) :length (seconds 5) :offset 600)))
 
 (defpartgroup group-beach-22
-  :id (part-group-id group-beach-22)
+  :id (part-group-id beach-22)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 680 :fade-after (meters 80) :period (seconds 8) :length (seconds 5))))
 
 (defpartgroup group-beach-18
-  :id (part-group-id group-beach-18)
+  :id (part-group-id beach-18)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 681 :fade-after (meters 100) :period (seconds 8) :length (seconds 5) :offset 1200)))
 
 (defpartgroup group-beach-17
-  :id (part-group-id group-beach-17)
+  :id (part-group-id beach-17)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 682 :fade-after (meters 50) :period (seconds 8) :length (seconds 5) :offset 600)))
 
 (defpartgroup group-beach-16
-  :id (part-group-id group-beach-16)
+  :id (part-group-id beach-16)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 683 :fade-after (meters 50) :period (seconds 8) :length (seconds 5))))
 
 (defpartgroup group-beach-15
-  :id (part-group-id group-beach-15)
+  :id (part-group-id beach-15)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 684 :fade-after (meters 50) :period (seconds 8) :length (seconds 5) :offset 64936)))
 
 (defpartgroup group-beach-14
-  :id (part-group-id group-beach-14)
+  :id (part-group-id beach-14)
   :bounds (static-bspherem 0 3 0 50)
   :parts ((sp-item 685 :fade-after (meters 50) :period (seconds 8) :length (seconds 5) :offset 64336)))
 
@@ -513,7 +513,7 @@
 (define sound-beach-waterfall (static-sound-spec "waterfall"))
 
 (defpartgroup group-beach-butterflies
-  :id (part-group-id group-beach-butterflies)
+  :id (part-group-id beach-butterflies)
   :bounds (static-bspherem 0 0 0 30)
   :parts
   ((sp-item 696
@@ -616,7 +616,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-beach-moth
-  :id (part-group-id group-beach-moth)
+  :id (part-group-id beach-moth)
   :bounds (static-bspherem 0 0 0 3)
   :parts
   ((sp-item 702

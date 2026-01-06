@@ -17,7 +17,7 @@
   :init-specs ((:fade-a -2.6666667)))
 
 (defpartgroup group-village2-waterfall-29
-  :id (part-group-id group-village2-waterfall-29)
+  :id (part-group-id village2-waterfall-29)
   :flags (always-draw)
   :bounds (static-bspherem 0 22 0 35)
   :parts
@@ -910,7 +910,7 @@
    (:rotate-y (degrees -90))))
 
 (defpartgroup group-village2-waterfall-30
-  :id (part-group-id group-village2-waterfall-30)
+  :id (part-group-id village2-waterfall-30)
   :flags (always-draw)
   :bounds (static-bspherem 0 22 0 35)
   :parts
@@ -1055,13 +1055,13 @@
    (:rotate-y (degrees -90))))
 
 (defpartgroup group-village2-waterfall-31
-  :id (part-group-id group-village2-waterfall-31)
+  :id (part-group-id village2-waterfall-31)
   :flags (always-draw)
   :bounds (static-bspherem 0 22 0 35)
   :parts ((sp-item 2324)))
 
 (defpartgroup group-village2-waterfall-32
-  :id (part-group-id group-village2-waterfall-32)
+  :id (part-group-id village2-waterfall-32)
   :flags (always-draw)
   :bounds (static-bspherem 0 22 0 35)
   :parts
@@ -1406,7 +1406,7 @@
    (:rotate-y (degrees 10) (degrees 50.000004))))
 
 (defpartgroup group-village2-waterfall-33
-  :id (part-group-id group-village2-waterfall-33)
+  :id (part-group-id village2-waterfall-33)
   :flags (always-draw)
   :bounds (static-bspherem 0 22 0 35)
   :parts
@@ -1723,7 +1723,7 @@
    (:rotate-y (degrees 90))))
 
 (defpartgroup group-village2-waterfall-34
-  :id (part-group-id group-village2-waterfall-34)
+  :id (part-group-id village2-waterfall-34)
   :flags (always-draw)
   :bounds (static-bspherem -15 17 -10 40)
   :parts
@@ -2634,7 +2634,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-village2-sagehut-warpgate
-  :id (part-group-id group-village2-sagehut-warpgate)
+  :id (part-group-id village2-sagehut-warpgate)
   :bounds (static-bspherem 7 4 -4.5 12)
   :parts
   ((sp-item 1313 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2901,7 +2901,7 @@
    (:flags (bit2 bit3 bit7))))
 
 (defpartgroup group-village2-tree-fire
-  :id (part-group-id group-village2-tree-fire)
+  :id (part-group-id village2-tree-fire)
   :bounds (static-bspherem 0 10 0 12)
   :parts
   ((sp-item 1316 :fade-after (meters 120) :falloff-to (meters 120))

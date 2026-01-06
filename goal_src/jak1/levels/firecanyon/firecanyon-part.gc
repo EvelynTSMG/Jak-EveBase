@@ -12,7 +12,7 @@
 
 
 (defpartgroup group-firecanyon-lava-1
-  :id (part-group-id group-firecanyon-lava-1)
+  :id (part-group-id firecanyon-lava-1)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1011 :fade-after (meters 60) :falloff-to (meters 60))
@@ -124,7 +124,7 @@
    (:rotate-y (degrees -165))))
 
 (defpartgroup group-firecanyon-lava-2
-  :id (part-group-id group-firecanyon-lava-2)
+  :id (part-group-id firecanyon-lava-2)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1017 :fade-after (meters 60) :falloff-to (meters 60))
@@ -236,7 +236,7 @@
    (:rotate-y (degrees -90))))
 
 (defpartgroup group-firecanyon-lava-3
-  :id (part-group-id group-firecanyon-lava-3)
+  :id (part-group-id firecanyon-lava-3)
   :bounds (static-bspherem 0 0 0 20)
   :parts
   ((sp-item 1021 :fade-after (meters 60) :falloff-to (meters 60))
@@ -348,7 +348,7 @@
    (:rotate-y (degrees -120))))
 
 (defpartgroup group-firecanyon-lava-5
-  :id (part-group-id group-firecanyon-lava-5)
+  :id (part-group-id firecanyon-lava-5)
   :bounds (static-bspherem -2 0 -2 14)
   :parts
   ((sp-item 1025 :fade-after (meters 60) :falloff-to (meters 60))
@@ -506,7 +506,7 @@
   :init-specs ((:fade-r 0.0) (:fade-b 0.0) (:fade-a -0.14222223)))
 
 (defpartgroup group-firecanyon-lava-6
-  :id (part-group-id group-firecanyon-lava-6)
+  :id (part-group-id firecanyon-lava-6)
   :bounds (static-bspherem 2 0 2 14)
   :parts
   ((sp-item 1031 :fade-after (meters 60) :falloff-to (meters 60))
@@ -618,7 +618,7 @@
    (:rotate-y (degrees -110))))
 
 (defpartgroup group-firecanyon-lava-7
-  :id (part-group-id group-firecanyon-lava-7)
+  :id (part-group-id firecanyon-lava-7)
   :bounds (static-bspherem 0 0 0 14)
   :parts
   ((sp-item 1035 :fade-after (meters 60) :falloff-to (meters 60))
@@ -730,7 +730,7 @@
    (:rotate-y (degrees -170))))
 
 (defpartgroup group-firecanyon-lava-8
-  :id (part-group-id group-firecanyon-lava-8)
+  :id (part-group-id firecanyon-lava-8)
   :bounds (static-bspherem 0 0 0 16)
   :parts
   ((sp-item 1039 :fade-after (meters 60) :falloff-to (meters 60))
@@ -842,7 +842,7 @@
    (:rotate-y (degrees -90))))
 
 (defpartgroup group-firecanyon-lava-9
-  :id (part-group-id group-firecanyon-lava-9)
+  :id (part-group-id firecanyon-lava-9)
   :bounds (static-bspherem 0 0 0 9)
   :parts
   ((sp-item 1043 :fade-after (meters 60) :falloff-to (meters 60))
@@ -954,7 +954,7 @@
    (:rotate-y (degrees -30))))
 
 (defpartgroup group-firecanyon-lava-10
-  :id (part-group-id group-firecanyon-lava-10)
+  :id (part-group-id firecanyon-lava-10)
   :bounds (static-bspherem -4 0 0 15)
   :parts
   ((sp-item 1047 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1066,7 +1066,7 @@
    (:rotate-y (degrees -35))))
 
 (defpartgroup group-firecanyon-lava-11
-  :id (part-group-id group-firecanyon-lava-11)
+  :id (part-group-id firecanyon-lava-11)
   :bounds (static-bspherem -4 0 0 12)
   :parts
   ((sp-item 1051 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1178,7 +1178,7 @@
    (:rotate-y (degrees -55))))
 
 (defpartgroup group-firecanyon-lava-14
-  :id (part-group-id group-firecanyon-lava-14)
+  :id (part-group-id firecanyon-lava-14)
   :bounds (static-bspherem -4 0 0 15)
   :parts
   ((sp-item 1055 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1290,7 +1290,7 @@
    (:rotate-y (degrees -55))))
 
 (defpartgroup group-firecanyon-lava-15
-  :id (part-group-id group-firecanyon-lava-15)
+  :id (part-group-id firecanyon-lava-15)
   :bounds (static-bspherem -4 0 0 12)
   :parts
   ((sp-item 1059 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1402,7 +1402,7 @@
    (:rotate-y (degrees -55))))
 
 (defpartgroup group-firecanyon-lava-16
-  :id (part-group-id group-firecanyon-lava-16)
+  :id (part-group-id firecanyon-lava-16)
   :bounds (static-bspherem 0 0 0 14)
   :parts
   ((sp-item 1063 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1514,7 +1514,7 @@
    (:rotate-y (degrees -130))))
 
 (defpartgroup group-firecanyon-lava-18
-  :id (part-group-id group-firecanyon-lava-18)
+  :id (part-group-id firecanyon-lava-18)
   :bounds (static-bspherem -4 0 -4 26)
   :parts
   ((sp-item 1067 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1626,7 +1626,7 @@
    (:rotate-y (degrees -55))))
 
 (defpartgroup group-firecanyon-lava-19
-  :id (part-group-id group-firecanyon-lava-19)
+  :id (part-group-id firecanyon-lava-19)
   :bounds (static-bspherem 0 0 0 20)
   :parts
   ((sp-item 1071 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1738,7 +1738,7 @@
    (:rotate-y (degrees -55))))
 
 (defpartgroup group-firecanyon-lava-21
-  :id (part-group-id group-firecanyon-lava-21)
+  :id (part-group-id firecanyon-lava-21)
   :bounds (static-bspherem -4 0 4 22)
   :parts
   ((sp-item 1075 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1850,7 +1850,7 @@
    (:rotate-y (degrees -30))))
 
 (defpartgroup group-firecanyon-lava-22
-  :id (part-group-id group-firecanyon-lava-22)
+  :id (part-group-id firecanyon-lava-22)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1079 :fade-after (meters 60) :falloff-to (meters 60))
@@ -1962,7 +1962,7 @@
    (:rotate-y (degrees -120))))
 
 (defpartgroup group-firecanyon-lava-60
-  :id (part-group-id group-firecanyon-lava-60)
+  :id (part-group-id firecanyon-lava-60)
   :bounds (static-bspherem 0 0 0 20)
   :parts
   ((sp-item 1083 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2074,7 +2074,7 @@
    (:rotate-y (degrees 50.000004))))
 
 (defpartgroup group-firecanyon-lava-62
-  :id (part-group-id group-firecanyon-lava-62)
+  :id (part-group-id firecanyon-lava-62)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1087 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2186,7 +2186,7 @@
    (:rotate-y (degrees 100.00001))))
 
 (defpartgroup group-firecanyon-lava-63
-  :id (part-group-id group-firecanyon-lava-63)
+  :id (part-group-id firecanyon-lava-63)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1091 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2298,7 +2298,7 @@
    (:rotate-y (degrees 110))))
 
 (defpartgroup group-firecanyon-lava-64
-  :id (part-group-id group-firecanyon-lava-64)
+  :id (part-group-id firecanyon-lava-64)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1095 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2410,7 +2410,7 @@
    (:rotate-y (degrees 110))))
 
 (defpartgroup group-firecanyon-heat-44
-  :id (part-group-id group-firecanyon-heat-44)
+  :id (part-group-id firecanyon-heat-44)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1099 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2459,7 +2459,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-firecanyon-heat-45
-  :id (part-group-id group-firecanyon-heat-45)
+  :id (part-group-id firecanyon-heat-45)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1101 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2508,7 +2508,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-firecanyon-heat-46
-  :id (part-group-id group-firecanyon-heat-46)
+  :id (part-group-id firecanyon-heat-46)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1103 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2557,7 +2557,7 @@
    (:rotate-y (degrees 5))))
 
 (defpartgroup group-firecanyon-heat-47
-  :id (part-group-id group-firecanyon-heat-47)
+  :id (part-group-id firecanyon-heat-47)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1105 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2606,7 +2606,7 @@
    (:rotate-y (degrees 5))))
 
 (defpartgroup group-firecanyon-heat-48
-  :id (part-group-id group-firecanyon-heat-48)
+  :id (part-group-id firecanyon-heat-48)
   :bounds (static-bspherem 0 0 0 20)
   :parts
   ((sp-item 1107 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2655,7 +2655,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-firecanyon-heat-50
-  :id (part-group-id group-firecanyon-heat-50)
+  :id (part-group-id firecanyon-heat-50)
   :bounds (static-bspherem 0 0 0 14)
   :parts
   ((sp-item 1109 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2704,7 +2704,7 @@
    (:rotate-y (degrees 20))))
 
 (defpartgroup group-firecanyon-heat-52
-  :id (part-group-id group-firecanyon-heat-52)
+  :id (part-group-id firecanyon-heat-52)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1111 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2753,7 +2753,7 @@
    (:rotate-y (degrees 150))))
 
 (defpartgroup group-firecanyon-heat-53
-  :id (part-group-id group-firecanyon-heat-53)
+  :id (part-group-id firecanyon-heat-53)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1113 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2802,7 +2802,7 @@
    (:rotate-y (degrees 150))))
 
 (defpartgroup group-firecanyon-heat-54
-  :id (part-group-id group-firecanyon-heat-54)
+  :id (part-group-id firecanyon-heat-54)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1115 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2851,7 +2851,7 @@
    (:rotate-y (degrees 155))))
 
 (defpartgroup group-firecanyon-heat-55
-  :id (part-group-id group-firecanyon-heat-55)
+  :id (part-group-id firecanyon-heat-55)
   :bounds (static-bspherem 0 0 0 20)
   :parts
   ((sp-item 1117 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2900,7 +2900,7 @@
    (:rotate-y (degrees 155))))
 
 (defpartgroup group-firecanyon-heat-56
-  :id (part-group-id group-firecanyon-heat-56)
+  :id (part-group-id firecanyon-heat-56)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 1119 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2949,7 +2949,7 @@
    (:rotate-y (degrees 110))))
 
 (defpartgroup group-firecanyon-heat-57
-  :id (part-group-id group-firecanyon-heat-57)
+  :id (part-group-id firecanyon-heat-57)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1121 :fade-after (meters 60) :falloff-to (meters 60))
@@ -2998,7 +2998,7 @@
    (:rotate-y (degrees 135))))
 
 (defpartgroup group-firecanyon-heat-58
-  :id (part-group-id group-firecanyon-heat-58)
+  :id (part-group-id firecanyon-heat-58)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1123 :fade-after (meters 60) :falloff-to (meters 60))
@@ -3047,7 +3047,7 @@
    (:rotate-y (degrees 170))))
 
 (defpartgroup group-firecanyon-heat-59
-  :id (part-group-id group-firecanyon-heat-59)
+  :id (part-group-id firecanyon-heat-59)
   :bounds (static-bspherem 0 0 0 12)
   :parts
   ((sp-item 1125 :fade-after (meters 60) :falloff-to (meters 60))

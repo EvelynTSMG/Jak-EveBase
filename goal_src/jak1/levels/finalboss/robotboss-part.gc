@@ -8,7 +8,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-robotboss-blue-beam
-  :id (part-group-id group-robotboss-blue-beam)
+  :id (part-group-id robotboss-blue-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts
@@ -40,7 +40,7 @@
    (sp-item 2547)))
 
 (defpartgroup group-robotboss-blue-beam-impact
-  :id (part-group-id group-robotboss-blue-beam-impact)
+  :id (part-group-id robotboss-blue-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts
@@ -290,7 +290,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-blue-blowup
-  :id (part-group-id group-robotboss-blue-blowup)
+  :id (part-group-id robotboss-blue-blowup)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -406,7 +406,7 @@
   :init-specs ((:fade-r 0.0) (:fade-g 0.0) (:fade-b 0.0)))
 
 (defpartgroup group-robotboss-blue-smoke
-  :id (part-group-id group-robotboss-blue-smoke)
+  :id (part-group-id robotboss-blue-smoke)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -484,7 +484,7 @@
    (:conerot-radius (meters 2) (meters 4))))
 
 (defpartgroup group-robotboss-darkecobomb-launch
-  :id (part-group-id group-robotboss-darkecobomb-launch)
+  :id (part-group-id robotboss-darkecobomb-launch)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2600 :period (seconds 2) :length (seconds 0.017)) (sp-item 2602 :period (seconds 2) :length (seconds 0.135))))
@@ -529,7 +529,7 @@
    (:conerot-radius (meters 0) (meters 2))))
 
 (defpartgroup group-robotboss-darkecobomb-glow
-  :id (part-group-id group-robotboss-darkecobomb-glow)
+  :id (part-group-id robotboss-darkecobomb-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -621,7 +621,7 @@
    (:func 'sparticle-track-root-prim)))
 
 (defpartgroup group-robotboss-darkecobomb-tick
-  :id (part-group-id group-robotboss-darkecobomb-tick)
+  :id (part-group-id robotboss-darkecobomb-tick)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -701,7 +701,7 @@
    (:next-launcher 146)))
 
 (defpartgroup group-final-boss-mine-explosion
-  :id (part-group-id group-final-boss-mine-explosion)
+  :id (part-group-id final-boss-mine-explosion)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts
@@ -905,7 +905,7 @@
   :init-specs ((:fade-a -1.4222223)))
 
 (defpartgroup group-robotboss-greenshot-launch
-  :id (part-group-id group-robotboss-greenshot-launch)
+  :id (part-group-id robotboss-greenshot-launch)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -995,7 +995,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-greenshot
-  :id (part-group-id group-robotboss-greenshot)
+  :id (part-group-id robotboss-greenshot)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1151,7 +1151,7 @@
    (:conerot-radius (meters 1) (meters 1))))
 
 (defpartgroup group-robotboss-redshot-charge
-  :id (part-group-id group-robotboss-redshot-charge)
+  :id (part-group-id robotboss-redshot-charge)
   :duration (seconds 3)
   :bounds (static-bspherem 0 0 0 64)
   :parts ((sp-item 2699) (sp-item 2700) (sp-item 2701)))
@@ -1218,7 +1218,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-redshot-launch
-  :id (part-group-id group-robotboss-redshot-launch)
+  :id (part-group-id robotboss-redshot-launch)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -1308,7 +1308,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-redshot-body
-  :id (part-group-id group-robotboss-redshot-body)
+  :id (part-group-id robotboss-redshot-body)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1367,7 +1367,7 @@
    (:conerot-radius (meters 1))))
 
 (defpartgroup group-robotboss-redshot-warning
-  :id (part-group-id group-robotboss-redshot-warning)
+  :id (part-group-id robotboss-redshot-warning)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1439,7 +1439,7 @@
    (:conerot-radius (meters 1))))
 
 (defpartgroup group-robotboss-redshot
-  :id (part-group-id group-robotboss-redshot)
+  :id (part-group-id robotboss-redshot)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2626 :flags (is-3d))))
@@ -1460,7 +1460,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-robotboss-redshot-test
-  :id (part-group-id group-robotboss-redshot-test)
+  :id (part-group-id robotboss-redshot-test)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1484,7 +1484,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-robotboss-red-blowup
-  :id (part-group-id group-robotboss-red-blowup)
+  :id (part-group-id robotboss-red-blowup)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -1600,7 +1600,7 @@
   :init-specs ((:fade-r 0.0) (:fade-g 0.0) (:fade-b 0.0)))
 
 (defpartgroup group-robotboss-red-smoke
-  :id (part-group-id group-robotboss-red-smoke)
+  :id (part-group-id robotboss-red-smoke)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -1675,7 +1675,7 @@
    (:conerot-radius (meters 2) (meters 4))))
 
 (defpartgroup group-robotboss-yellowshot-launch
-  :id (part-group-id group-robotboss-yellowshot-launch)
+  :id (part-group-id robotboss-yellowshot-launch)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -1765,7 +1765,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-yellowshot-charge
-  :id (part-group-id group-robotboss-yellowshot-charge)
+  :id (part-group-id robotboss-yellowshot-charge)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1833,7 +1833,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-yellowshot
-  :id (part-group-id group-robotboss-yellowshot)
+  :id (part-group-id robotboss-yellowshot)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1937,7 +1937,7 @@
    (:flags (bit2))))
 
 (defpartgroup group-robotboss-yellow-blowup
-  :id (part-group-id group-robotboss-yellow-blowup)
+  :id (part-group-id robotboss-yellow-blowup)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -2053,7 +2053,7 @@
   :init-specs ((:fade-r 0.0) (:fade-g 0.0) (:fade-b 0.0)))
 
 (defpartgroup group-robotboss-yellow-smoke
-  :id (part-group-id group-robotboss-yellow-smoke)
+  :id (part-group-id robotboss-yellow-smoke)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts
@@ -2128,7 +2128,7 @@
    (:conerot-radius (meters 2) (meters 4))))
 
 (defpartgroup group-white-eco
-  :id (part-group-id group-white-eco)
+  :id (part-group-id white-eco)
   :bounds (static-bspherem 0 0.5 0 1.5)
   :parts ((sp-item 2852)))
 
@@ -2225,7 +2225,7 @@
    (:func 'sparticle-track-root)))
 
 (defpartgroup group-finalboss-blue-claw-beam
-  :id (part-group-id group-finalboss-blue-claw-beam)
+  :id (part-group-id finalboss-blue-claw-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts
@@ -2245,7 +2245,7 @@
    (sp-item 2722)))
 
 (defpartgroup group-finalboss-blue-claw-beam-impact
-  :id (part-group-id group-finalboss-blue-claw-beam-impact)
+  :id (part-group-id finalboss-blue-claw-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2723 :flags (is-3d))))
@@ -2397,7 +2397,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-finalboss-red-claw-beam
-  :id (part-group-id group-finalboss-red-claw-beam)
+  :id (part-group-id finalboss-red-claw-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 23 0 64)
   :parts
@@ -2547,7 +2547,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-finalboss-yellow-claw-beam
-  :id (part-group-id group-finalboss-yellow-claw-beam)
+  :id (part-group-id finalboss-yellow-claw-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts
@@ -2568,7 +2568,7 @@
    (sp-item 2736)))
 
 (defpartgroup group-finalboss-yellow-claw-beam-impact
-  :id (part-group-id group-finalboss-yellow-claw-beam-impact)
+  :id (part-group-id finalboss-yellow-claw-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2737 :flags (is-3d))))
@@ -2702,7 +2702,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-finalboss-green-claw-beam
-  :id (part-group-id group-finalboss-green-claw-beam)
+  :id (part-group-id finalboss-green-claw-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts
@@ -2723,7 +2723,7 @@
    (sp-item 2743)))
 
 (defpartgroup group-finalboss-green-claw-beam-impact
-  :id (part-group-id group-finalboss-green-claw-beam-impact)
+  :id (part-group-id finalboss-green-claw-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 10)
   :parts ((sp-item 2744 :flags (is-3d))))
@@ -2856,28 +2856,28 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-robotboss-blue-claw-glow
-  :id (part-group-id group-robotboss-blue-claw-glow)
+  :id (part-group-id robotboss-blue-claw-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts ((sp-item 2324)))
 
 (defpartgroup group-robotboss-green-claw-glow
-  :id (part-group-id group-robotboss-green-claw-glow)
+  :id (part-group-id robotboss-green-claw-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts ((sp-item 2324)))
 
 (defpartgroup group-robotboss-red-claw-glow
-  :id (part-group-id group-robotboss-red-claw-glow)
+  :id (part-group-id robotboss-red-claw-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
   :parts ((sp-item 2324)))
 
 (defpartgroup group-robotboss-yellow-claw-glow
-  :id (part-group-id group-robotboss-yellow-claw-glow)
+  :id (part-group-id robotboss-yellow-claw-glow)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)

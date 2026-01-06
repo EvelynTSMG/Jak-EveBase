@@ -360,8 +360,8 @@
   (set! (-> this attack-start-anim) 5)
   (set! (-> this attack-anim) 6)
   (set! (-> this beam-joint) 20)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-citb-red-sage-beam)) this))
-  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id group-citb-red-sage-beam-impact)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id citb-red-sage-beam)) this))
+  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id citb-red-sage-beam-impact)) this))
   (set! (-> this resolution-anim)
         (new 'static
              'spool-anim
@@ -427,8 +427,8 @@
   (set! (-> this attack-start-anim) 5)
   (set! (-> this attack-anim) 6)
   (set! (-> this beam-joint) 53)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-citb-blue-sage-beam)) this))
-  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id group-citb-blue-sage-beam-impact)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id citb-blue-sage-beam)) this))
+  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id citb-blue-sage-beam-impact)) this))
   (set! (-> this resolution-anim)
         (new 'static
              'spool-anim
@@ -503,8 +503,8 @@
   (set! (-> this attack-start-anim) 5)
   (set! (-> this attack-anim) 6)
   (set! (-> this beam-joint) 74)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-citb-yellow-sage-beam)) this))
-  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id group-citb-yellow-sage-beam-impact)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id citb-yellow-sage-beam)) this))
+  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id citb-yellow-sage-beam-impact)) this))
   (set! (-> this resolution-anim)
         (new 'static
              'spool-anim
@@ -555,8 +555,8 @@
   (set! (-> this attack-start-anim) 4)
   (set! (-> this attack-anim) 4)
   (set! (-> this beam-joint) 22)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-citb-green-sage-beam)) this))
-  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id group-citb-green-sage-beam-impact)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id citb-green-sage-beam)) this))
+  (set! (-> this part-impact) (create-launch-control (-> *part-group-table* (part-group-id citb-green-sage-beam-impact)) this))
   (set! (-> this resolution-anim)
         (new 'static
              'spool-anim

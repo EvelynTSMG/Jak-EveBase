@@ -13,7 +13,7 @@
 
 
 (defpartgroup group-part-maincave-torch
-  :id (part-group-id group-part-maincave-torch)
+  :id (part-group-id part-maincave-torch)
   :bounds (static-bspherem 0 3 0 4)
   :parts
   ((sp-item 706 :fade-after (meters 200) :falloff-to (meters 220))
@@ -164,7 +164,7 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-cave-cavedrip-1
-  :id (part-group-id group-cave-cavedrip-1)
+  :id (part-group-id cave-cavedrip-1)
   :bounds (static-bspherem 0 8 0 8.25)
   :parts
   ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 1.23) :length (seconds 0.017))
@@ -175,7 +175,7 @@
    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 12.77) :length (seconds 0.017))))
 
 (defpartgroup group-cave-cavedrip-2
-  :id (part-group-id group-cave-cavedrip-2)
+  :id (part-group-id cave-cavedrip-2)
   :bounds (static-bspherem 0 8 0 8.25)
   :parts
   ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 1.557) :length (seconds 0.017))
@@ -186,7 +186,7 @@
    (sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 11.957) :length (seconds 0.017))))
 
 (defpartgroup group-cave-cavedrip-3
-  :id (part-group-id group-cave-cavedrip-3)
+  :id (part-group-id cave-cavedrip-3)
   :bounds (static-bspherem 0 8 0 8.25)
   :parts
   ((sp-item 2230 :fade-after (meters 60) :falloff-to (meters 60) :period (seconds 2.67) :length (seconds 0.017))

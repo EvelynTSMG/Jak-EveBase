@@ -59,7 +59,7 @@
     v0-1))
 
 (defpartgroup group-eco-blue
-  :id (part-group-id group-eco-blue)
+  :id (part-group-id eco-blue)
   :bounds (static-bspherem 0 0 0 1)
   :parts
   ((sp-item 2 :flags (launch-asap) :binding 3)
@@ -216,7 +216,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-eco-blue-collect
-  :id (part-group-id group-eco-blue-collect)
+  :id (part-group-id eco-blue-collect)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -333,7 +333,7 @@
    (:next-launcher 146)))
 
 (defpartgroup group-part-vent-blue-active
-  :id (part-group-id group-part-vent-blue-active)
+  :id (part-group-id part-vent-blue-active)
   :bounds (static-bspherem 0 5 0 5)
   :parts
   ((sp-item 149 :fade-after (meters 140) :falloff-to (meters 140) :binding 156)
@@ -353,7 +353,7 @@
    (sp-item 155 :fade-after (meters 120) :falloff-to (meters 120) :flags (start-dead))))
 
 (defpartgroup group-part-vent-blue-inactive
-  :id (part-group-id group-part-vent-blue-inactive)
+  :id (part-group-id part-vent-blue-inactive)
   :bounds (static-bspherem 0 5 0 5)
   :parts ((sp-item 149 :fade-after (meters 100)) (sp-item 150)))
 
@@ -513,7 +513,7 @@
   :init-specs ((:r 64.0) (:g 64.0) (:fade-r -1.0) (:fade-g -1.0) (:fade-a -2.0)))
 
 (defpartgroup group-eco-red
-  :id (part-group-id group-eco-red)
+  :id (part-group-id eco-red)
   :bounds (static-bspherem 0 0 0 1)
   :parts
   ((sp-item 160 :flags (launch-asap) :binding 161)
@@ -640,7 +640,7 @@
   :init-specs ((:fade-g 0.0)))
 
 (defpartgroup group-eco-red-collect
-  :id (part-group-id group-eco-red-collect)
+  :id (part-group-id eco-red-collect)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :flags (use-local-clock)
@@ -720,7 +720,7 @@
    (:next-launcher 171)))
 
 (defpartgroup group-part-vent-red-active
-  :id (part-group-id group-part-vent-red-active)
+  :id (part-group-id part-vent-red-active)
   :bounds (static-bspherem 0 3 0 5)
   :parts
   ((sp-item 172 :fade-after (meters 30) :period (seconds 1.1) :length (seconds 0.017) :binding 173)
@@ -756,7 +756,7 @@
    (sp-item 177)))
 
 (defpartgroup group-part-vent-red-inactive
-  :id (part-group-id group-part-vent-red-inactive)
+  :id (part-group-id part-vent-red-inactive)
   :bounds (static-bspherem 0 3 0 5)
   :parts ((sp-item 176 :fade-after (meters 140) :falloff-to (meters 140)) (sp-item 177)))
 
@@ -881,7 +881,7 @@
   :init-specs ((:fade-g 0.0)))
 
 (defpartgroup group-part-vent-yellow-active
-  :id (part-group-id group-part-vent-yellow-active)
+  :id (part-group-id part-vent-yellow-active)
   :bounds (static-bspherem 0 3 0 5)
   :parts
   ((sp-item 178 :fade-after (meters 40) :period (seconds 1.1) :length (seconds 0.017) :binding 179)
@@ -917,7 +917,7 @@
    (sp-item 183)))
 
 (defpartgroup group-part-vent-yellow-inactive
-  :id (part-group-id group-part-vent-yellow-inactive)
+  :id (part-group-id part-vent-yellow-inactive)
   :bounds (static-bspherem 0 3 0 5)
   :parts ((sp-item 182 :fade-after (meters 140) :falloff-to (meters 140)) (sp-item 183)))
 
@@ -1043,7 +1043,7 @@
   :init-specs ((:fade-r 0.0)))
 
 (defpartgroup group-eco-yellow
-  :id (part-group-id group-eco-yellow)
+  :id (part-group-id eco-yellow)
   :bounds (static-bspherem 0 0 0 1)
   :parts
   ((sp-item 191 :flags (launch-asap) :binding 192)
@@ -1171,7 +1171,7 @@
   :init-specs ((:fade-g 0.0)))
 
 (defpartgroup group-eco-yellow-collect
-  :id (part-group-id group-eco-yellow-collect)
+  :id (part-group-id eco-yellow-collect)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1247,7 +1247,7 @@
    (:next-launcher 198)))
 
 (defpartgroup group-eco-green
-  :id (part-group-id group-eco-green)
+  :id (part-group-id eco-green)
   :bounds (static-bspherem 0 0 0 1)
   :parts
   ((sp-item 202 :flags (launch-asap) :binding 203)
@@ -1357,7 +1357,7 @@
   :init-specs ((:fade-r 0.0)))
 
 (defpartgroup group-eco-green-pill
-  :id (part-group-id group-eco-green-pill)
+  :id (part-group-id eco-green-pill)
   :bounds (static-bspherem 0 0 0 0.4)
   :parts
   ((sp-item 209 :flags (launch-asap) :binding 210)
@@ -1476,7 +1476,7 @@
    (:next-launcher 208)))
 
 (defpartgroup group-eco-green-pill-collect
-  :id (part-group-id group-eco-green-pill-collect)
+  :id (part-group-id eco-green-pill-collect)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1494,7 +1494,7 @@
    (sp-item 218 :fade-after (meters 40) :flags (start-dead))))
 
 (defpartgroup group-eco-green-collect
-  :id (part-group-id group-eco-green-collect)
+  :id (part-group-id eco-green-collect)
   :duration (seconds 0.5)
   :linger-duration (seconds 2)
   :bounds (static-bspherem 0 0 0 2)
@@ -1610,7 +1610,7 @@
    (:next-launcher 221)))
 
 (defpartgroup group-part-vent-green-active
-  :id (part-group-id group-part-vent-green-active)
+  :id (part-group-id part-vent-green-active)
   :bounds (static-bspherem 0 5 0 5)
   :parts
   ((sp-item 222
@@ -1749,7 +1749,7 @@
    (:next-launcher 208)))
 
 (defpartgroup group-fuel-cell-starburst
-  :id (part-group-id group-fuel-cell-starburst)
+  :id (part-group-id fuel-cell-starburst)
   :bounds (static-bspherem 0 0.5 0 1.5)
   :parts
   ((sp-item 228 :fade-after (meters 35))
@@ -1937,12 +1937,12 @@
    (:func 'sparticle-track-root-money)))
 
 (defpartgroup group-money-starburst
-  :id (part-group-id group-money-starburst)
+  :id (part-group-id money-starburst)
   :bounds (static-bspherem 0 0.5 0 1.5)
   :parts ((sp-item 238)))
 
 (defpartgroup group-buzzer-effect
-  :id (part-group-id group-buzzer-effect)
+  :id (part-group-id buzzer-effect)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 239 :flags (is-3d)) (sp-item 240 :flags (is-3d))))
 
@@ -1983,7 +1983,7 @@
    (:launchrot-y (degrees -180) (degrees 360))))
 
 (defpartgroup group-green-collect
-  :id (part-group-id group-green-collect)
+  :id (part-group-id green-collect)
   :duration (seconds 0.017)
   :linger-duration (seconds 4)
   :flags (use-local-clock)
@@ -2055,7 +2055,7 @@
    (:next-launcher 245)))
 
 (defpartgroup group-blue-collect
-  :id (part-group-id group-blue-collect)
+  :id (part-group-id blue-collect)
   :duration (seconds 0.017)
   :linger-duration (seconds 4)
   :flags (use-local-clock)
@@ -2127,7 +2127,7 @@
    (:next-launcher 245)))
 
 (defpartgroup group-yellow-collect
-  :id (part-group-id group-yellow-collect)
+  :id (part-group-id yellow-collect)
   :duration (seconds 0.017)
   :linger-duration (seconds 4)
   :flags (use-local-clock)
@@ -2205,7 +2205,7 @@
   :init-specs ((:scalevel-x (meters -0.025)) (:scalevel-y :copy scalevel-x)))
 
 (defpartgroup group-red-collect
-  :id (part-group-id group-red-collect)
+  :id (part-group-id red-collect)
   :duration (seconds 0.017)
   :linger-duration (seconds 4)
   :flags (use-local-clock)

@@ -7,7 +7,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-sharkey-splash
-  :id (part-group-id group-sharkey-splash)
+  :id (part-group-id sharkey-splash)
   :duration (seconds 0.4)
   :linger-duration (seconds 2.6)
   :flags (use-local-clock)

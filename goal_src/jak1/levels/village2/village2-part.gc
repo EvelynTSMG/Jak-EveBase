@@ -10,7 +10,7 @@
 
 
 (defpartgroup group-village2-moth
-  :id (part-group-id group-village2-moth)
+  :id (part-group-id village2-moth)
   :bounds (static-bspherem 0 0 0 3)
   :parts
   ((sp-item 1129 :fade-after (meters 120) :flags (bit1) :period (seconds 60.1) :length (seconds 0.017) :binding 1127)
@@ -75,7 +75,7 @@
    (:flags (bit2 bit3 bit9 bit12))))
 
 (defpartgroup group-village2-tableflys
-  :id (part-group-id group-village2-tableflys)
+  :id (part-group-id village2-tableflys)
   :bounds (static-bspherem 0 3 0 10)
   :parts
   ((sp-item 1133 :flags (launch-asap) :binding 1131)
@@ -170,7 +170,7 @@
    (:flags (bit2 bit9 bit12))))
 
 (defpartgroup group-village2-flamepot
-  :id (part-group-id group-village2-flamepot)
+  :id (part-group-id village2-flamepot)
   :bounds (static-bspherem 0 5 0 6)
   :parts
   ((sp-item 1137 :fade-after (meters 180) :falloff-to (meters 180))
@@ -183,7 +183,7 @@
    (sp-item 1144 :fade-after (meters 50) :falloff-to (meters 60))))
 
 (defpartgroup group-village2-flamepot-half
-  :id (part-group-id group-village2-flamepot-half)
+  :id (part-group-id village2-flamepot-half)
   :bounds (static-bspherem 0 5 0 6)
   :parts
   ((sp-item 1145 :fade-after (meters 180) :falloff-to (meters 180))
@@ -191,7 +191,7 @@
    (sp-item 1147 :fade-after (meters 50) :falloff-to (meters 60))))
 
 (defpartgroup group-village2-flamepot-alt1
-  :id (part-group-id group-village2-flamepot-alt1)
+  :id (part-group-id village2-flamepot-alt1)
   :bounds (static-bspherem 0 5 0 6)
   :parts
   ((sp-item 1137 :fade-after (meters 180) :falloff-to (meters 180))
@@ -204,7 +204,7 @@
    (sp-item 1144 :fade-after (meters 50) :falloff-to (meters 60))))
 
 (defpartgroup group-village2-flamepot-alt2
-  :id (part-group-id group-village2-flamepot-alt2)
+  :id (part-group-id village2-flamepot-alt2)
   :bounds (static-bspherem 0 5 0 6)
   :parts
   ((sp-item 1137 :fade-after (meters 180) :falloff-to (meters 180))
@@ -217,7 +217,7 @@
    (sp-item 1144 :fade-after (meters 50) :falloff-to (meters 60))))
 
 (defpartgroup group-village2-flamepot-off
-  :id (part-group-id group-village2-flamepot-off)
+  :id (part-group-id village2-flamepot-off)
   :bounds (static-bspherem 0 5 0 6)
   :parts ((sp-item 1148 :fade-after (meters 100) :falloff-to (meters 100))))
 
@@ -531,14 +531,14 @@
    (:conerot-radius (meters 0) (meters 0.5))))
 
 (defpartgroup group-village2-fireboulder-off
-  :id (part-group-id group-village2-fireboulder-off)
+  :id (part-group-id village2-fireboulder-off)
   :bounds (static-bspherem 0 4 0 10.5)
   :parts
   ((sp-item 1169 :fade-after (meters 80) :falloff-to (meters 100))
    (sp-item 1170 :fade-after (meters 80) :falloff-to (meters 100))))
 
 (defpartgroup group-village2-fireboulder
-  :id (part-group-id group-village2-fireboulder)
+  :id (part-group-id village2-fireboulder)
   :duration (seconds 60)
   :bounds (static-bspherem 0 4 0 10.5)
   :parts
@@ -1056,7 +1056,7 @@
    (:timer (seconds 2))))
 
 (defpartgroup group-village2-window-flames-45
-  :id (part-group-id group-village2-window-flames-45)
+  :id (part-group-id village2-window-flames-45)
   :bounds (static-bspherem 8 -8 0 36)
   :parts
   ((sp-item 1178 :fade-after (meters 300))
@@ -1203,7 +1203,7 @@
    (:rotate-y (degrees 5))))
 
 (defpartgroup group-village2-window-flames-41
-  :id (part-group-id group-village2-window-flames-41)
+  :id (part-group-id village2-window-flames-41)
   :bounds (static-bspherem 8 -8 0 36)
   :parts
   ((sp-item 1186 :fade-after (meters 300))
@@ -1341,7 +1341,7 @@
    (:rotate-y (degrees 106))))
 
 (defpartgroup group-village2-big-boulder
-  :id (part-group-id group-village2-big-boulder)
+  :id (part-group-id village2-big-boulder)
   :bounds (static-bspherem 8 -8 0 36)
   :parts
   ((sp-item 1191 :fade-after (meters 300))
@@ -1401,7 +1401,7 @@
    (:rotate-y (degrees 0))))
 
 (defpartgroup group-village2-sages-controlpanel
-  :id (part-group-id group-village2-sages-controlpanel)
+  :id (part-group-id village2-sages-controlpanel)
   :bounds (static-bspherem 0 0 0 4)
   :parts
   ((sp-item 1193 :fade-after (meters 30) :period (seconds 2.455) :length (seconds 0.035))
@@ -1496,7 +1496,7 @@
    (:conerot-y (degrees -45) (degrees 180))))
 
 (defpartgroup group-village2-sages-machine
-  :id (part-group-id group-village2-sages-machine)
+  :id (part-group-id village2-sages-machine)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 1199 :fade-after (meters 40) :period (seconds 2.56) :length (seconds 0.035) :binding 1197)
@@ -1731,7 +1731,7 @@
   (none))
 
 (defpartgroup group-village2-fireboulder-hover
-  :id (part-group-id group-village2-fireboulder-hover)
+  :id (part-group-id village2-fireboulder-hover)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 16)

@@ -434,7 +434,7 @@
     (else #t)))
 
 (defpartgroup group-assistant-bluehut-torch
-  :id (part-group-id group-assistant-bluehut-torch)
+  :id (part-group-id assistant-bluehut-torch)
   :bounds (static-bspherem 0 0 0 15)
   :parts
   ((sp-item 1322 :fade-after (meters 30) :falloff-to (meters 30))
@@ -507,7 +507,7 @@
 
 (defmethod init-from-entity! ((this assistant-bluehut) (arg0 entity-actor))
   (process-taskable-method-40 this arg0 *assistant-village2-sg* 3 31 (new 'static 'vector :w 4096.0) 5)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-assistant-bluehut-torch)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id assistant-bluehut-torch)) this))
   (set! (-> this tasks) (get-task-control (game-task village2-levitator)))
   (set! (-> this jaws) (the-as handle #f))
   (set! (-> this sage) (entity-actor-lookup arg0 'alt-actor 0))
@@ -518,7 +518,7 @@
   (none))
 
 (defpartgroup group-levitator-blue-beam
-  :id (part-group-id group-levitator-blue-beam)
+  :id (part-group-id levitator-blue-beam)
   :flags (use-local-clock)
   :bounds (static-bspherem -20 8 0 80)
   :parts
@@ -716,7 +716,7 @@
    (:flags (bit2 bit3 bit14))))
 
 (defpartgroup group-levitator-blue-beam-impact
-  :id (part-group-id group-levitator-blue-beam-impact)
+  :id (part-group-id levitator-blue-beam-impact)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 34)
   :parts ((sp-item 2695) (sp-item 2696 :fade-after (meters 200) :falloff-to (meters 200)) (sp-item 2677)))
@@ -783,7 +783,7 @@
    (:conerot-radius (meters 0) (meters 0.5))))
 
 (defpartgroup group-levitator-on-big
-  :id (part-group-id group-levitator-on-big)
+  :id (part-group-id levitator-on-big)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -919,7 +919,7 @@
    (:next-launcher 146)))
 
 (defpartgroup group-levitator-on-small
-  :id (part-group-id group-levitator-on-small)
+  :id (part-group-id levitator-on-small)
   :duration (seconds 3)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 64)
@@ -1149,10 +1149,10 @@
   (process-taskable-method-40 this arg0 *assistant-village2-sg* 3 31 (new 'static 'vector :w 4096.0) 5)
   (set! (-> this tasks) (get-task-control (game-task village2-levitator)))
   (set! (-> this boulder) (entity-actor-lookup arg0 'alt-actor 0))
-  (set! (-> this particle 0) (create-launch-control (-> *part-group-table* (part-group-id group-levitator-blue-beam)) this))
-  (set! (-> this particle 1) (create-launch-control (-> *part-group-table* (part-group-id group-levitator-blue-beam-impact)) this))
-  (set! (-> this particle 2) (create-launch-control (-> *part-group-table* (part-group-id group-levitator-on-big)) this))
-  (set! (-> this particle 3) (create-launch-control (-> *part-group-table* (part-group-id group-levitator-on-small)) this))
+  (set! (-> this particle 0) (create-launch-control (-> *part-group-table* (part-group-id levitator-blue-beam)) this))
+  (set! (-> this particle 1) (create-launch-control (-> *part-group-table* (part-group-id levitator-blue-beam-impact)) this))
+  (set! (-> this particle 2) (create-launch-control (-> *part-group-table* (part-group-id levitator-on-big)) this))
+  (set! (-> this particle 3) (create-launch-control (-> *part-group-table* (part-group-id levitator-on-small)) this))
   (set! (-> this sound) (new 'process 'ambient-sound (static-sound-spec "lev-mach-idle" :fo-max 30) (-> this root trans)))
   (if (= (get-task-status (game-task village2-levitator)) (task-status invalid))
     (go just-particles)

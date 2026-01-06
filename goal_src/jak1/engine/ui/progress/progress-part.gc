@@ -138,97 +138,97 @@
   (none))
 
 (defpartgroup group-part-progress-hud-previous
-  :id (part-group-id group-part-progress-hud-previous)
+  :id (part-group-id part-progress-hud-previous)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 332 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-next
-  :id (part-group-id group-part-progress-hud-next)
+  :id (part-group-id part-progress-hud-next)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 333 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-selector
-  :id (part-group-id group-part-progress-hud-selector)
+  :id (part-group-id part-progress-hud-selector)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 334 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-left
-  :id (part-group-id group-part-progress-hud-left)
+  :id (part-group-id part-progress-hud-left)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 335 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-right
-  :id (part-group-id group-part-progress-hud-right)
+  :id (part-group-id part-progress-hud-right)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 336 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-tint
-  :id (part-group-id group-part-progress-hud-tint)
+  :id (part-group-id part-progress-hud-tint)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 337 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-cell
-  :id (part-group-id group-part-progress-card-cell)
+  :id (part-group-id part-progress-card-cell)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2190 :flags (launch-asap)) (sp-item 2191 :flags (launch-asap)) (sp-item 2192 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-x
-  :id (part-group-id group-part-progress-button-x)
+  :id (part-group-id part-progress-button-x)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2336 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-square
-  :id (part-group-id group-part-progress-button-square)
+  :id (part-group-id part-progress-button-square)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2337 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-triangle
-  :id (part-group-id group-part-progress-button-triangle)
+  :id (part-group-id part-progress-button-triangle)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2338 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-button-circle
-  :id (part-group-id group-part-progress-button-circle)
+  :id (part-group-id part-progress-button-circle)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2339 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-01
-  :id (part-group-id group-part-progress-card-slot-01)
+  :id (part-group-id part-progress-card-slot-01)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2142 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-02
-  :id (part-group-id group-part-progress-card-slot-02)
+  :id (part-group-id part-progress-card-slot-02)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2143 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-03
-  :id (part-group-id group-part-progress-card-slot-03)
+  :id (part-group-id part-progress-card-slot-03)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2144 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-card-slot-04
-  :id (part-group-id group-part-progress-card-slot-04)
+  :id (part-group-id part-progress-card-slot-04)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2145 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-hud-power-cell-center
-  :id (part-group-id group-part-progress-hud-power-cell-center)
+  :id (part-group-id part-progress-hud-power-cell-center)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 338 :flags (launch-asap))))
@@ -647,7 +647,7 @@
    (:func 'fuel-cell-progress-hud-orbit-callback)))
 
 (defpartgroup group-part-progress-hud-power-cell-whole
-  :id (part-group-id group-part-progress-hud-power-cell-whole)
+  :id (part-group-id part-progress-hud-power-cell-whole)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts
@@ -661,7 +661,7 @@
    (sp-item 342 :flags (launch-asap))))
 
 (defpartgroup group-part-progress-buzzer
-  :id (part-group-id group-part-progress-buzzer)
+  :id (part-group-id part-progress-buzzer)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1982 :flags (launch-asap) :binding 1981) (sp-item 1981 :flags (start-dead launch-asap))))
@@ -699,7 +699,7 @@
    (:flags (bit2 bit7 bit9 bit13))))
 
 (defpartgroup group-part-progress-orb
-  :id (part-group-id group-part-progress-orb)
+  :id (part-group-id part-progress-orb)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1983 :flags (launch-asap))))
@@ -718,7 +718,7 @@
    (:flags (bit2 bit9 bit13))))
 
 (defpartgroup group-part-progress-buzzer-small
-  :id (part-group-id group-part-progress-buzzer-small)
+  :id (part-group-id part-progress-buzzer-small)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1985 :flags (launch-asap) :binding 1984) (sp-item 1984 :flags (start-dead launch-asap))))
@@ -757,7 +757,7 @@
    (:func 'part-progress-hud-buzzer-func)))
 
 (defpartgroup group-part-progress-orb-small
-  :id (part-group-id group-part-progress-orb-small)
+  :id (part-group-id part-progress-orb-small)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 1986 :flags (launch-asap))))
@@ -777,7 +777,7 @@
    (:func 'part-progress-hud-orb-func)))
 
 (defpartgroup group-part-progress-save-icon
-  :id (part-group-id group-part-progress-save-icon)
+  :id (part-group-id part-progress-save-icon)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 2478 :flags (launch-asap))))

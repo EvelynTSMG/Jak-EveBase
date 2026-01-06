@@ -7,7 +7,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-lurkercrab-slide
-  :id (part-group-id group-lurkercrab-slide)
+  :id (part-group-id lurkercrab-slide)
   :bounds (static-bspherem 0 -12 0 14)
   :parts
   ((sp-item 663 :fade-after (meters 40) :falloff-to (meters 40))
@@ -428,7 +428,7 @@ nav-enemy-default-event-handler
   (process-drawable-from-entity! this arg0)
   (initialize-skeleton this *lurkercrab-sg* '())
   (init-defaults! this *lurkercrab-nav-enemy-info*)
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-lurkercrab-slide)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id lurkercrab-slide)) this))
   (set! (-> this orient) #t)
   (logclear! (-> this nav-enemy-flags) (nav-enemy-flags navenmf5 navenmf6))
   (set! (-> this target-speed) 0.0)

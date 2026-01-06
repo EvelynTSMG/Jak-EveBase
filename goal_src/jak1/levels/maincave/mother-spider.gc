@@ -56,7 +56,7 @@
        (new 'static 'mother-spider-leg-info :joint-index0 26 :joint-index1 #x3eb33333 :cprim-index #x3dcccccd)))
 
 (defpartgroup group-mother-spider-leg
-  :id (part-group-id group-mother-spider-leg)
+  :id (part-group-id mother-spider-leg)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2477)))
@@ -165,7 +165,7 @@
                1.0)
   (set! (-> self gravity) (rand-vu-float-range -266240.0 -163840.0))
   (initialize-skeleton self *mother-spider-leg-sg* '())
-  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id group-mother-spider-leg)) self))
+  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id mother-spider-leg)) self))
   (create-connection! *cavecrystal-light-control*
                       self
                       (-> self entity)
@@ -176,7 +176,7 @@
   (none))
 
 (defpartgroup group-mother-spider-leg-socket
-  :id (part-group-id group-mother-spider-leg-socket)
+  :id (part-group-id mother-spider-leg-socket)
   :flags (use-local-clock)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 2498 :period (seconds 0.3) :length (seconds 0.1))))
@@ -1180,7 +1180,7 @@
   (logior! (-> this path flags) (path-control-flag display draw-line draw-point draw-text))
   (set! (-> this fact) (new 'process 'fact-info-enemy this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))
   (set! (-> this draw shadow-ctrl) (new 'process 'shadow-control 0.0 0.0 4096000.0 (the-as float 60) 245760.0))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id group-mother-spider-leg-socket)) this))
+  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id mother-spider-leg-socket)) this))
   (logior! (-> this skel status) (janim-status inited))
   (let ((v0-30 (new 'process 'joint-mod (joint-mod-handler-mode reset) this 19)))
     (set! (-> this neck) v0-30)

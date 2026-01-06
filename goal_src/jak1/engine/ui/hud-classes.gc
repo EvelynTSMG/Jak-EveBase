@@ -8,7 +8,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-part-hud-pickup
-  :id (part-group-id group-part-hud-pickup)
+  :id (part-group-id part-hud-pickup)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 2)
   :parts
@@ -154,7 +154,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-pickup)) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-pickup)) this))
       (set! (-> this particles s5-0 init-pos x) 110.0)
       (set! (-> this particles s5-0 init-pos y) 55.0)
       (set! (-> this particles s5-0 init-pos z) 1.0)
@@ -171,19 +171,19 @@
   (none))
 
 (defpartgroup group-part-hud-health-1
-  :id (part-group-id group-part-hud-health-1)
+  :id (part-group-id part-hud-health-1)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 309 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-health-2
-  :id (part-group-id group-part-hud-health-2)
+  :id (part-group-id part-hud-health-2)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 310 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-health-3
-  :id (part-group-id group-part-hud-health-3)
+  :id (part-group-id part-hud-health-3)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 311 :flags (launch-asap))))
@@ -281,7 +281,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-health-1)) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-health-1)) this))
       (set! (-> this particles s5-0 init-pos x) 61.0)
       (set! (-> this particles s5-0 init-pos y) 55.0)
       (set! (-> this particles s5-0 init-pos z) 5.0)
@@ -290,7 +290,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-1 (-> this nb-of-particles)))
       (set! (-> this particles s5-1) (new 'static 'hud-particle))
-      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-health-2)) this))
+      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-health-2)) this))
       (set! (-> this particles s5-1 init-pos x) 98.0)
       (set! (-> this particles s5-1 init-pos y) 55.0)
       (set! (-> this particles s5-1 init-pos z) 5.0)
@@ -299,7 +299,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-2 (-> this nb-of-particles)))
       (set! (-> this particles s5-2) (new 'static 'hud-particle))
-      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-health-3)) this))
+      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-health-3)) this))
       (set! (-> this particles s5-2 init-pos x) 70.0)
       (set! (-> this particles s5-2 init-pos y) 76.0)
       (set! (-> this particles s5-2 init-pos z) 5.0)
@@ -343,7 +343,7 @@
   (none))
 
 (defpartgroup group-part-hud-orb-all
-  :id (part-group-id group-part-hud-orb-all)
+  :id (part-group-id part-hud-orb-all)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 2964 :flags (launch-asap))))
@@ -462,7 +462,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s4-1 (-> this nb-of-particles)))
       (set! (-> this particles s4-1) (new 'static 'hud-particle))
-      (set! (-> this particles s4-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-orb-all)) this))
+      (set! (-> this particles s4-1 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-orb-all)) this))
       (set! (-> this particles s4-1 init-pos x) 172.0)
       (set! (-> this particles s4-1 init-pos y) 330.0)
       (set! (-> this particles s4-1 init-pos z) 2.0)
@@ -507,7 +507,7 @@
   (none))
 
 (defpartgroup group-part-hud-orb
-  :id (part-group-id group-part-hud-orb)
+  :id (part-group-id part-hud-orb)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 312 :flags (launch-asap))))
@@ -611,7 +611,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-1 (-> this nb-of-particles)))
       (set! (-> this particles s5-1) (new 'static 'hud-particle))
-      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-orb)) this))
+      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-orb)) this))
       (set! (-> this particles s5-1 init-pos x) 400.0)
       (set! (-> this particles s5-1 init-pos y) 58.0)
       (set! (-> this particles s5-1 init-pos z) 2.0)
@@ -749,7 +749,7 @@
    (:func 'fuel-cell-hud-center-callback)))
 
 (defpartgroup group-part-hud-power-cell-whole
-  :id (part-group-id group-part-hud-power-cell-whole)
+  :id (part-group-id part-hud-power-cell-whole)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts
@@ -953,7 +953,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-power-cell-whole)) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-power-cell-whole)) this))
       (set! (-> this particles s5-0 init-pos x) 256.0)
       (set! (-> this particles s5-0 init-pos y) 224.0)
       (set! (-> this particles s5-0 init-pos z) 1.0)
@@ -1017,7 +1017,7 @@
   (none))
 
 (defpartgroup group-part-hud-buzzer
-  :id (part-group-id group-part-hud-buzzer)
+  :id (part-group-id part-hud-buzzer)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 324 :flags (launch-asap) :binding 325) (sp-item 325 :flags (start-dead launch-asap))))
@@ -1117,7 +1117,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-buzzer)) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-buzzer)) this))
       (set! (-> this particles s5-0 init-pos x) 60.0)
       (set! (-> this particles s5-0 init-pos y) 380.0)
       (set! (-> this particles s5-0 init-pos z) 1.0)
@@ -1156,13 +1156,13 @@
   (none))
 
 (defpartgroup group-part-hud-eco-timer
-  :id (part-group-id group-part-hud-eco-timer)
+  :id (part-group-id part-hud-eco-timer)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 327 :flags (launch-asap))))
 
 (defpartgroup group-part-hud-eco-timer-backing
-  :id (part-group-id group-part-hud-eco-timer-backing)
+  :id (part-group-id part-hud-eco-timer-backing)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 328 :flags (launch-asap))))
@@ -1196,7 +1196,7 @@
    (:func 'part-hud-eco-timer-backing-func)))
 
 (defpartgroup group-part-hud-timer-blue
-  :id (part-group-id group-part-hud-timer-blue)
+  :id (part-group-id part-hud-timer-blue)
   :flags (use-local-clock screen-space)
   :bounds (static-bspherem 0 0 0 100)
   :parts ((sp-item 329 :flags (launch-asap)) (sp-item 330 :flags (launch-asap)) (sp-item 331 :flags (launch-asap))))
@@ -1357,7 +1357,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-0 (-> this nb-of-particles)))
       (set! (-> this particles s5-0) (new 'static 'hud-particle))
-      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-eco-timer-backing)) this))
+      (set! (-> this particles s5-0 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-eco-timer-backing)) this))
       (set! (-> this particles s5-0 init-pos x) 435.0)
       (set! (-> this particles s5-0 init-pos y) 370.0)
       (set! (-> this particles s5-0 init-pos z) 10.0)
@@ -1366,7 +1366,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-1 (-> this nb-of-particles)))
       (set! (-> this particles s5-1) (new 'static 'hud-particle))
-      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-timer-blue)) this))
+      (set! (-> this particles s5-1 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-timer-blue)) this))
       (set! (-> this particles s5-1 init-pos x) 432.0)
       (set! (-> this particles s5-1 init-pos y) 368.0)
       (set! (-> this particles s5-1 init-pos z) 3.0)
@@ -1375,7 +1375,7 @@
   (when (< (-> this nb-of-particles) (-> this max-nb-of-particles))
     (let ((s5-2 (-> this nb-of-particles)))
       (set! (-> this particles s5-2) (new 'static 'hud-particle))
-      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id group-part-hud-eco-timer)) this))
+      (set! (-> this particles s5-2 part) (create-launch-control (-> *part-group-table* (part-group-id part-hud-eco-timer)) this))
       (set! (-> this particles s5-2 init-pos x) 435.0)
       (set! (-> this particles s5-2 init-pos y) 370.0)
       (set! (-> this particles s5-2 init-pos z) 2.0)

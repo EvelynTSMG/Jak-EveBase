@@ -290,7 +290,7 @@
   (none))
 
 (defpartgroup group-scarecrow-explode
-  :id (part-group-id group-scarecrow-explode)
+  :id (part-group-id scarecrow-explode)
   :duration (seconds 0.05)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2912) (sp-item 2913) (sp-item 2914) (sp-item 2915) (sp-item 2916)))
@@ -425,13 +425,13 @@
    (:conerot-y (degrees 0) (degrees 360))))
 
 (defpartgroup group-scarecrow-joint-explode
-  :id (part-group-id group-scarecrow-joint-explode)
+  :id (part-group-id scarecrow-joint-explode)
   :duration (seconds 0.05)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2912)))
 
 (defpartgroup group-scarecrow-hit
-  :id (part-group-id group-scarecrow-hit)
+  :id (part-group-id scarecrow-hit)
   :duration (seconds 0.05)
   :bounds (static-bspherem 0 0 0 1)
   :parts ((sp-item 2913)))

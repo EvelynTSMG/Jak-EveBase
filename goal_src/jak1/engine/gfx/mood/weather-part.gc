@@ -9,7 +9,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-rain-screend-drop-real
-  :id (part-group-id group-rain-screend-drop-real)
+  :id (part-group-id rain-screend-drop-real)
   :flags (screen-space)
   :bounds (static-bspherem 0 0 0 16)
   :parts
@@ -80,7 +80,7 @@
    (sp-item 23 :flags (start-dead launch-asap))
    (sp-item 23 :flags (start-dead launch-asap))))
 
-(define group-rain-screend-drop (-> *part-group-table* (part-group-id group-rain-screend-drop-real)))
+(define group-rain-screend-drop (-> *part-group-table* (part-group-id rain-screend-drop-real)))
 
 (defpart 21
   :init-specs
@@ -203,7 +203,7 @@
   :init-specs ((:fade-g -10.240001)))
 
 (defpartgroup group-stars
-  :id (part-group-id group-stars)
+  :id (part-group-id stars)
   :flags (always-draw)
   :bounds (static-bspherem 0 0 0 8)
   :parts ((sp-item 28) (sp-item 29) (sp-item 30)))
@@ -480,7 +480,7 @@
   (none))
 
 (defpartgroup group-sun
-  :id (part-group-id group-sun)
+  :id (part-group-id sun)
   :flags (always-draw)
   :bounds (static-bspherem 0 0 0 70)
   :parts ((sp-item 1950) (sp-item 1951) (sp-item 1952)))
@@ -535,7 +535,7 @@
    (:func 'sparticle-track-sun)))
 
 (defpartgroup group-green-sun
-  :id (part-group-id group-green-sun)
+  :id (part-group-id green-sun)
   :flags (always-draw)
   :bounds (static-bspherem 0 0 0 70)
   :parts ((sp-item 1974) (sp-item 1975) (sp-item 1976)))

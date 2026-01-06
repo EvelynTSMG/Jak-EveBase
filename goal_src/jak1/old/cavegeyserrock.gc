@@ -60,7 +60,7 @@
   obj)
 
 ;; failed to figure out what this is:
-(set! (-> *part-group-table* (part-group-id group-cavegeyserrock-sides))
+(set! (-> *part-group-table* (part-group-id cavegeyserrock-sides))
       (new 'static
            'sparticle-launch-group
            :length 7
@@ -333,7 +333,7 @@
            (new 'static 'inline-array sp-field-init-spec 2 (sp-flt spt-fade-a -1.0666667) (sp-end))))
 
 ;; failed to figure out what this is:
-(set! (-> *part-group-table* (part-group-id group-cavegeyserrock-plume))
+(set! (-> *part-group-table* (part-group-id cavegeyserrock-plume))
       (new 'static
            'sparticle-launch-group
            :length 9
@@ -832,8 +832,8 @@
   (set! (-> obj down quad) (-> obj root-override trans quad))
   (set! (-> obj up quad) (-> obj root-override trans quad))
   (set! (-> obj up y) (+ 40960.0 (-> obj up y)))
-  (set! (-> obj part) (create-launch-control (-> *part-group-table* (part-group-id group-cavegeyserrock-sides)) obj))
-  (set! (-> obj part2) (create-launch-control (-> *part-group-table* (part-group-id group-cavegeyserrock-plume)) obj))
+  (set! (-> obj part) (create-launch-control (-> *part-group-table* (part-group-id cavegeyserrock-sides)) obj))
+  (set! (-> obj part2) (create-launch-control (-> *part-group-table* (part-group-id cavegeyserrock-plume)) obj))
   (vector-reset! (-> obj root-override transv))
   (create-connection! *cavecrystal-light-control*
                       (the-as cavecrystal obj)

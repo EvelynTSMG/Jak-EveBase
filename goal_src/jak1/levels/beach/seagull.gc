@@ -15,7 +15,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-seagull-takeoff
-  :id (part-group-id group-seagull-takeoff)
+  :id (part-group-id seagull-takeoff)
   :bounds (static-bspherem 0 -12 0 14)
   :parts ((sp-item 663 :fade-after (meters 20))))
 

@@ -8,7 +8,7 @@
 ;; DECOMP BEGINS
 
 (defpartgroup group-flut-trans-pad
-  :id (part-group-id group-flut-trans-pad)
+  :id (part-group-id flut-trans-pad)
   :bounds (static-bspherem 0 0 0 8)
   :parts
   ((sp-item 746 :fade-after (meters 160))
@@ -67,7 +67,7 @@
    (:flags (bit2 bit3))))
 
 (defpartgroup group-flut-attack-strike-ground
-  :id (part-group-id group-flut-attack-strike-ground)
+  :id (part-group-id flut-attack-strike-ground)
   :duration (seconds 0.035)
   :linger-duration (seconds 1.5)
   :bounds (static-bspherem 0 0 0 2)
