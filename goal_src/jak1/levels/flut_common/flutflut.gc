@@ -245,7 +245,7 @@
       (if v1-27 (logior! (-> v1-27 flags) (path-control-flag display draw-line draw-point draw-text)))))
   (set! (-> this condition) (res-lump-value arg0 'index int))
   (set! (-> this fact) (new 'process 'fact-info this (pickup-type eco-pill-random) (-> *FACT-bank* default-pill-inc)))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id flut-trans-pad)) this))
+  (set! (-> this part) (create-launch-control (part-group flut-trans-pad) this))
   (set! (-> this auto-get-off) #f)
   (move-to-ground (-> this root) 40960.0 40960.0 #t (collide-kind background))
   (set! (-> this cell) (the-as handle #f))

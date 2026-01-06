@@ -279,7 +279,7 @@
        (process-spawn part-tracker
                       :init
                       part-tracker-init
-                      (-> *part-group-table* (part-group-id land-poof-stone))
+                      (part-group land-poof-stone)
                       -1
                       #f
                       #f

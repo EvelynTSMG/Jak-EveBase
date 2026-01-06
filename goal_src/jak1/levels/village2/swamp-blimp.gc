@@ -535,7 +535,7 @@
             (process-spawn part-tracker
                            :init
                            part-tracker-init
-                           (-> *part-group-table* (part-group-id tetherrock-explode))
+                           (part-group tetherrock-explode)
                            -1
                            #f
                            #f
@@ -611,7 +611,7 @@
                 (process-spawn part-tracker
                                :init
                                part-tracker-init
-                               (-> *part-group-table* (part-group-id swamp-tether-rock-hit))
+                               (part-group swamp-tether-rock-hit)
                                150
                                #f
                                #f

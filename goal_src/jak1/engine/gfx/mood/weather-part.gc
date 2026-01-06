@@ -80,7 +80,7 @@
    (sp-item 23 :flags (start-dead launch-asap))
    (sp-item 23 :flags (start-dead launch-asap))))
 
-(define group-rain-screend-drop (-> *part-group-table* (part-group-id rain-screend-drop-real)))
+(define group-rain-screend-drop (part-group rain-screend-drop-real))
 
 (defpart 21
   :init-specs

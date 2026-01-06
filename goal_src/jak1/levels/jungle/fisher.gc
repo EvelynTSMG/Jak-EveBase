@@ -958,7 +958,7 @@
         (('big)
           (process-spawn part-tracker
             :init part-tracker-init
-            (-> *part-group-table* (part-group-id fish-caught))
+            (part-group fish-caught)
             -1
             #f
             #f
@@ -973,7 +973,7 @@
         (else
           (process-spawn part-tracker
             :init part-tracker-init
-            (-> *part-group-table* (part-group-id fish-caught))
+            (part-group fish-caught)
             -1
             #f
             #f
@@ -1058,18 +1058,18 @@
       ((= type 'deadly)
         (set! (-> self size) (meters 0.1))
         (set-vector! (-> self root scale) 0.9 0.9 0.7 1.0)
-        (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id fish-eel)) self))
+        (set! (-> self part) (create-launch-control (part-group fish-eel) self))
         *catch-fish-deadly-sg*
       )
       ((= type 'big)
         (set-vector! (-> self root scale) 0.4 0.4 0.4 1.0)
-        (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id fish-swim)) self))
+        (set! (-> self part) (create-launch-control (part-group fish-swim) self))
         *catch-fish-big-sg*
       )
       ;;[ADD-FISH-TYPE] Add initialization here
       (else
         (set-vector! (-> self root scale) 0.3 0.3 0.3 1.0)
-        (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id fish-swim)) self))
+        (set! (-> self part) (create-launch-control (part-group fish-swim) self))
         *catch-fish-normal-sg*
       )
     )

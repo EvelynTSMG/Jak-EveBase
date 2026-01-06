@@ -61,6 +61,10 @@
 ;; All the particle groups.
 (define *part-group-table* (new 'global 'boxed-array sparticle-launch-group 1024))
 
+(defmacro part-group (group-id)
+  `(-> *part-group-table* (part-group-id ,group-id))
+)
+
 (defun lookup-part-group-by-name ((arg0 string))
   "Find a particle group with the given name. Checks all of them, not very efficient."
   (let* ((s5-0 *part-group-table*)

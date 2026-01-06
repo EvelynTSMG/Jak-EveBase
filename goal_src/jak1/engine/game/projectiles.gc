@@ -604,7 +604,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id part-yellow-eco-fireball-hit))
+                     (part-group part-yellow-eco-fireball-hit)
                      -1
                      #f
                      #f
@@ -624,7 +624,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id part-yellow-eco-fireball-hit))
+                     (part-group part-yellow-eco-fireball-hit)
                      -1
                      #f
                      #f
@@ -739,9 +739,9 @@
       (sound-play "yellow-fire")
       (set! (-> this sound-id) (sound-play "yellow-buzz"))
       (if (not (logtest? (-> this options) 416))
-        (process-spawn part-tracker :init part-tracker-init (-> *part-group-table* (part-group-id part-yellow-eco-fireball-launcher)) -1 #f #f #f s5-0 :to this))
+        (process-spawn part-tracker :init part-tracker-init (part-group part-yellow-eco-fireball-launcher) -1 #f #f #f s5-0 :to this))
       (set! (-> *part-id-table* 350 init-specs 2 initial-valuef) f30-0)))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id yellow-eco-fireball)) this))
+  (set! (-> this part) (create-launch-control (part-group yellow-eco-fireball) this))
   (when *target*
     (case (-> *target* current-level name)
       (('swamp)
@@ -853,7 +853,7 @@
   (vector+float*! (-> this target) (-> this root trans) (-> this root transv) 2.0)
   (set! (-> this target-base quad) (-> this target quad))
   (set! (-> this mask) (the-as process-mask (logior (process-mask ambient) (-> this mask))))
-  (set! (-> this part) (create-launch-control (-> *part-group-table* (part-group-id eco-blue)) this))
+  (set! (-> this part) (create-launch-control (part-group eco-blue) this))
   (set! (-> this root root-prim collide-with) (collide-kind background))
   (let* ((s5-1 (handle->process (-> this last-target)))
          (v1-20 (if (and (nonzero? s5-1) (type-type? (-> s5-1 type) process-drawable)) s5-1)))

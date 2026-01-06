@@ -548,7 +548,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id balloonlurker-mine-explosion))
+                     (part-group balloonlurker-mine-explosion)
                      -1
                      #f
                      #f
@@ -643,7 +643,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id balloonlurker-pilot-death))
+                     (part-group balloonlurker-pilot-death)
                      -1
                      #f
                      #f

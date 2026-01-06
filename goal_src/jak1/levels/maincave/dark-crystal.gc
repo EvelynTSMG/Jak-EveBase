@@ -452,7 +452,7 @@
         (process-spawn part-tracker
                        :init
                        part-tracker-init
-                       (if (-> self underwater?) (-> *part-group-table* (part-group-id dark-crystal-water-explode)) (-> *part-group-table* (part-group-id dark-crystal-gnd-explode)))
+                       (if (-> self underwater?) (part-group dark-crystal-water-explode) (part-group dark-crystal-gnd-explode))
                        -1
                        #f
                        #f

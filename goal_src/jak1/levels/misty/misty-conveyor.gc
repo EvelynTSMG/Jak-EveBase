@@ -118,7 +118,7 @@
        (process-spawn part-tracker
                       :init
                       part-tracker-init
-                      (-> *part-group-table* (part-group-id crate-explode))
+                      (part-group crate-explode)
                       20
                       #f
                       #f
@@ -238,7 +238,7 @@
                       (process-spawn part-tracker
                                      :init
                                      part-tracker-init
-                                     (-> *part-group-table* (part-group-id keg-bounce))
+                                     (part-group keg-bounce)
                                      -1
                                      keg-bounce-set-particle-rotation-callback
                                      (-> self ppointer)

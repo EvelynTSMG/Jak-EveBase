@@ -329,7 +329,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id quicksandlurker-missile-impact))
+                     (part-group quicksandlurker-missile-impact)
                      -1
                      #f
                      #f
@@ -369,7 +369,7 @@
   (set! (-> self root quat vec quad) (-> (the-as process-drawable (-> self parent 0)) root quat vec quad))
   (vector-identity! (-> self root scale))
   (set! (-> self root transv quad) (-> arg0 velocity quad))
-  (set! (-> self part) (create-launch-control (-> *part-group-table* (part-group-id quicksandlurker-missile)) self))
+  (set! (-> self part) (create-launch-control (part-group quicksandlurker-missile) self))
   (go quicksandlurker-missile-idle)
   (none))
 
@@ -560,7 +560,7 @@
       (let ((f1-0 (vector-xz-length s5-0))) (set! (-> s5-0 y) (fmin (-> s5-0 y) (/ f1-0 2))))
       (vector-normalize! s5-0 49152.0)
       (spawn-quicksandlurker-missile self gp-0 s5-0 (-> self entity)))
-    (process-spawn part-tracker :init part-tracker-init (-> *part-group-table* (part-group-id quicksandlurker-pre-missile)) -1 #f #f #f gp-0 :to *entity-pool*)))
+    (process-spawn part-tracker :init part-tracker-init (part-group quicksandlurker-pre-missile) -1 #f #f #f gp-0 :to *entity-pool*)))
 
 (defstate quicksandlurker-attack (quicksandlurker)
   :event quicksandlurker-default-event-handler
@@ -628,7 +628,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id quicksandlurker-hide))
+                     (part-group quicksandlurker-hide)
                      -1
                      #f
                      #f
@@ -649,7 +649,7 @@
       (process-spawn part-tracker
                      :init
                      part-tracker-init
-                     (-> *part-group-table* (part-group-id quicksandlurker-popup))
+                     (part-group quicksandlurker-popup)
                      -1
                      #f
                      #f

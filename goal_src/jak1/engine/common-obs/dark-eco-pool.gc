@@ -326,7 +326,7 @@
                 (process-spawn part-tracker
                                :init
                                part-tracker-init
-                               (-> *part-group-table* (part-group-id dark-eco-pool-nasty))
+                               (part-group dark-eco-pool-nasty)
                                -1
                                #f
                                #f

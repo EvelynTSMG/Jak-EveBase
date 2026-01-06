@@ -384,7 +384,7 @@
   (process-spawn part-tracker
                  :init
                  part-tracker-init
-                 (-> *part-group-table* (part-group-id target-hit))
+                 (part-group target-hit)
                  -1
                  #f
                  #f
@@ -703,7 +703,7 @@
          (process-spawn part-tracker
                         :init
                         part-tracker-init
-                        (-> *part-group-table* (part-group-id lava-death))
+                        (part-group lava-death)
                         -1
                         #f
                         #f
@@ -750,7 +750,7 @@
             (process-spawn part-tracker
                            :init
                            part-tracker-init
-                           (-> *part-group-table* (part-group-id dark-eco-death))
+                           (part-group dark-eco-death)
                            -1
                            #f
                            #f
@@ -763,7 +763,7 @@
             (process-spawn part-tracker
                            :init
                            part-tracker-init
-                           (-> *part-group-table* (part-group-id lava-death))
+                           (part-group lava-death)
                            -1
                            #f
                            #f
@@ -863,7 +863,7 @@
          (process-spawn part-tracker
                         :init
                         part-tracker-init
-                        (-> *part-group-table* (part-group-id burn-death))
+                        (part-group burn-death)
                         -1
                         #f
                         #f

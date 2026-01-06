@@ -50,7 +50,7 @@
         ;; notes:
         ;;  - particles that use aux list won't work (warp parts)
         ;;  - some particles may have callbacks that won't work yet
-        (let ((gp-1 (-> *part-group-table* (part-group-id part-tester))))
+        (let ((gp-1 (part-group part-tester)))
           (#when PC_PORT
             (if (nonzero? (-> *part-group-table* *part-tester-id*)) (set! gp-1 (-> *part-group-table* *part-tester-id*))))
           (let ((s5-1 (-> self root trans)))

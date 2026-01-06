@@ -131,7 +131,7 @@
         (process-spawn part-tracker
                        :init
                        part-tracker-init
-                       (-> *part-group-table* (part-group-id tntbarrel-explosion))
+                       (part-group tntbarrel-explosion)
                        -1
                        #f
                        #f

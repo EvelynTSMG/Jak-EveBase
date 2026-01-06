@@ -1260,9 +1260,9 @@
     (let ((v1-18 (-> this entity extra level name)))
       (set! (-> this part)
             (create-launch-control (cond
-                                     ((= v1-18 'beach) (-> *part-group-table* (part-group-id beach-launcher)))
-                                     ((= v1-18 'swamp) (-> *part-group-table* (part-group-id swamp-launcher)))
-                                     (else (-> *part-group-table* (part-group-id jungle-launcher))))
+                                     ((= v1-18 'beach) (part-group beach-launcher))
+                                     ((= v1-18 'swamp) (part-group swamp-launcher))
+                                     (else (part-group jungle-launcher)))
                                    this)))
     (let ((v1-24 (logand (the-as int s4-1) 255)))
       (cond
@@ -1298,9 +1298,9 @@
   (let ((v1-23 (-> self entity extra level name)))
     (set! (-> self part)
           (create-launch-control (cond
-                                   ((= v1-23 'beach) (-> *part-group-table* (part-group-id beach-launcher)))
-                                   ((= v1-23 'swamp) (-> *part-group-table* (part-group-id swamp-launcher)))
-                                   (else (-> *part-group-table* (part-group-id jungle-launcher))))
+                                   ((= v1-23 'beach) (part-group beach-launcher))
+                                   ((= v1-23 'swamp) (part-group swamp-launcher))
+                                   (else (part-group jungle-launcher)))
                                  self)))
   (case (logand arg2 255)
     ((1) (set! (-> self camera) cam-launcher-longfall))

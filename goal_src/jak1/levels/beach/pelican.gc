@@ -157,7 +157,7 @@
             (send-event (ppointer->process v1-8)
                         'eval
                         (lambda :behavior pelican ()
-                          (let ((v0-0 (create-launch-control (-> *part-group-table* (part-group-id fuel-cell-starburst)) self))) (set! (-> self part) v0-0) v0-0))))))
+                          (let ((v0-0 (create-launch-control (part-group fuel-cell-starburst) self))) (set! (-> self part) v0-0) v0-0))))))
       (set! (-> self path) (-> self path-circle))
       (set! (-> self path-pos) 0.0)
       (set! (-> self path-max) (the float (+ (-> self path curve num-cverts) -1)))
@@ -524,7 +524,7 @@
         (process-spawn part-tracker
                        :init
                        part-tracker-init
-                       (-> *part-group-table* (part-group-id crate-explode))
+                       (part-group crate-explode)
                        -1
                        #f
                        #f
@@ -596,7 +596,7 @@
          (send-event (ppointer->process s5-2)
                      'eval
                      (lambda :behavior pelican ()
-                       (let ((v0-0 (create-launch-control (-> *part-group-table* (part-group-id fuel-cell-starburst)) self))) (set! (-> self part) v0-0) v0-0)))
+                       (let ((v0-0 (create-launch-control (part-group fuel-cell-starburst) self))) (set! (-> self part) v0-0) v0-0)))
          (send-event (ppointer->process s5-2) 'trans-hook fuel-cell-animate)))
      (go pelican-wait-at-nest #t))
     (else (go pelican-circle)))
