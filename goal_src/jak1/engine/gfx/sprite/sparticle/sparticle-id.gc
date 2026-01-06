@@ -1,0 +1,6 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(defenum part-id :type uint32
+  (jungle-eco-beam-impact 825)
+)

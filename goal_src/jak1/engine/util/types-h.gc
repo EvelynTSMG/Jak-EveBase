@@ -8,8 +8,6 @@
 
 (deftype time-frame (int64) ())
 
-(deftype part-id (uint32) ())
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Units
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;

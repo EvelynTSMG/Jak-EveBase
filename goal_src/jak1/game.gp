@@ -1905,6 +1905,8 @@
  "gfx/tie/tie-methods.gc"
  "util/sync-info.gc"
  "physics/trajectory.gc"
+ "gfx/sprite/sparticle/sparticle-group-id.gc"
+ "gfx/sprite/sparticle/sparticle-id.gc"
  "gfx/sprite/sparticle/sparticle-launcher.gc"
  "gfx/sprite/sparticle/sparticle.gc"
  "entity/entity-table.gc"
