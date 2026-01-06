@@ -55,7 +55,8 @@
 
 ;; All the particle launchers.
 ;; Particle effects will add themselves to this table when the code is loaded/linked
-(define *part-id-table* (new 'global 'boxed-array sparticle-launcher 3584))
+;mod: Increased table size 3584 -> 8192
+(define *part-id-table* (new 'global 'boxed-array sparticle-launcher 8192))
 
 ;; All the particle groups.
 (define *part-group-id-table* (new 'global 'boxed-array sparticle-launch-group 1024))
@@ -157,7 +158,8 @@
 
 ;; og:preserve-this
 ;(#if (not PC_BIG_MEMORY)
-(defconstant SPARTICLE_QUEUE_SIZE 32)
+;mod: Increased particle queue size 32 -> 64
+(defconstant SPARTICLE_QUEUE_SIZE 64)
 
 ;(defconstant SPARTICLE_QUEUE_SIZE 80))
 
