@@ -18,7 +18,7 @@
       (when (move-legs?)
         (remove-exit)
         (go target-ice-walk))
-      (when (and (cpad-hold? (-> self control unknown-cpad-info00 number) l1 r1) (can-duck?))
+      (when (and (cpad-hold? (target-cpad) l1 r1) (can-duck?))
         (remove-exit)
         (go target-duck-stance))
       ;; og:preserve-this - High FPS Fix
@@ -117,9 +117,9 @@
       ;; og:preserve-this - High FPS Fix
       (if (and (recently-pressed? l1 r1)
                (and (time-elapsed? (-> *TARGET-bank* wheel-timeout) (-> self control unknown-dword30))
-                    (and (!= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0) (can-wheel?))))
+                    (and (!= (-> *cpad-list* cpads (target-cpad) stick0-speed) 0.0) (can-wheel?))))
         (go target-wheel))
-      (when (and (cpad-hold? (-> self control unknown-cpad-info00 number) l1 r1) (can-duck?))
+      (when (and (cpad-hold? (target-cpad) l1 r1) (can-duck?))
         (target-effect-exit)
         (remove-exit)
         (go target-duck-stance))

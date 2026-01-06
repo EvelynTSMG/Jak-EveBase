@@ -476,7 +476,7 @@
   :trans
     (behavior ()
       (if (logtest? (-> self control status) (cshape-moving-flags onsurf)) (go target-tube))
-      (mod-var-jump #t #t (cpad-hold? (-> self control unknown-cpad-info00 number) x) (-> self control transv))
+      (mod-var-jump #t #t (cpad-hold? (target-cpad) x) (-> self control transv))
       (seek! (-> self control unknown-float122)
              (fmax 0.0 (fmin 1.0 (* 0.00012207031 (+ -2048.0 (-> self control unknown-float01)))))
              (seconds-per-frame)))

@@ -453,7 +453,7 @@
   (cond
     ((and (= (-> self control ground-pat material) (pat-material ice))
           (and (>= (-> self control unknown-float01) 204.8)
-               (not (time-elapsed? (-> self control unknown-dword11) (seconds 0.05)))))
+               (not (time-elapsed? (-> self control last-ground-time) (seconds 0.05)))))
      (let ((gp-0 (vector<-cspace! (new 'stack-no-clear 'vector) (joint-node eichar-lod0-jg RbigToe))))
        (if (and (< (fabs (vector-dot (-> self control dynam gravity-normal) (vector-! (new 'stack-no-clear 'vector) gp-0 (-> self control trans))))
                    819.2)

@@ -416,8 +416,8 @@
     (('jump 'up 'up-forward)
      (when (and (not (logtest? (-> self control root-prim prim-core action) (collide-action racer flut)))
                 (not (and (= (-> self game mode) 'play) (>= 0.0 (-> self fact health)))))
-       (if (and (cpad-pressed? (-> self control unknown-cpad-info00 number) circle) (can-feet?)) (go target-attack-air #f))
-       (if (and (cpad-pressed? (-> self control unknown-cpad-info00 number) square)
+       (if (and (cpad-pressed? (target-cpad) circle) (can-feet?)) (go target-attack-air #f))
+       (if (and (cpad-pressed? (target-cpad) square)
                 (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 26624.0)
                 (and (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
                      (time-elapsed? (-> self control unknown-dword36) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
@@ -426,10 +426,10 @@
          (go target-flop
              (the-as float 65502.96)
              (the-as float -163840.0)
-             (the-as float (if (= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0) 0.0 68812.8)))))))
+             (the-as float (if (= (-> *cpad-list* cpads (target-cpad) stick0-speed) 0.0) 0.0 68812.8)))))))
   (when (if (and (< (target-move-dist (-> *TARGET-bank* stuck-time)) (-> *TARGET-bank* stuck-distance))
                  (and (time-elapsed? (-> self state-time) (the-as time-frame (-> *TARGET-bank* stuck-time)))
-                      (not (and *cheat-mode* (cpad-hold? (-> self control unknown-cpad-info00 number) r2)))))
+                      (not (and *cheat-mode* (cpad-hold? (target-cpad) r2)))))
           #t)
     (logior! (-> self control status) (cshape-moving-flags onsurf))
     (return (the-as object 'stuck)))
@@ -544,7 +544,7 @@
   :trans
     (behavior ()
       (when (= *cheat-mode* 'debug)
-        (when (and (not *pause-lock*) (cpad-hold? (-> self control unknown-cpad-info00 number) r2))
+        (when (and (not *pause-lock*) (cpad-hold? (target-cpad) r2))
           (pickup-collectable! (-> self fact) (pickup-type eco-green) (the-as float 1.0) (the-as handle #f))
           (go target-stance))))
   :code

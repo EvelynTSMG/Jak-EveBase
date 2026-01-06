@@ -99,7 +99,7 @@
                  (lerp-scale 81920.0 163840.0 (-> self control unknown-float01) 40960.0 (-> self racer transv-max)))
                 ((or (-> self racer hop?) (= (-> self next-state name) 'target-racing-bounce))
                  (lerp-scale 81920.0 163840.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
-                ((time-elapsed? (-> self control unknown-dword11) (seconds 0.6))
+                ((time-elapsed? (-> self control last-ground-time) (seconds 0.6))
                  (lerp-scale 81920.0 122880.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
                 (else (lerp-scale 245760.0 81920.0 (-> self control unknown-float01) 40960.0 (-> self racer transv-max))))))
     (set! (-> self control dynam gravity-max) (* 8.0 f0-8))
@@ -112,15 +112,15 @@
   (let ((v1-1 (-> self racer slide-mode)))
     (cond
       ((zero? v1-1)
-       (if (not (cpad-hold? (-> self control unknown-cpad-info00 number) l1 r1)) (set! (-> self racer slide-mode) -1)))
+       (if (not (cpad-hold? (target-cpad) l1 r1)) (set! (-> self racer slide-mode) -1)))
       ((= v1-1 1)
-       (if (not (cpad-hold? (-> self control unknown-cpad-info00 number) l1 r1)) (set! (-> self racer slide-mode) -1)))))
+       (if (not (cpad-hold? (target-cpad) l1 r1)) (set! (-> self racer slide-mode) -1)))))
   (when (>= (-> self racer slide-mode) 0)
     (cond
-      ((< (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) leftx) (the-as uint 64))
+      ((< (-> *cpad-list* cpads (target-cpad) leftx) (the-as uint 64))
        (set! (-> self racer slide-mode) 0)
        0)
-      ((< (the-as uint 192) (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) leftx))
+      ((< (the-as uint 192) (-> *cpad-list* cpads (target-cpad) leftx))
        (set! (-> self racer slide-mode) 1))))
   (seek! (-> self racer slide-amp) 0.0 (* 0.3 (seconds-per-frame)))
   (if (= (-> self racer slide-amp) 0.0) (set! (-> self racer slide-mode) -1))
@@ -184,7 +184,7 @@
   (none))
 
 (defbehavior racer-thrust target ((arg0 basic) (arg1 float))
-  (let ((f0-0 (if (and (cpad-hold? (-> self control unknown-cpad-info00 number) x)
+  (let ((f0-0 (if (and (cpad-hold? (target-cpad) x)
                        (not (-> self racer stick-lock))
                        (not (-> self racer stick-off)))
                 1.0
@@ -199,9 +199,9 @@
          (f0-13 (- 1.0 (* (- 1.0 f1-12) (-> *display* time-adjust-ratio)))))
     (set! f0-13
           (cond
-            ((and (not (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0)))
-                  (cpad-hold? (-> self control unknown-cpad-info00 number) square))
-             (if (and (cpad-hold? (-> self control unknown-cpad-info00 number) x)
+            ((and (not (has-eco? (pickup-type eco-yellow)))
+                  (cpad-hold? (target-cpad) square))
+             (if (and (cpad-hold? (target-cpad) x)
                       (not (-> self racer stick-lock))
                       (not (-> self racer stick-off)))
                ;; og:preserve-this changed for high fps
@@ -209,7 +209,7 @@
                (* (- 0.5 (* 0.00625 DISPLAY_FPS_RATIO)) (+ 1.0 f0-13))))
             (else
              (cond
-               ((and (cpad-hold? (-> self control unknown-cpad-info00 number) x)
+               ((and (cpad-hold? (target-cpad) x)
                      (not (-> self racer stick-lock))
                      (not (-> self racer stick-off))))
                (else (set! f0-13 (* 0.5 (+ 1.0 f0-13)))))
@@ -264,7 +264,7 @@
       (+! (-> self racer shock-offsetv)
           (+ (* -20.0 (seconds-per-frame) (-> self racer shock-offset))
              (if (racer-on-ground?) (* (-> self control dynam gravity-length) (seconds-per-frame) f30-0) 0.0))))
-    (if (and (or (not (time-elapsed? (-> self control unknown-dword11) (seconds 0.2))) (< (-> self racer shock-offset) 0.0))
+    (if (and (or (not (time-elapsed? (-> self control last-ground-time) (seconds 0.2))) (< (-> self racer shock-offset) 0.0))
              (!= (-> self control unknown-surface00 mode) 'air))
       (+! (-> self racer shock-offset) (* (-> self racer shock-offsetv) (seconds-per-frame))))
     (set! (-> self racer shock-offset)
@@ -329,7 +329,7 @@
   (quaternion-copy! (-> self control quat) (-> self control unknown-quaternion00))
   (set-twist! (-> self racer front-blade) (the-as float #f) (- (-> self racer front-rot)) (the-as float #f))
   (set-twist! (-> self racer bottom-blade) (the-as float #f) (the-as float #f) (- (-> self racer bottom-rot)))
-  (if (and (= *cheat-mode* 'debug) (and (cpad-hold? (-> self control unknown-cpad-info00 number) r2) (not *pause-lock*)))
+  (if (and (= *cheat-mode* 'debug) (and (cpad-hold? (target-cpad) r2) (not *pause-lock*)))
     (vector-reset! (-> self control transv)))
   0
   (none))
@@ -475,8 +475,8 @@
                           (if gp-5 *sp-particle-system-3d* *sp-particle-system-2d*)
                           (the-as sparticle-launcher s5-3)
                           a2-7))))
-  (when (and (and (= (-> self fact eco-type) (pickup-type eco-yellow)) (>= (-> self fact eco-level) 1.0))
-             (cpad-pressed? (-> self control unknown-cpad-info00 number) circle square)
+  (when (and (has-eco? (pickup-type eco-yellow))
+             (cpad-pressed? (target-cpad) circle square)
              (time-elapsed? (-> self control unknown-dword82) (seconds 0.25))
              (not (logtest? (-> self state-flags) (state-flags being-attacked dying))))
     (let ((gp-6 (vector-z-quaternion! (new 'stack-no-clear 'vector) (-> self control quat)))
@@ -517,7 +517,7 @@
            (seek! (-> self racer heat) (-> *RACER-bank* heat-max) (* f24-1 (seconds-per-frame)))
            (seek! (-> self racer heat) (-> *RACER-bank* heat-max) (* f28-2 (seconds-per-frame)))))
         (else (if (not (racer-on-ground?)) (seek! (-> self racer heat) 0.0 (* f26-0 (seconds-per-frame)))))))
-    (let ((v1-189 (- (current-time) (-> self control unknown-dword11))))
+    (let ((v1-189 (- (current-time) (-> self control last-ground-time))))
       (if (and (>= v1-189 (seconds 0.9)) (>= (seconds 3) v1-189)) (seek! (-> self racer heat) 0.0 (* f30-2 (seconds-per-frame))))))
   (if (and (>= (-> self racer heat) (-> *RACER-bank* heat-max)) (= (-> self game mode) 'play))
     (send-event self 'attack #f (static-attack-info ((mode 'heat)))))
@@ -529,7 +529,7 @@
             (* (-> *RACER-bank* boost-curve-max)
                (sin (* 32768.0 (/ (the float v1-218) (the float (-> self racer boost-duration)))))))
       (set! (-> self racer boost-curve) 0.0)))
-  (when (or (not (cpad-hold? (-> self control unknown-cpad-info00 number) x))
+  (when (or (not (cpad-hold? (target-cpad) x))
             (< (-> self control unknown-float01) 4096.0)
             (= (-> self racer boost-level) 0.0))
     (when (nonzero? (-> self racer boost-sound-id))
@@ -748,23 +748,23 @@
                (f28-1 (* f28-0
                          (cond
                            ((zero? v1-17)
-                            (- (fmax (analog-input (the-as int (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) abutton (abutton-idx l1))) ;; og:preserve-this abutton indexing
+                            (- (fmax (analog-input (the-as int (-> *cpad-list* cpads (target-cpad) abutton (abutton-idx l1))) ;; og:preserve-this abutton indexing
                                                    0.0
                                                    32.0
                                                    255.0
                                                    1.0)
-                                     (analog-input (the-as int (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) abutton (abutton-idx r1))) ;; og:preserve-this abutton indexing
+                                     (analog-input (the-as int (-> *cpad-list* cpads (target-cpad) abutton (abutton-idx r1))) ;; og:preserve-this abutton indexing
                                                    0.0
                                                    32.0
                                                    255.0
                                                    1.0))))
                            ((= v1-17 1)
-                            (fmax (analog-input (the-as int (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) abutton (abutton-idx l1))) ;; og:preserve-this abutton indexing
+                            (fmax (analog-input (the-as int (-> *cpad-list* cpads (target-cpad) abutton (abutton-idx l1))) ;; og:preserve-this abutton indexing
                                                 0.0
                                                 32.0
                                                 255.0
                                                 1.0)
-                                  (analog-input (the-as int (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) abutton (abutton-idx r1))) ;; og:preserve-this abutton indexing
+                                  (analog-input (the-as int (-> *cpad-list* cpads (target-cpad) abutton (abutton-idx r1))) ;; og:preserve-this abutton indexing
                                                 0.0
                                                 32.0
                                                 255.0
@@ -834,7 +834,7 @@
                   ((or (= (-> self next-state name) 'target-racing-jump)
                        (and (= (-> self next-state name) 'target-racing-bounce) (= (-> self racer bounce) 1)))
                    (set! (-> self racer speed-rotx) 0.5)
-                   (when (time-elapsed? (-> self control unknown-dword11) (seconds 0.1))
+                   (when (time-elapsed? (-> self control last-ground-time) (seconds 0.1))
                      (seek! (-> self racer hill-rotx) 0.0 (* 65536.0 (seconds-per-frame)))
                      (set! (-> self racer speed-rotx) 0.6)))
                   (else (set! (-> self racer speed-rotx) 0.25)))
@@ -845,12 +845,12 @@
              (set! (-> self racer bob-timer) (- f0-91 (* (the float (the int (/ f0-91 f1-44))) f1-44))))
            (seek! (-> self racer bob-mult-rot) 0.0 (* 16.0 (seconds-per-frame)))
            (seek! (-> self racer bob-mult-trans) 0.0 (* 16.0 (seconds-per-frame)))
-           (set! f30-1 (lerp-scale f30-1 1820.4445 (the float (- (current-time) (-> self control unknown-dword11))) 0.0 900.0))
+           (set! f30-1 (lerp-scale f30-1 1820.4445 (the float (- (current-time) (-> self control last-ground-time))) 0.0 900.0))
            (cond
              ((and (logtest? (-> self control status) (cshape-moving-flags twall))
-                   (and (time-elapsed? (-> self control unknown-dword11) (seconds 0.1))
+                   (and (time-elapsed? (-> self control last-ground-time) (seconds 0.1))
                         (or (-> self racer stick-lock) (< (target-move-dist (-> *TARGET-bank* stuck-time)) 4096.0))
-                        (not (and (= *cheat-mode* 'debug) (cpad-hold? (-> self control unknown-cpad-info00 number) r2)))))
+                        (not (and (= *cheat-mode* 'debug) (cpad-hold? (target-cpad) r2)))))
               (cond
                 ((and (< 0.0
                          (vector-dot (-> self control dynam gravity-normal)
