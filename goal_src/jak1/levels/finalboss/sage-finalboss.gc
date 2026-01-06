@@ -47,6 +47,7 @@
    (speed      float)
    (touch-time time-frame)))
 
+
 (defmethod get-unlit-skel ((this plat-eco-finalboss))
   *plat-eco-finalboss-unlit-sg*)
 
@@ -114,6 +115,7 @@
    (active symbol))
   :allow-misaligned)
 
+
 (deftype sage-finalboss (process-taskable)
   ((redsage           handle)
    (bluesage          handle)
@@ -134,6 +136,7 @@
    (credits-played    symbol))
   (:states
    sage-finalboss-credits))
+
 
 (defmethod relocate ((this sage-finalboss) (offset int))
   (dotimes (v1-0 9)

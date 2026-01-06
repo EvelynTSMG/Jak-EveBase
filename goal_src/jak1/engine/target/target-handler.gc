@@ -486,7 +486,7 @@
          (set! (-> self attack-info-rec attacker) (process->handle arg0))
          (logior! (-> self attack-info-rec mask) (attack-mask attacker)))
        (go target-hit 'shove (-> self attack-info-rec))))
-    (('launch) (mem-copy! (&-> (-> self control) unknown-pointer00) (the-as pointer arg3) 72) #t)
+    (('launch) (mem-copy! (&-> self control unknown-pointer00) (the-as pointer arg3) 72) #t)
     (('powerup)
      (if (or (= (-> self next-state name) 'target-stance)
              (= (-> self next-state name) 'target-walk)
@@ -576,7 +576,7 @@
                (vector-dot (-> self control dynam gravity-normal)
                            (vector-! (new 'stack-no-clear 'vector) (-> self control transv) (-> self control unknown-vector10))))
             (begin
-              (vector-normalize! (vector-! s4-0 (the-as vector (-> self control unknown-sphere-array00 0 prim-core)) (-> self control unknown-vector72))
+              (vector-normalize! (vector-! s4-0 (-> self control unknown-sphere-array00 0 prim-core world-sphere) (-> self control unknown-vector72))
                                  (the-as float 1.0))
               (< 0.01 (-> s4-0 y))))
        (if (< 0.75 (-> s4-0 y))

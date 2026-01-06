@@ -30,6 +30,7 @@
   (:states
    citb-sagecage-idle))
 
+
 (defbehavior citb-sagecage-draw-bars citb-sagecage ()
   (when (logtest? (-> self draw status) (draw-status was-drawn))
     (let ((gp-0 (-> self node-list data 3 bone transform))
@@ -216,9 +217,10 @@
    (sound-id          sound-id)
    (alt-actor         entity-actor)))
 
-(defmethod relocate ((this citb-sage) (arg0 int))
-  (if (nonzero? (-> this part-impact)) (&+! (-> this part-impact) arg0))
-  (the-as citb-sage ((method-of-type process-taskable relocate) this arg0)))
+
+(defmethod relocate ((this citb-sage) (offset int))
+  (if (nonzero? (-> this part-impact)) (&+! (-> this part-impact) offset))
+  (the-as citb-sage ((method-of-type process-taskable relocate) this offset)))
 
 (defmethod deactivate ((this citb-sage))
   (if (nonzero? (-> this part-impact)) (kill-and-free-particles (-> this part-impact)))
@@ -326,6 +328,7 @@
 
 (deftype red-sagecage (citb-sage) ())
 
+
 (defmethod process-taskable-method-52 ((this red-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
     (when v1-1
@@ -392,6 +395,7 @@
   (none))
 
 (deftype blue-sagecage (citb-sage) ())
+
 
 (defmethod process-taskable-method-52 ((this blue-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
@@ -469,6 +473,7 @@
 
 (deftype yellow-sagecage (citb-sage) ())
 
+
 (defmethod process-taskable-method-52 ((this yellow-sagecage))
   (let ((v1-1 (-> this draw shadow-ctrl)))
     (when v1-1
@@ -540,6 +545,7 @@
    (evilsis     handle)
    (robotboss   handle)
    (exitplat    handle)))
+
 
 (defmethod process-taskable-method-45 ((this green-sagecage))
   (set! (-> *part-id-table* 2469 init-specs 14 initial-valuef) (-> this rot-y))

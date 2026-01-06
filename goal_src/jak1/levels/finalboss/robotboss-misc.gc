@@ -68,11 +68,13 @@
    (kind    basic)
    (trans   vector :inline)))
 
+
 (deftype ecoclaw (process-drawable)
   ((particles ecoclaw-part-info 3 :inline))
   (:states
    ecoclaw-activate
    ecoclaw-idle))
+
 
 (defskelgroup *ecoclaw-sg*
   ecoclaw
@@ -199,6 +201,7 @@
    idle
    hidden))
 
+
 (defskelgroup *silodoor-sg*
   silodoor
   silodoor-lod0-jg
@@ -304,6 +307,7 @@
 
 (deftype finalbosscam (process-taskable)
   ((robotboss handle)))
+
 
 (defskelgroup *finalbosscam-sg*
   finalbosscam

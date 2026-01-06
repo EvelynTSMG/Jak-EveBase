@@ -14,6 +14,7 @@
    spider-egg-hatch
    (spider-egg-idle symbol)))
 
+
 (defskelgroup *spider-egg-unbroken-sg*
   spider-egg
   spider-egg-unbroken-lod0-jg

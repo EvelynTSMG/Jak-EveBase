@@ -322,8 +322,7 @@
             (else (set! (-> this up-blend) (seek-with-smooth (-> this up-blend) f28-1 (* 8192.0 (seconds-per-frame)) 0.125 0.01))))))
       (when (and arg1 *target*)
         (set-target! (-> this neck) (target-pos 5))
-        (if *target*
-          (look-at-enemy! (-> *target* neck) (the-as vector (-> this root-overeride root-prim prim-core)) 'attacking this)))
+        (if *target* (look-at-enemy! (-> *target* neck) (-> this root-overeride root-prim prim-core world-sphere) 'attacking this)))
       (let ((f30-3 (-> this drill-speed)))
         (let ((v1-56 (-> this mode)))
           (cond

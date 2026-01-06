@@ -118,6 +118,7 @@
 
 (deftype hud-pickups (hud) ())
 
+
 (defmethod draw-hud ((this hud-pickups))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
   (let* ((s5-0 (-> *display* frames (-> *display* on-screen) frame global-buf))
@@ -232,6 +233,7 @@
 
 (deftype hud-health (hud)
   ((scale float)))
+
 
 (defun part-hud-health-01-func ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 matrix))
   (let ((f0-0 (-> *hud-parts* health 0 scale))) (set! (-> arg2 vector 0 w) f0-0) (set! (-> arg2 vector 1 w) f0-0))
@@ -369,6 +371,7 @@
    (level-index int32)
    (start-time  time-frame)))
 
+
 (defmethod draw-hud ((this hud-money-all))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
   0
@@ -385,9 +388,9 @@
                        0.0
                        (font-color red)
                        (font-flags shadow kerning))))
-        (let ((v1-12 s5-1)) (set! (-> v1-12 width) (the float 228)))
-        (let ((v1-13 s5-1)) (set! (-> v1-13 height) (the float 45)))
-        (let ((v1-14 s5-1)) (set! (-> v1-14 scale) 0.6))
+        (set-width! s5-1 228)
+        (set-height! s5-1 45)
+        (set-scale! s5-1 0.6)
         (set! (-> s5-1 flags) (font-flags shadow kerning middle middle-vert large))
         (print-game-text (lookup-text! *common-text* (-> *level-task-data* (-> this level-index) level-name-id) #f)
                          s5-1
@@ -853,6 +856,7 @@
    (scale-center        float)
    (icon-pos-y          int32)))
 
+
 (defmethod draw-hud ((this hud-fuel-cell))
   (let ((t9-0 (method-of-type hud draw-hud))) (t9-0 this))
   (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug))
@@ -1059,6 +1063,7 @@
   ((scale         float)
    (text-y-offset int32)))
 
+
 (defun part-hud-buzzer-func ((arg0 sparticle-system) (arg1 sparticle-cpuinfo) (arg2 matrix))
   (let ((f0-0 (-> *hud-parts* buzzers 0 scale))) (set! (-> arg2 vector 0 w) f0-0) (set! (-> arg2 vector 1 w) f0-0))
   (none))
@@ -1247,6 +1252,7 @@
   ((scale-timer   float)
    (scale-backing float)
    (scale-blue    float)))
+
 
 (defun calculate-rotation-and-color-for-slice ((arg0 int) (arg1 float) (arg2 int) (arg3 int) (arg4 int) (arg5 matrix))
   (cond

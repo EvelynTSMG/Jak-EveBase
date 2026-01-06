@@ -247,6 +247,7 @@
 
 (deftype hud-bike-heat (hud) ())
 
+
 (defmethod hud-update ((this hud-bike-heat))
   (if *target* (tally-value this (the int (-> *target* racer heat)) 0))
   0
@@ -299,6 +300,7 @@
   (none))
 
 (deftype hud-bike-speed (hud) ())
+
 
 (defmethod hud-update ((this hud-bike-speed))
   (if *target* (tally-value this (the int (-> *target* control unknown-float01)) 0))

@@ -2483,12 +2483,12 @@
                       (cond
                         ((>=
                           (-> (the-as (pointer float) (-> options (-> progress option-index) value-to-modify)))
-                          (+ (-> options (-> progress option-index) slider-step-size) (-> options (-> progress option-index) param1))
+                          (+ (* (-> options (-> progress option-index) slider-step-size) DISPLAY_FPS_RATIO) (-> options (-> progress option-index) param1))
                         )
                           ;; we're a step above minimum, so reduce by a step
                           (-!
                             (-> (the-as (pointer float) (-> options (-> progress option-index) value-to-modify)))
-                            (-> options (-> progress option-index) slider-step-size)
+                            (* (-> options (-> progress option-index) slider-step-size) DISPLAY_FPS_RATIO)
                           )
                           (set! changed? #t)
                         )
@@ -2621,13 +2621,13 @@
                         ((>=
                           (-
                             (-> options (-> progress option-index) param2)
-                            (-> options (-> progress option-index) slider-step-size)
+                            (* (-> options (-> progress option-index) slider-step-size) DISPLAY_FPS_RATIO)
                           )
                           (-> (the-as (pointer float) (-> options (-> progress option-index) value-to-modify)))
                         )
                           (+!
                             (-> (the-as (pointer float) (-> options (-> progress option-index) value-to-modify)))
-                            (-> options (-> progress option-index) slider-step-size)
+                            (* (-> options (-> progress option-index) slider-step-size) DISPLAY_FPS_RATIO)
                           )
 
                           (set! changed? #t)
@@ -3033,22 +3033,27 @@
                       ((= (-> options (-> progress option-index) name) (text-id fit-to-screen))
                         (set-aspect! *pc-settings* 4 3)
                         (false! (-> *pc-settings* use-vis?))
+                        (set! (-> *setting-control* default aspect-ratio) 'aspect4x3)
                         (set-aspect-ratio 'aspect4x3)
                         (true! (-> *pc-settings* aspect-ratio-auto?))
                       )
+
                       ((= newx -1.0)
                         (set-aspect! *pc-settings* 4 3)
                         (true! (-> *pc-settings* use-vis?))
                         (set! (-> *setting-control* default aspect-ratio) 'aspect4x3)
                         (set-aspect-ratio 'aspect4x3)
                       )
+
                       ((= newx -2.0)
                         (set-aspect! *pc-settings* 4 3)
                         (true! (-> *pc-settings* use-vis?))
                         (set! (-> *setting-control* default aspect-ratio) 'aspect16x9)
                         (set-aspect-ratio 'aspect16x9)
                       )
+
                       (else
+                        (set! (-> *setting-control* default aspect-ratio) 'aspect4x3)
                         (set-aspect! *pc-settings* newx newy)
                       )
                     )
