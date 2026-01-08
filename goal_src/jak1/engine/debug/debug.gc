@@ -120,7 +120,7 @@
                                   (gs-reg-list rgbaq xyzf2 rgbaq xyzf2))
           (case mode
             (('fade-depth)
-             (let ((f0-3 (fminmax (* (1/ #xffffff) (the float (-> s4-0 vector 0 z))) 0.2 1.0)))
+             (let ((f0-3 (fclamp (* (1/ #xffffff) (the float (-> s4-0 vector 0 z))) 0.2 1.0)))
                (set! (-> s1-0 vector 0 x) (the int (* (the float (-> first-color r)) f0-3)))
                (set! (-> s1-0 vector 0 y) (the int (* (the float (-> first-color g)) f0-3)))
                (set! (-> s1-0 vector 0 z) (the int (* (the float (-> first-color b)) f0-3))))
@@ -132,7 +132,7 @@
              (set! (-> s1-0 vector 0 w) (the-as int (-> first-color a)))))
           (cond
             ((= mode 'fade-depth)
-             (let ((f0-7 (fminmax (* (1/ #xffffff) (the float (-> s4-0 vector 1 z))) 0.2 1.0)))
+             (let ((f0-7 (fclamp (* (1/ #xffffff) (the float (-> s4-0 vector 1 z))) 0.2 1.0)))
                (set! (-> s1-0 vector 1 x) (the int (* (the float (-> second-color r)) f0-7)))
                (set! (-> s1-0 vector 1 y) (the int (* (the float (-> second-color g)) f0-7)))
                (set! (-> s1-0 vector 1 z) (the int (* (the float (-> second-color b)) f0-7))))

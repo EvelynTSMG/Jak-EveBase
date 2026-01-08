@@ -1618,9 +1618,9 @@
     (+! (-> self paddle-vel) (per-second net-accel))
   )
   (seek! (-> self paddle-vel) 0.0 (per-second (-> *fisher-bank* net-decel)))
-  (fminmax! (-> self paddle-vel) (- (-> *fisher-bank* net-max-vel)) (-> *fisher-bank* net-max-vel))
+  (fclamp! (-> self paddle-vel) (- (-> *fisher-bank* net-max-vel)) (-> *fisher-bank* net-max-vel))
   (+! (-> self paddle) (per-second (-> self paddle-vel)))
-  (fminmax! (-> self paddle) 0.0 1.0)
+  (fclamp! (-> self paddle) 0.0 1.0)
   (vector-lerp! (-> self paddle-pos) (-> self paddle-end 0) (-> self paddle-end 1) (-> self paddle))
 
   (none)

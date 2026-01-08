@@ -691,13 +691,13 @@
   `(max (min ,val ,maxval) ,minval)
   )
 
-(defmacro fminmax (val minval maxval)
+(defmacro fclamp (val minval maxval)
   `(fmax (fmin ,val ,maxval) ,minval)
   )
 (defmacro minmax! (val minval maxval)
   `(set! ,val (max (min ,val ,maxval) ,minval))
   )
-(defmacro fminmax! (val minval maxval)
+(defmacro fclamp! (val minval maxval)
   `(set! ,val (fmax (fmin ,val ,maxval) ,minval))
   )
 
