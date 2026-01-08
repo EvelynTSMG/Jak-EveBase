@@ -30,7 +30,7 @@
    (unknown-quaternion00      quaternion :inline :offset 496)
    (unknown-quaternion01      quaternion :inline :offset 512)
    (unknown-float00           float :offset 528)
-   (unknown-float01           float :offset 532)
+   (xz-vel-mag                float :offset 532)
    (unknown-float02           float :offset 536)
    (unknown-vector10          vector :inline :offset 544)
    (unknown-vector11          vector :inline :offset 560)

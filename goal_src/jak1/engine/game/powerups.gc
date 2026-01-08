@@ -452,7 +452,7 @@
       (('snow) (update-snow self))))
   (cond
     ((and (= (-> self control ground-pat material) (pat-material ice))
-          (and (>= (-> self control unknown-float01) 204.8)
+          (and (>= (-> self control xz-vel-mag) 204.8)
                (not (time-elapsed? (-> self control last-ground-time) (seconds 0.05)))))
      (let ((gp-0 (vector<-cspace! (new 'stack-no-clear 'vector) (joint-node eichar-lod0-jg RbigToe))))
        (if (and (< (fabs (vector-dot (-> self control dynam gravity-normal) (vector-! (new 'stack-no-clear 'vector) gp-0 (-> self control trans))))
@@ -465,11 +465,11 @@
                 (rand-vu-percent? 0.5))
          (launch-particles :system *sp-particle-system-3d* (-> *part-id-table* 2391) gp-1)))
      ;; og:preserve-this PAL patch here
-     (let ((f0-8 (lerp-scale 80.0 100.0 (-> self control unknown-float01) 0.0 81920.0)))
+     (let ((f0-8 (lerp-scale 80.0 100.0 (-> self control xz-vel-mag) 0.0 81920.0)))
        (if (not (ja-group? eichar-ice-stance-ja)) (set! f0-8 (* 0.8 f0-8)))
        (seek! (-> self control unknown-float141) f0-8 (* 100.0 (seconds-per-frame))))
      (let ((f30-0 (-> self control unknown-float141))
-           (f0-13 (lerp-scale -0.3 0.3 (-> self control unknown-float01) 0.0 81920.0)))
+           (f0-13 (lerp-scale -0.3 0.3 (-> self control xz-vel-mag) 0.0 81920.0)))
        (sound-play "ice-loop"
                    :id (-> self control unknown-soundid00)
                    :vol

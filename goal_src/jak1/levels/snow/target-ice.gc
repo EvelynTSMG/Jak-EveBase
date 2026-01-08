@@ -84,7 +84,7 @@
                (suspend)
                (ja :num! (seek! 0.0 1.2)))
              (set! gp-0 60))))
-        (while (< 16384.0 (-> self control unknown-float01))
+        (while (< 16384.0 (-> self control xz-vel-mag))
           (cond
             ((ja-group? eichar-ice-slide-ja))
             (else (ja-channel-push! 1 (the-as time-frame gp-0)) (set! gp-0 150) (ja :group! eichar-ice-slide-ja)))

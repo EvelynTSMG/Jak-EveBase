@@ -43,7 +43,7 @@
   (build-conversions (-> self control transv)))
 
 (defbehavior reverse-conversions target ((arg0 vector))
-  (set! (-> self control unknown-float01) (vector-xz-length (-> self control unknown-vector00)))
+  (set! (-> self control xz-vel-mag) (vector-xz-length (-> self control unknown-vector00)))
   (vector-matrix*! arg0 (-> self control unknown-vector00) (-> self control unknown-matrix01))
   (set! (-> self control old-status) (-> self control status))
   (none))
@@ -193,7 +193,7 @@
   (when (and *stats-target* arg0)
     (format arg1
             "~0ks: ~M ~X/~X ~A ~A ~A~%"
-            (-> arg0 control unknown-float01)
+            (-> arg0 control xz-vel-mag)
             (-> arg0 control status)
             (-> arg0 control prev-status)
             (-> arg0 state name)
@@ -325,7 +325,7 @@
       (countdown (a2-0 15)
         (let ((a3-2 (-> a1-3 a2-0 quad))) (set! (-> a1-3 (+ a2-0 1) quad) a3-2)))
       (set! (-> a1-3 0 quad) (-> self control transv quad))
-      (set! (-> a1-3 0 w) (-> self control unknown-float01))
+      (set! (-> a1-3 0 w) (-> self control xz-vel-mag))
       (dotimes (a2-6 16)
         (+! f1-0 (-> a1-3 a2-6 w))
         (when (< f2-0 (-> a1-3 a2-6 w))
@@ -637,7 +637,7 @@
                             (collide-action edgegrab-cam swingpole-active racer snowball tube flut)))
              (-> *setting-control* current allow-look-around)
              (time-elapsed? (-> self no-look-around-wait) (seconds 0.05))
-             (not (and (= (-> self control ground-pat material) (pat-material ice)) (< 4096.0 (-> self control unknown-float01)))))
+             (not (and (= (-> self control ground-pat material) (pat-material ice)) (< 4096.0 (-> self control xz-vel-mag)))))
       (send-event self 'change-mode 'look-around)))
   (when (and (= *cheat-mode* 'debug)
              (cpad-hold? (target-cpad) r2)

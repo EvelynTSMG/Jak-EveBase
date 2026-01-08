@@ -96,12 +96,12 @@
   (let ((f0-8 (cond
                 ((or (-> self racer stick-lock) (-> self racer heavy)) 409600.0)
                 ((= (-> self next-state name) 'target-racing-bounce)
-                 (lerp-scale 81920.0 163840.0 (-> self control unknown-float01) 40960.0 (-> self racer transv-max)))
+                 (lerp-scale 81920.0 163840.0 (-> self control xz-vel-mag) 40960.0 (-> self racer transv-max)))
                 ((or (-> self racer hop?) (= (-> self next-state name) 'target-racing-bounce))
-                 (lerp-scale 81920.0 163840.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
+                 (lerp-scale 81920.0 163840.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max)))
                 ((time-elapsed? (-> self control last-ground-time) (seconds 0.6))
-                 (lerp-scale 81920.0 122880.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
-                (else (lerp-scale 245760.0 81920.0 (-> self control unknown-float01) 40960.0 (-> self racer transv-max))))))
+                 (lerp-scale 81920.0 122880.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max)))
+                (else (lerp-scale 245760.0 81920.0 (-> self control xz-vel-mag) 40960.0 (-> self racer transv-max))))))
     (set! (-> self control dynam gravity-max) (* 8.0 f0-8))
     (set! (-> self control dynam gravity-length) f0-8))
   (vector-float*! (-> self control dynam gravity)
@@ -132,12 +132,12 @@
   (seek! (-> self racer slide-interp) 0.0 (seconds-per-frame))
   (let ((f30-1 (if (or (< (* arg1 arg0) 0.0) (not (racer-on-ground?)))
                  1.0
-                 (+ 1.0 (* (fabs arg1) (lerp-scale 0.0 3.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))))
-        (f28-1 (lerp-scale 32768.0 20024.889 (-> self control unknown-float01) 0.0 (/ (-> self racer transv-max) 2)))
-        (f0-18 (lerp-scale 91022.22 236657.78 (-> self control unknown-float01) 0.0 (/ (-> self racer transv-max) 8))))
+                 (+ 1.0 (* (fabs arg1) (lerp-scale 0.0 3.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))))
+        (f28-1 (lerp-scale 32768.0 20024.889 (-> self control xz-vel-mag) 0.0 (/ (-> self racer transv-max) 2)))
+        (f0-18 (lerp-scale 91022.22 236657.78 (-> self control xz-vel-mag) 0.0 (/ (-> self racer transv-max) 8))))
     (seek! (-> self racer rotv y) (* arg0 f30-1 (- f28-1)) (* f0-18 (seconds-per-frame))))
   (set! (-> self racer rotv y)
-        (* (-> self racer rotv y) (lerp-scale 0.99 0.9 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
+        (* (-> self racer rotv y) (lerp-scale 0.99 0.9 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))
   (let ((f30-3 (vector-y-angle (-> self control unknown-vector00)))
         (s5-1 (racer-on-ground?)))
     (cond
@@ -245,7 +245,7 @@
   (quaternion-rotate-x! (-> self control unknown-quaternion00)
                         (-> self control unknown-quaternion00)
                         (+ arg0 (-> self racer shock-rotx) (* (-> self racer mult-rotx) (-> self racer cur-rotx))))
-  (let ((f30-1 (* (-> self control unknown-float61) (/ (-> self control unknown-float01) (-> self racer transv-max)))))
+  (let ((f30-1 (* (-> self control unknown-float61) (/ (-> self control xz-vel-mag) (-> self racer transv-max)))))
     (set! (-> self racer hill-value) f30-1)
     (if (and (racer-on-ground?) (begin (set! (-> self racer hill-ground-value) f30-1) (< 0.0 f30-1)))
       (set! (-> self racer hill-offset) (lerp (-> self racer hill-offset) (fmax -4096.0 (* -16384.0 f30-1)) 0.05))
@@ -268,7 +268,7 @@
              (!= (-> self control unknown-surface00 mode) 'air))
       (+! (-> self racer shock-offset) (* (-> self racer shock-offsetv) (seconds-per-frame))))
     (set! (-> self racer shock-offset)
-          (* (-> self racer shock-offset) (lerp-scale 0.99 0.98 (-> self control unknown-float01) 0.0 28672.0)))
+          (* (-> self racer shock-offset) (lerp-scale 0.99 0.98 (-> self control xz-vel-mag) 0.0 28672.0)))
     (cond
       ((< 81920.0 (-> self racer shock-offset))
        (set! (-> self racer shock-offset) 81920.0)
@@ -386,7 +386,7 @@
      (sound-play "warning"))))
 
 (defbehavior racer-buzz target ((arg0 float))
-  (let ((f1-0 (lerp-scale 0.2 1.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
+  (let ((f1-0 (lerp-scale 0.2 1.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))
     (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 (the int (* 255.0 (fmin 1.0 (* arg0 f1-0)))) (seconds 0.05)))
   0
   (none))
@@ -424,7 +424,7 @@
                         *sp-particle-system-3d*
                         (-> *part-id-table* 2212)
                         (vector<-cspace! (new 'stack-no-clear 'vector) (-> self manipy 0 node-list data 10)))))
-  (when (and (racer-on-ground?) (< (-> self control unknown-float01) 90112.0))
+  (when (and (racer-on-ground?) (< (-> self control xz-vel-mag) 90112.0))
     (let* ((gp-4 #f)
            (s5-2 (vector<-cspace! (new 'stack-no-clear 'vector) (-> self manipy 0 node-list data 10)))
            (v1-61 (-> self control ground-pat material))
@@ -432,7 +432,7 @@
                     ((= v1-61 (pat-material waterbottom))
                      (when (and (logtest? (-> self draw status) (draw-status was-drawn)) (zero? (-> self draw cur-lod)))
                        (let ((f1-3 (y-angle (-> self control)))
-                             (f0-17 (-> self control unknown-float01))
+                             (f0-17 (-> self control xz-vel-mag))
                              (s4-2 s5-2))
                          (set! (-> s4-2 y) (-> self water height))
                          (set! (-> *part-id-table* 2275 init-specs 4 initial-valuef) (+ 24576.0 f1-3))
@@ -530,7 +530,7 @@
                (sin (* 32768.0 (/ (the float v1-218) (the float (-> self racer boost-duration)))))))
       (set! (-> self racer boost-curve) 0.0)))
   (when (or (not (cpad-hold? (target-cpad) x))
-            (< (-> self control unknown-float01) 4096.0)
+            (< (-> self control xz-vel-mag) 4096.0)
             (= (-> self racer boost-level) 0.0))
     (when (nonzero? (-> self racer boost-sound-id))
       (let ((v1-241 (the-as sound-rpc-set-param (get-sound-buffer-entry))))
@@ -558,11 +558,11 @@
            (a1-54 (cond
                     ((or (= v1-274 (pat-material metal)) (= v1-274 (pat-material pcmetal)))
                      (set! (-> *part-id-table* 2226 init-specs 1 initial-valuef)
-                           (lerp-scale 0.2 10.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
+                           (lerp-scale 0.2 10.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max)))
                      (-> *part-id-table* 2226))
                     (else
                      (set! (-> *part-id-table* 2225 init-specs 1 initial-valuef)
-                           (lerp-scale 0.2 10.0 (-> self control unknown-float01) 0.0 (-> self racer transv-max)))
+                           (lerp-scale 0.2 10.0 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max)))
                      (-> *part-id-table* 2225)))))
       (launch-particles a1-54 gp-8))
     (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 51 (seconds 0.05))
@@ -605,7 +605,7 @@
           (* (- (-> self racer turn-anim-targ) (-> self racer turn-anim-frame))
              (lerp-scale 20.0
                          (if (< (fabs (-> self racer turn-anim-frame)) (fabs (-> self racer turn-anim-targ))) 30.0 60.0)
-                         (-> self control unknown-float01)
+                         (-> self control xz-vel-mag)
                          0.0
                          (* 0.3 (-> self racer transv-max)))
              (seconds-per-frame)))
@@ -613,7 +613,7 @@
             (fmax -100.0
                   (fmin 100.0
                         (* (-> self racer turn-anim-vel)
-                           (lerp-scale 0.96 0.9 (-> self control unknown-float01) 0.0 (* 0.3 (-> self racer transv-max)))))))
+                           (lerp-scale 0.96 0.9 (-> self control xz-vel-mag) 0.0 (* 0.3 (-> self racer transv-max)))))))
       (+! (-> self racer turn-anim-frame) (* (-> self racer turn-anim-vel) (seconds-per-frame)))
       (set! (-> self racer turn-anim-frame) (fmax -20.0 (fmin 20.0 (-> self racer turn-anim-frame))))
       (cond
@@ -776,8 +776,8 @@
               (set! f26-2 0.0))
             (+! (-> self racer front-turn) (* 0.0625 (deg-diff (-> self racer front-turn) (* 3640.889 f30-0))))
             (+! (-> self racer tail-tilt) (* 0.0625 (deg-diff (-> self racer tail-tilt) (* -3640.889 f26-2)))))
-          (let* ((f26-3 (* f30-0 (lerp-scale 5461.3335 7281.778 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
-                 (f0-29 (* f28-1 (lerp-scale 546.13336 3640.889 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
+          (let* ((f26-3 (* f30-0 (lerp-scale 5461.3335 7281.778 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))
+                 (f0-29 (* f28-1 (lerp-scale 546.13336 3640.889 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))
                  (f1-3 (* -0.8 (-> self racer rotv y)))
                  (f0-33 (+ (cond
                              ((< (* f1-3 f26-3) 0.0) 0.0)
@@ -791,7 +791,7 @@
       (racer-calc-gravity)
       (add-gravity)
       (reverse-conversions (-> self control transv))
-      (let ((f30-1 (/ (* (-> self racer tail-tilt) (+ 20480.0 (-> self control unknown-float01))) (+ 20480.0 (-> self racer transv-max)))))
+      (let ((f30-1 (/ (* (-> self racer tail-tilt) (+ 20480.0 (-> self control xz-vel-mag))) (+ 20480.0 (-> self racer transv-max)))))
         (cond
           ((racer-on-ground?)
            (seek! (-> self control unknown-float81) 1.0 (* 8.0 (seconds-per-frame)))
@@ -810,7 +810,7 @@
                (when (time-elapsed? (-> self racer bob-meta-time) (seconds 2.2))
                  (set-time! (-> self racer bob-meta-time))
                  (set! (-> self racer bob-meta-meta-timer) (rand-vu-float-range 0.8 1.2)))))
-           (let ((f0-63 (lerp-scale -1.0 -0.33 (-> self control unknown-float01) 0.0 (-> self racer transv-max))))
+           (let ((f0-63 (lerp-scale -1.0 -0.33 (-> self control xz-vel-mag) 0.0 (-> self racer transv-max))))
              (seek! (-> self racer bob-mult-rot) f0-63 (* 8.0 (seconds-per-frame))))
            (if (< 0.0 f30-1) (set! f30-1 0.0))
            (set! (-> self racer stick-lock) #f))

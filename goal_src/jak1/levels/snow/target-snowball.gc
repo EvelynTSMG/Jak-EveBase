@@ -62,7 +62,7 @@
       (let ((a0-2 (handle->process arg0))) (if a0-2 (set! (-> self snowball entity) (-> a0-2 entity))))
       (reset-target-state #t)
       (set! (-> self control transv quad) (the-as uint128 0))
-      (set! (-> self control unknown-float01) 0.0)
+      (set! (-> self control xz-vel-mag) 0.0)
       (move-by-vector! (-> self control) (new 'static 'vector :y 4096.0 :w 1.0))
       (logior! (-> self control root-prim prim-core action) (collide-action snowball))
       (ja-channel-set! 1)
