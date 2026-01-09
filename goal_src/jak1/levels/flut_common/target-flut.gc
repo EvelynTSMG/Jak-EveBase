@@ -544,12 +544,26 @@
             (fmax (-> self control unknown-float123)
                   (* 0.003921569 (the float (-> *cpad-list* cpads (target-cpad) abutton (abutton-idx x)))))) ;; og:preserve-this abutton indexing
       (if (logtest? (-> self control status) (cshape-moving-flags onsurf)) (go target-flut-hit-ground))
-      (if (and (cpad-pressed? (target-cpad) x)
-               (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 40960.0)
-               (and (not (logtest? (-> self water flags) (water-flags wt09)))
-                    (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
-                    (< 4096.0 (target-height-above-ground))))
-        (go target-flut-double-jump (-> *FLUT-bank* double-jump-height-min) (-> *FLUT-bank* double-jump-height-max)))
+      (if (and
+        (cpad-pressed? (target-cpad) x)
+        (or
+          (and
+            (= (-> *pc-settings* mod doublejump-ability) 'always)
+            (time-elapsed? (-> self state-time) (seconds 0.04))
+          )
+          (and
+            (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 40960.0)
+            (< 4096.0 (target-height-above-ground))
+          )
+        )
+        (and
+          (not (logtest? (-> self water flags) (water-flags wt09)))
+          (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
+        )
+      )
+        (go target-flut-double-jump (-> *FLUT-bank* double-jump-height-min) (-> *FLUT-bank* double-jump-height-max))
+      )
+
       (if (and (cpad-pressed? (target-cpad) square)
                (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 61440.0)
                (and (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))

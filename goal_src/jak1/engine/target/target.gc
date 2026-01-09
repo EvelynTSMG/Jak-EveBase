@@ -1751,9 +1751,17 @@
 
     (if (and
       (cpad-pressed? (target-cpad) x)
-      (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 3.0))
+      (or
+        (and
+          (= (-> *pc-settings* mod doublejump-ability) 'always)
+          (time-elapsed? (-> self state-time) (seconds 0.04))
+        )
+        (and
+          (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 3.0))
+          (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
+        )
+      )
       (and
-        (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
         (not (logtest? (-> self water flags) (water-flags wt09)))
         (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
       )
