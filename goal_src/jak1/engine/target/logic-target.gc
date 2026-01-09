@@ -471,7 +471,7 @@
                         (vector-dot (-> self control dynam gravity-normal)
                                     (vector-! (new 'stack-no-clear 'vector)
                                               (the-as vector (-> self control unknown-sphere-array00 1 prim-core))
-                                              (-> self control unknown-vector70)))))
+                                              (-> self control wall-hit-tri-intersect)))))
               (set-time! (-> self control unknown-dword70)))
             (if (not (time-elapsed? (-> self control unknown-dword70) (seconds 0.2))) (set! f30-4 (+ 204800.0 f30-4)))
             (if (and (not (logtest? (-> self control status) (cshape-moving-flags twall)))

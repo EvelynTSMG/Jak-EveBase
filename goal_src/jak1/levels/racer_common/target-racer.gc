@@ -293,7 +293,7 @@
       (when (and (logtest? (-> self control status) (cshape-moving-flags twall))
                  (< 20480.0 f30-2)
                  (and (< (fabs (-> self racer mod-x)) 0.5) (!= (-> self next-state name) 'target-racing-smack)))
-        (let ((s5-3 (vector-! (new 'stack-no-clear 'vector) (-> self control trans) (-> self control unknown-vector70))))
+        (let ((s5-3 (vector-! (new 'stack-no-clear 'vector) (-> self control trans) (-> self control wall-hit-tri-intersect))))
           (vector-normalize! s5-3 1.0)
           (let ((gp-1 (vector-reflect-flat! (new 'stack-no-clear 'vector) gp-0 s5-3)))
             (set! (-> gp-1 y) 0.0)
@@ -553,7 +553,7 @@
                           (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data v1-258)))))
     (cpad-set-buzz! (-> *cpad-list* cpads 0) 0 1 (seconds 0.1)))
   (when (logtest? (-> self control status) (cshape-moving-flags twall))
-    (let* ((gp-8 (racer-find-prop-point (new 'stack-no-clear 'vector) (-> self control unknown-vector70)))
+    (let* ((gp-8 (racer-find-prop-point (new 'stack-no-clear 'vector) (-> self control wall-hit-tri-intersect)))
            (v1-274 (-> self control wall-pat material))
            (a1-54 (cond
                     ((or (= v1-274 (pat-material metal)) (= v1-274 (pat-material pcmetal)))

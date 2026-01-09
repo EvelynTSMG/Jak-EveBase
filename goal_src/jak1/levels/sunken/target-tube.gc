@@ -197,7 +197,7 @@
       (bucket-id debug-no-zbuf)
       (-> self control trans)
       s4-1
-      (meters 0.00024414062)
+      1.0
       (new 'static 'rgba :g #xff :a #x80)
     )
 
@@ -210,66 +210,58 @@
 
     (vector-v++! (-> self control unknown-vector00) s4-1)
 
+    ; We collided with something
     (when (logtest? (-> self control status) (cshape-moving-flags twall))
-      (let ((s3-0 (-> self tube old-transv)))
-        ;(-> self control unknown-vector00 y)
-        (vector-reflect! s4-1 s3-0 (-> self control unknown-vector71))
+      (let ((old-transv (-> self tube old-transv)))
+        ; Bounce off of the wall
+        (vector-reflect! s4-1 old-transv (-> self control wall-hit-poly-normal))
 
         (let (
-          (f30-1 (vector-dot (-> self tube sidetube) (-> self tube old-transv)))
-          (s2-0 (new-stack-vector0))
+          (f30-1 (vector-dot (-> self tube sidetube) old-transv))
+          (forward-vel (new-stack-vector0))
           (f28-0 (vector-dot (-> self tube sidetube) s4-1))
         )
-          (vector-! s2-0
+          (vector-! forward-vel
             s4-1
-            (vector-float*! s2-0 (-> self tube sidetube) f28-0)
+            (vector-float*! forward-vel (-> self tube sidetube) f28-0)
           )
 
-          (let* (
-            (f0-8 (vector-length s2-0))
-            (f1-0 f0-8)
+          (cond
+            ((and
+              (> f30-1 0.0)
+              (> (- f30-1) f28-0)
+            )
+              (set! f28-0 (- f30-1))
+            )
+
+            ((and
+              (< f30-1 0.0)
+              (< (- f30-1) f28-0)
+            )
+              (set! f28-0 (- f30-1))
+            )
           )
-            (cond
-              ((and
-                (> f30-1 0.0)
-                (> (- f30-1) f28-0)
-              )
-                (set! f28-0 (- f30-1))
-              )
 
-              ((and
-                (< f30-1 0.0)
-                (< (- f30-1) f28-0)
-              )
-                (set! f28-0 (- f30-1))
-              )
-            )
-
-            (vector+! s4-1
-              (vector-float*! s4-1 (-> self tube sidetube) f28-0)
-              (vector-float*! s2-0 s2-0 (/ f0-8 f1-0))
-            )
+          (vector+! s4-1
+            (vector-float*! s4-1 (-> self tube sidetube) f28-0)
+            forward-vel
           )
         )
         (vector-flatten! s4-1 s4-1 (-> self control local-normal))
 
-        (let ((s2-1 (new-stack-vector0)))
-          (let ((f0-11 (vector-dot (-> self tube downtube) s4-1)))
-            (vector-! s2-1
-              s4-1
-              (vector-float*! s2-1 (-> self tube downtube) f0-11)
-            )
+        (let (
+          (downward-vel (new-stack-vector0))
+          (f0-11 (vector-dot (-> self tube downtube) s4-1))
+          (f2-5 (fmax (-> self control xz-vel-mag) (vector-dot old-transv (-> self tube downtube))))
+        )
+          (vector-! downward-vel
+            s4-1
+            (vector-float*! downward-vel (-> self tube downtube) f0-11)
           )
 
-          (let* (
-            (f0-12 (vector-length s2-1))
-            (f1-2 f0-12)
-            (f2-5 (fmax (-> self control xz-vel-mag) (vector-dot s3-0 (-> self tube downtube))))
-          )
-            (vector+! s4-1
-              (vector-float*! s4-1 (-> self tube downtube) f2-5)
-              (vector-float*! s2-1 s2-1 (/ f0-12 f1-2))
-            )
+          (vector+! s4-1
+            (vector-float*! s4-1 (-> self tube downtube) f2-5)
+            downward-vel
           )
         )
       )
@@ -309,7 +301,7 @@
       (bucket-id debug-no-zbuf)
       (-> self control trans)
       s4-2
-      (meters 2)
+      (meters 2.0)
       (new 'static 'rgba :r #xff :g #x80 :b #x40 :a #x80)
     )
 
@@ -344,7 +336,8 @@
     )
   )
     (if (>= (vector-xz-length (-> self control unknown-vector00)) f30-2)
-      (vector-xz-normalize! (-> self control unknown-vector00) f30-2))
+      (vector-xz-normalize! (-> self control unknown-vector00) f30-2)
+    )
   )
 
   (let ((gp-1 (new-stack-vector0)))
@@ -355,7 +348,7 @@
       (bucket-id debug-no-zbuf)
       (-> self control trans)
       gp-1
-      (meters 0.00024414062)
+      1.0
       (new 'static 'rgba :g #xff :b #xff :a #x80)
     )
 
@@ -715,8 +708,8 @@
         )
 
         ((and
-          (>= -20.0 (-> self tube turn-anim-frame))
-          (>= 0.0 (-> self tube turn-anim-vel))
+          (<= (-> self tube turn-anim-frame) -20.0)
+          (<= (-> self tube turn-anim-vel) 0.0)
         )
          (set! (-> self tube turn-anim-vel) 0.0)
         )
@@ -897,9 +890,9 @@
 
       (let (
         (s3-2 (new-stack-vector0))
-        (f30-0 (vector-dot (-> self control unknown-vector71) (-> atk-info vector)))
+        (f30-0 (vector-dot (-> self control wall-hit-poly-normal) (-> atk-info vector)))
       )
-        (vector-! s3-2 (-> atk-info vector) (vector-float*! s3-2 (-> self control unknown-vector71) f30-0))
+        (vector-! s3-2 (-> atk-info vector) (vector-float*! s3-2 (-> self control wall-hit-poly-normal) f30-0))
         (let* (
           (f0-3 (vector-length s3-2))
           (f1-0 f0-3)
@@ -908,7 +901,7 @@
             (/! f30-0 2)
           )
           (vector+! (-> atk-info vector)
-            (vector-float*! (-> atk-info vector) (-> self control unknown-vector71) f30-0)
+            (vector-float*! (-> atk-info vector) (-> self control wall-hit-poly-normal) f30-0)
             (vector-float*! s3-2 s3-2 (/ f0-3 f1-0))
           )
         )
