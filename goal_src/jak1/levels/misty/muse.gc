@@ -175,7 +175,7 @@
 (defmethod nav-enemy-method-51 ((this muse))
   (dotimes (s5-0 2)
     (let ((v1-2 (rand-vu-int-range 3 (+ (-> this node-list length) -1))))
-      (launch-particles (-> *part-id-table* 2003) (vector<-cspace! (new 'stack-no-clear 'vector) (-> this node-list data v1-2)))
+      (launch-particles (-> *part-id-table* 271) (vector<-cspace! (new 'stack-no-clear 'vector) (-> this node-list data v1-2)))
     )
   )
 
