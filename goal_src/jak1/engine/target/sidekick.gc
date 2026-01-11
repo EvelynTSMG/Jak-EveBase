@@ -77,24 +77,50 @@
         (case (-> block param 0)
           (('play-anim)
             (set! v0-0 (-> self node-list data))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0) cspace<-cspace+quaternion!)
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param1) (the-as basic (-> self parent-override 0 node-list data)))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2) (the-as basic (-> self parent-override 0 control quat)))
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0)
+              cspace<-cspace+quaternion!
+            )
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param1)
+              (the-as basic (-> self parent-override 0 node-list data))
+            )
+            
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2)
+              (the-as basic (-> self parent-override 0 control quat))
+            )
           )
 
           (('copy-parent)
             (set! v0-0 (-> self node-list data))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0) cspace<-cspace!)
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param1) (the-as basic (-> self parent-override 0 node-list data)))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2) #f)
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0)
+              cspace<-cspace!
+            )
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param1)
+              (the-as basic (-> self parent-override 0 node-list data))
+            )
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2)
+              #f
+            )
           )
 
           (else
             (set! v0-0 (-> self node-list data))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0) cspace<-cspace+quaternion!)
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param0)
+              cspace<-cspace+quaternion!
+            )
+            
             (set! (-> (the-as (inline-array cspace) v0-0) 0 param1)
-                  (the-as basic (-> self parent-override 0 control unknown-cspace10 parent)))
-            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2) (the-as basic (-> self parent-override 0 control quat)))
+              (the-as basic (-> self parent-override 0 control unknown-cspace10 parent))
+            )
+
+            (set! (-> (the-as (inline-array cspace) v0-0) 0 param2)
+              (the-as basic (-> self parent-override 0 control quat))
+            )
           )
         )
 
@@ -155,7 +181,6 @@
       )
 
       (set! (-> self draw color-emissive quad) (-> self parent-override 0 draw color-emissive quad))
-
       (set! (-> self draw secondary-interp) (-> self parent-override 0 draw secondary-interp))
 
       (if *debug-segment*
@@ -177,58 +202,58 @@
 
       (vector<-cspace! (-> self draw origin) (-> self node-list data (-> self draw origin-joint-index)))
     )
-  )
 
-  (when *display-sidekick-stats*
-    (format *stdcon* "~%")
-    (debug-print-channels (-> self skel) (the-as symbol *stdcon*))
+    (when *display-sidekick-stats*
+      (format *stdcon* "~%")
+      (debug-print-channels (-> self skel) (the-as symbol *stdcon*))
 
-    (add-debug-sphere
-      #t
-      (bucket-id debug-no-zbuf)
-      (-> self parent-override 0 control unknown-cspace10 parent bone transform vector 3)
-      (meters 0.1)
-      (new 'static 'rgba :g #xff :a #x80)
-    )
-
-    (add-debug-sphere
-      #t
-      (bucket-id debug-no-zbuf)
-      (-> self node-list data 3 bone transform vector 3)
-      (meters 0.1)
-      (new 'static 'rgba :r #xff :g #xff :a #x80)
-    )
-
-    (add-debug-sphere
-      #t
-      (bucket-id debug-no-zbuf)
-      (-> self draw origin)
-      (meters 0.1)
-      (new 'static 'rgba :r #xff :g #x80 :a #x80)
-    )
-  )
-
-  (set! (-> self draw shadow)
-    (the-as shadow-geo
-      (if (and
-        (movie?)
-        (-> self shadow-in-movie?)
+      (add-debug-sphere
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self parent-override 0 control unknown-cspace10 parent bone transform vector 3)
+        (meters 0.1)
+        (new 'static 'rgba :g #xff :a #x80)
       )
-        sidekick-shadow-mg
+
+      (add-debug-sphere
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self node-list data 3 bone transform vector 3)
+        (meters 0.1)
+        (new 'static 'rgba :r #xff :g #xff :a #x80)
+      )
+
+      (add-debug-sphere
+        #t
+        (bucket-id debug-no-zbuf)
+        (-> self draw origin)
+        (meters 0.1)
+        (new 'static 'rgba :r #xff :g #x80 :a #x80)
       )
     )
-  )
 
-  (if (-> self skel effect)
-    (effect-control-method-9 (-> self skel effect))
-  )
+    (set! (-> self draw shadow)
+      (the-as shadow-geo
+        (if (and
+          (movie?)
+          (-> self shadow-in-movie?)
+        )
+          sidekick-shadow-mg
+        )
+      )
+    )
 
-  (if (logtest? (-> self skel status) (janim-status blerc blerc-done))
-    (merc-blend-shape self)
-  )
+    (if (-> self skel effect)
+      (effect-control-method-9 (-> self skel effect))
+    )
 
-  (if (logtest? (-> self skel status) (janim-status eye-done eye))
-    (merc-eye-anim self)
+    (if (logtest? (-> self skel status) (janim-status blerc blerc-done))
+      (merc-blend-shape self)
+    )
+
+    (if (logtest? (-> self skel status) (janim-status eye-done eye))
+      (merc-eye-anim self)
+    )
   )
 )
 
@@ -236,7 +261,9 @@
   sidekick
   sidekick-lod0-jg
   -1
+
   ((sidekick-lod0-mg (meters 999999)))
+  
   :bounds (static-spherem 0 0 0 3)
   :longest-edge (meters 1)
   :shadow sidekick-shadow-mg
@@ -269,9 +296,17 @@
   )
 
   (let ((v1-14 (-> self node-list data)))
-    (set! (-> v1-14 0 param0) cspace<-cspace+quaternion!)
-    (set! (-> v1-14 0 param1) (the-as basic (-> self parent-override 0 control unknown-cspace10 parent)))
-    (set! (-> v1-14 0 param2) (the-as basic (-> self parent-override 0 control quat)))
+    (set! (-> v1-14 0 param0)
+      cspace<-cspace+quaternion!
+    )
+    
+    (set! (-> v1-14 0 param1)
+      (the-as basic (-> self parent-override 0 control unknown-cspace10 parent))
+    )
+
+    (set! (-> v1-14 0 param2)
+      (the-as basic (-> self parent-override 0 control quat))
+    )
   )
 
   (set! (-> self shadow-in-movie?) #t)
