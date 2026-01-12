@@ -76,7 +76,7 @@
       (dotimes (s3-2 (-> this alt-actors length))
         (let* ((v1-10 (-> this alt-actors s3-2))
                (s1-0 (if v1-10 (-> v1-10 extra process)))
-               (s2-2 (if (and (nonzero? s1-0) (type-type? (-> s1-0 type) process-drawable)) s1-0)))
+               (s2-2 (ensure-type s1-0 process-drawable)))
           (when s2-2
             (when (send-event s2-2 'can-spawn?)
               (let ((f30-0 (vector-vector-distance s4-0 (-> (the-as process-drawable s2-2) root trans)))

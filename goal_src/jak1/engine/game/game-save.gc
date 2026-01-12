@@ -1183,8 +1183,8 @@
            (when (= (-> *pc-settings* speedrunner-mode?) #f)
              (activate-progress *dproc* (progress-screen auto-save))))))))
 
-(defun auto-save-command ((arg0 symbol) (arg1 int) (arg2 int) (arg3 process-tree))
-  (process-spawn auto-save arg0 arg3 arg1 arg2)
+(defun auto-save-command ((desired-mode symbol) (card-idx int) (file-idx int) (notify-proc process-tree))
+  (process-spawn auto-save desired-mode notify-proc card-idx file-idx)
   (none))
 
 (defun auto-save-check ()

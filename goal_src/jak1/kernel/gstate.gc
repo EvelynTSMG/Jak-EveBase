@@ -419,6 +419,57 @@ It type checks the arguments for the entry function.
     ,@(apply-i (lambda (x i) `(set! (-> event-data param ,i) (the-as uint ,x))) params)
     (send-event-function ,proc event-data)))
 
+(defmacro try-send-event (actor msg &key (from (with-pp pp)) &rest params)
+  "Send an event to a process of an entity actor, iif the actor exists."
+  `(let ((event-data (new 'stack-no-clear 'event-message-block)))
+    (set! (-> event-data message) ,msg)
+    (set! (-> event-data from) ,from)
+
+    (set! (-> event-data num-params) ,(length params))
+    ,@(apply-i
+      (lambda (x i)
+        `(set! (-> event-data param ,i) (the-as uint ,x))
+      )
+      params
+    )
+
+    (send-event-function
+      (if ,actor
+        (-> ,actor extra process)
+      )
+      event-data
+    )
+  )
+)
+
+(defmacro try-send-event-copy (actor &key (from #f) block)
+  "Send an event to a process of an entity actor, iif the actor exists."
+  `(let ((event-data (new 'stack-no-clear 'event-message-block)))
+    (set! (-> event-data message) (-> ,block message))
+
+    (when (not ,from)
+      (set! (-> event-data from) (-> ,block from))
+    )
+
+    (set! (-> event-data num-params) (-> ,block num-params))
+
+    (set! (-> event-data param 0) (-> ,block param 0))
+    (set! (-> event-data param 1) (-> ,block param 1))
+    (set! (-> event-data param 2) (-> ,block param 2))
+    (set! (-> event-data param 3) (-> ,block param 3))
+    (set! (-> event-data param 4) (-> ,block param 4))
+    (set! (-> event-data param 5) (-> ,block param 5))
+    (set! (-> event-data param 6) (-> ,block param 6))
+
+    (send-event-function
+      (if ,actor
+        (-> ,actor extra process)
+      )
+      event-data
+    )
+  )
+)
+
 (defun looping-code ()
   "Loop."
   (loop

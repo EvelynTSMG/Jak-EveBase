@@ -769,10 +769,10 @@
                                             (-> self control unknown-dword51))))
               (when gp-1
                 (set! (-> self control unknown-uint20) (the-as uint (current-time)))
-                (let ((v1-9 (if (and (nonzero? proc) (type-type? (-> proc type) process-drawable)) proc)))
+                (let ((v1-9 (ensure-type proc process-drawable)))
                   (when v1-9
                     (let* ((s5-1 (-> (the-as process-drawable v1-9) root))
-                           (v1-11 (if (and (nonzero? s5-1) (type-type? (-> s5-1 type) collide-shape)) s5-1)))
+                           (v1-11 (ensure-type s5-1 collide-shape)))
                       (if (and v1-11
                                (or (logtest? (-> (the-as collide-shape v1-11) root-prim prim-core collide-as) (collide-kind enemy))
                                    (logtest? (-> (the-as collide-shape v1-11) root-prim prim-core action) (collide-action attackable))))
@@ -1215,7 +1215,7 @@
           (quaternion-copy! (-> self control unknown-quaternion03) (-> self control unknown-quaternion00))
           (set! (-> self control unknown-uint20) (the-as uint (-> self control unknown-vector11 y)))
           (let* ((s3-0 (handle->process arg0))
-                 (s4-1 (if (and (nonzero? s3-0) (type-type? (-> s3-0 type) process-drawable)) s3-0)))
+                 (s4-1 (ensure-type s3-0 process-drawable)))
             (when s4-1
               (set! (-> s5-0 quad) (-> (the-as process-drawable s4-1) root trans quad))
               (quaternion-copy! (-> self control unknown-quaternion03) (-> (the-as process-drawable s4-1) root quat))
@@ -1294,7 +1294,7 @@
           (quaternion-copy! (-> self control unknown-quaternion03) (-> self control unknown-quaternion00))
           (set! (-> self control unknown-uint20) (the-as uint (-> self control unknown-vector11 y)))
           (let* ((s2-0 (handle->process arg0))
-                 (s3-0 (if (and (nonzero? s2-0) (type-type? (-> s2-0 type) process-drawable)) s2-0)))
+                 (s3-0 (ensure-type s2-0 process-drawable)))
             (when s3-0
               (set! (-> s4-0 quad) (-> (the-as process-drawable s3-0) root trans quad))
               (set-yaw-angle-clear-roll-pitch! (-> (the-as process-drawable s3-0) root) (quaternion-y-angle (-> self control quat)))

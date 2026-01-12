@@ -821,7 +821,7 @@ swamp-rat-nest-default-event-handler
       (let ((gp-0 (the-as (pointer process-tree) (-> self child-process))))
         (while gp-0
           (let* ((s5-0 (ppointer->process gp-0))
-                 (a0-1 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) swamp-rat)) s5-0)))
+                 (a0-1 (ensure-type s5-0 swamp-rat)))
             (if a0-1 (send-event a0-1 'victory)))
           (set! gp-0 (-> gp-0 0 brother))))
       (go swamp-rat-nest-active))

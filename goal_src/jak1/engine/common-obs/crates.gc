@@ -572,10 +572,10 @@
       (set! (-> self target) arg0)
       (loop
         (let* ((gp-0 (handle->process (-> self target)))
-               (v1-4 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable)) gp-0)))
+               (v1-4 (ensure-type gp-0 process-drawable)))
           (when v1-4
             (let* ((gp-1 (-> (the-as process-drawable v1-4) root))
-                   (v1-6 (if (and (nonzero? gp-1) (type-type? (-> gp-1 type) collide-shape)) gp-1)))
+                   (v1-6 (ensure-type gp-1 collide-shape)))
               (when v1-6
                 (let* ((gp-2 (-> self root root-prim prim-core))
                        (a1-3 (-> (the-as collide-shape v1-6) root-prim prim-core))

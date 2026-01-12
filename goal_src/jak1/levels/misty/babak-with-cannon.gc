@@ -100,7 +100,7 @@ nav-enemy-default-event-handler
 (defbehavior babak-with-cannon-ride-cannon-post babak-with-cannon ()
   (let* ((v1-0 (-> self cannon-ent))
          (s5-0 (if v1-0 (-> v1-0 extra process)))
-         (gp-0 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+         (gp-0 (ensure-type s5-0 process-drawable)))
     (when gp-0
       (let ((s5-1 (new 'stack-no-clear 'vector)))
         (babak-with-cannon-compute-cannon-dir (the-as mistycannon gp-0) s5-1)
@@ -123,7 +123,7 @@ nav-enemy-default-event-handler
       (nav-enemy-neck-control-inactive)
       (let* ((v1-7 (-> self cannon-ent))
              (gp-0 (if v1-7 (-> v1-7 extra process)))
-             (a0-2 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable)) gp-0)))
+             (a0-2 (ensure-type gp-0 process-drawable)))
         (cond
           (a0-2
            (babak-with-cannon-compute-ride-point (the-as mistycannon a0-2) (-> self event-param-point))
@@ -137,7 +137,7 @@ nav-enemy-default-event-handler
       (logclear! (-> self nav-enemy-flags) (nav-enemy-flags enable-rotate enable-travel))
       (let* ((v1-20 (-> self cannon-ent))
              (gp-1 (if v1-20 (-> v1-20 extra process)))
-             (a0-9 (if (and (nonzero? gp-1) (type-type? (-> gp-1 type) process-drawable)) gp-1)))
+             (a0-9 (ensure-type gp-1 process-drawable)))
         (when a0-9
           (let ((gp-2 (babak-with-cannon-compute-cannon-dir (the-as mistycannon a0-9) (new 'stack-no-clear 'vector))))
             (when (not (nav-enemy-facing-direction? gp-2 1820.4445))

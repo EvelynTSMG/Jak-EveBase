@@ -732,6 +732,13 @@
   `(set! ,place (logior ,place ,amount))
   )
 
+(defmacro logior* (x &rest args)
+  (if `(= ,(length args) 1)
+    `(begin ,x)
+    `(logior* (logior ,x ,(car args)) ,@(cdr args))
+  )
+)
+
 (defmacro logxor! (place amount)
   `(set! ,place (logxor ,place ,amount))
   )

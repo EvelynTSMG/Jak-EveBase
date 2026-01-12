@@ -125,7 +125,7 @@
   (case arg2
     (('touch)
      (let* ((s4-0 arg0)
-            (v1-2 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) process-drawable)) s4-0)))
+            (v1-2 (ensure-type s4-0 process-drawable)))
        (when (and v1-2 (< 8192.0 (- (-> v1-2 root trans y) (-> self root trans y))))
          (do-push-aways! (-> self root))
          (send-shove-back (-> self root) arg0 (the-as touching-shapes-entry (-> arg3 param 0)) 0.7 6144.0 16384.0))))

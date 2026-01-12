@@ -368,7 +368,7 @@
     (when (< s5-0 (-> this alt-actors length))
       (let* ((v1-5 (-> this alt-actors s5-0))
              (s4-0 (if v1-5 (-> v1-5 extra process)))
-             (a0-3 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) process-drawable)) s4-0)))
+             (a0-3 (ensure-type s4-0 process-drawable)))
         (+ -1638.4 (-> this root trans y))
         (cond
           (a0-3

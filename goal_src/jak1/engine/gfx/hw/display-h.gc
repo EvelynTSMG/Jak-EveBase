@@ -112,12 +112,12 @@
    (frames virtual-frame 6 :inline)
    (bg-clear-color rgba 4)
    ;; counters
-   (real-frame-counter time-frame)
-   (base-frame-counter time-frame)
-   (game-frame-counter time-frame)
-   (integral-frame-counter time-frame)
+   (real-frame-counter time-frame) ; Total amount of time the game has been running (never paused)
+   (base-frame-counter time-frame) ; Paused when the game is paused
+   (game-frame-counter time-frame) ; Paused when the game is paused or when a cutscene is playing
+   (integral-frame-counter time-frame) ; Counts frames instead of seconds
    (real-integral-frame-counter time-frame)
-   (actual-frame-counter time-frame)
+   (actual-frame-counter time-frame) ; Ignores lag frames
    (real-actual-frame-counter time-frame)
    (part-frame-counter time-frame)
    ;; the "old" counters are the values from the previous tick.
@@ -199,6 +199,10 @@
 
 (defmacro current-time ()
   `(-> *display* base-frame-counter))
+
+(defmacro current-game-time ()
+  `(-> *display* game-frame-counter)
+)
 
 (defmacro integral-current-time ()
   `(-> *display* integral-frame-counter))

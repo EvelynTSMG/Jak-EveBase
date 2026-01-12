@@ -240,7 +240,7 @@
    The third is the LOD of the drawing. (also only for process-drawable)"
   (let* ((s5-0 arg0)
          (proc-draw (the-as process-drawable
-                            (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) (the-as process-drawable s5-0)))))
+                            (try-as process-drawable s5-0))))
     (if (and (the-as process proc-draw) (zero? (-> proc-draw draw))) (set! proc-draw (the-as process-drawable #f)))
     ;; first char is r or ' '. r for run.
     ;; second char is d or ' '. I think d is draw.
@@ -300,7 +300,7 @@
         (format #t " :trans ~14f ~14f ~14f  " (-> this extra trans x) (-> this extra trans y) (-> this extra trans z)))
       ;; if we have an associated process, print info.
       (let* ((s3-2 (-> this extra process))
-             (s4-2 (if (and (nonzero? s3-2) (type-type? (-> s3-2 type) process-drawable)) s3-2)))
+             (s4-2 (ensure-type s3-2 process-drawable)))
         (format #t
                 ":pr #x~8X ~-12S ~-21S ~-5S/~-5S "
                 (if (-> this extra process) (-> this extra process) 0)
@@ -1033,7 +1033,7 @@
                (deactivate s2-0))))
           (else
            (let* ((s1-0 s2-0)
-                  (v1-34 (if (and (nonzero? s1-0) (type-type? (-> s1-0 type) process-drawable)) s1-0)))
+                  (v1-34 (ensure-type s1-0 process-drawable)))
              (when v1-34
                (cond
                  ((and (nonzero? (-> (the-as process-drawable v1-34) part))

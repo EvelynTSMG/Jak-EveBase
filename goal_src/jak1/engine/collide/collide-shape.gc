@@ -2405,7 +2405,7 @@
   (let ((s3-0 (-> obj root-prim)))
     (if (logtest? (-> s3-0 prim-id) arg0)
       (set! (-> s3-0 prim-core collide-as) (logior (logclear (-> s3-0 prim-core collide-as) arg1) arg2)))
-    (let ((v1-7 (if (and (nonzero? s3-0) (type-type? (-> s3-0 type) collide-shape-prim-group)) s3-0)))
+    (let ((v1-7 (ensure-type s3-0 collide-shape-prim-group)))
       (when v1-7
         (dotimes (a0-4 (-> (the-as collide-shape-prim-group v1-7) num-prims))
           (let ((a1-4 (-> (the-as collide-shape-prim-group v1-7) prims a0-4)))
@@ -2417,7 +2417,7 @@
 (defmethod set-collide-offense ((obj collide-shape) (arg0 int) (arg1 collide-offense))
   (let ((s4-0 (-> obj root-prim)))
     (if (logtest? (-> s4-0 prim-id) arg0) (set! (-> s4-0 prim-core offense) arg1))
-    (let ((v1-5 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) collide-shape-prim-group)) s4-0)))
+    (let ((v1-5 (ensure-type s4-0 collide-shape-prim-group)))
       (when v1-5
         (dotimes (a0-3 (-> (the-as collide-shape-prim-group v1-5) num-prims))
           (let ((a1-4 (-> (the-as collide-shape-prim-group v1-5) prims a0-3)))
@@ -2431,7 +2431,7 @@
     (when arg1
       (let ((s1-0 (-> arg1 head)))
         (set! sv-144 arg0)
-        (let ((s5-0 (if (and (nonzero? sv-144) (type-type? (-> sv-144 type) process-drawable)) sv-144)))
+        (let ((s5-0 (ensure-type sv-144 process-drawable)))
           (when (and s1-0 s5-0)
             (let ((s0-1 (get-touched-prim s1-0 obj arg1)))
               (get-touched-prim s1-0 (-> (the-as process-drawable s5-0) root) arg1)

@@ -418,7 +418,7 @@
       (when (-> self alt-actor)
         (spool-push *art-control* "happy-plant-open" 0 self -99.0)
         (let* ((gp-0 (-> self alt-actor extra process))
-               (a0-2 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) dark-plant)) gp-0)))
+               (a0-2 (ensure-type gp-0 dark-plant)))
           (when a0-2
             (if (dark-plants-all-done (the-as dark-plant a0-2)) (go happy-plant-opening))))))
   :code

@@ -199,12 +199,12 @@
   (when (= option 'attacking)
     ;; make sure we got a process-drawable
     (let* ((s3-0 proc)
-           (proc-drawable (if (and (nonzero? s3-0) (type-type? (-> s3-0 type) process-drawable)) (the-as process-drawable s3-0))))
+           (proc-drawable (try-as process-drawable s3-0)))
       (when proc-drawable
         ;; get enemy fact info
         (let* ((s0-0 (-> proc-drawable fact))
                (enemy-facts (the-as fact-info-enemy
-                                    (if (and (nonzero? s0-0) (type-type? (-> s0-0 type) fact-info-enemy)) (the-as fact-info-enemy s0-0)))))
+                                    (try-as fact-info-enemy s0-0))))
           ;; check that we have enemy facts, and that we are within the notice distance
           (when (and enemy-facts
                      (< (vector-vector-distance (-> this process root trans) (-> proc-drawable root trans)) (-> enemy-facts cam-notice-dist)))

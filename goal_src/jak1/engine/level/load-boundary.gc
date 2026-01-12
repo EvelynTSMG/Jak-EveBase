@@ -980,48 +980,139 @@
 ;; Load Commands
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun command-get-int ((arg0 object) (arg1 int))
+(defun command-get-int ((param object) (fallback int))
   (cond
-    ((null? arg0) (empty) arg1)
-    ((type-type? (rtype-of arg0) binteger) (/ (the-as int arg0) 8))
-    ((type-type? (rtype-of arg0) bfloat) (the int (-> (the-as bfloat arg0) data)))
-    (else (empty) arg1)))
+    ((null? param)
+      fallback
+    )
 
-(defun command-get-float ((arg0 object) (arg1 float))
+    ((type-type? (rtype-of param) binteger)
+      (/ (the-as int param) 8)
+    )
+
+    ((type-type? (rtype-of param) bfloat)
+      (the int (-> (the-as bfloat param) data))
+    )
+
+    (else
+      fallback
+    )
+  )
+)
+
+(defun command-get-float ((param object) (fallback float))
   (cond
-    ((null? arg0) (empty) arg1)
-    ((type-type? (rtype-of arg0) binteger) (the float (/ (the-as int arg0) 8)))
-    ((type-type? (rtype-of arg0) bfloat) (-> (the-as bfloat arg0) data))
-    (else (empty) arg1)))
+    ((null? param)
+      fallback
+    )
 
-(defun command-get-time ((arg0 object) (arg1 int))
+    ((type-type? (rtype-of param) binteger)
+      (the float (/ (the-as int param) 8))
+    )
+
+    ((type-type? (rtype-of param) bfloat)
+      (-> (the-as bfloat param) data)
+    )
+
+    (else
+      fallback
+    )
+  )
+)
+
+(defun command-get-time ((param object) (fallback int))
   (cond
-    ((null? arg0) (empty) arg1)
-    ((and (pair? arg0) (= (car arg0) 'seconds)) (the int (* 300.0 (command-get-float (car (cdr arg0)) 0.0))))
-    ((type-type? (rtype-of arg0) binteger) (/ (the-as int arg0) 8))
-    ((type-type? (rtype-of arg0) bfloat) (the int (-> (the-as bfloat arg0) data)))
-    (else (empty) arg1)))
+    ((null? param)
+      fallback
+    )
 
-(defun command-get-param ((arg0 object) (arg1 object))
+    ((and
+      (pair? param)
+      (= (car param) 'seconds)
+    )
+      (the int (* 300.0 (command-get-float (car (cdr param)) 0.0)))
+    )
+
+    ((type-type? (rtype-of param) binteger)
+      (/ (the-as int param) 8)
+    )
+
+    ((type-type? (rtype-of param) bfloat)
+      (the int (-> (the-as bfloat param) data))
+    )
+
+    (else
+      fallback
+    )
+  )
+)
+
+(defun command-get-param ((param object) (fallback object))
   (cond
-    ((null? arg0) arg1)
-    ((and (pair? arg0) (= (car arg0) 'seconds)) (the int (* 300.0 (command-get-float (car (cdr arg0)) 0.0))))
-    ((and (pair? arg0) (= (car arg0) 'meters)) (* 4096.0 (command-get-float (car (cdr arg0)) 0.0)))
-    ((and (pair? arg0) (= (car arg0) 'deg)) (* 182.04445 (command-get-float (car (cdr arg0)) 0.0)))
-    ((and (pair? arg0) (= (car arg0) 'static-vectorm))
-     (let ((s4-0 (the-as object (new 'static 'vector))))
-       (set-vector! (the-as vector s4-0)
-                    (* 4096.0 (command-get-float (car (cdr arg0)) 0.0))
-                    (* 4096.0 (command-get-float (car (cdr (cdr arg0))) 0.0))
-                    (* 4096.0 (command-get-float (car (cdr (cdr (cdr arg0)))) 0.0))
-                    1.0)
-       s4-0))
-    ((type-type? (rtype-of arg0) binteger) (/ (the-as int arg0) 8))
-    ((type-type? (rtype-of arg0) bfloat) (-> (the-as bfloat arg0) data))
-    (else arg0)))
+    ((null? param)
+      fallback
+    )
 
-(defun command-get-quoted-param ((arg0 object) (arg1 object))
-  (if (and (pair? arg0) (= (car arg0) 'quote)) (command-get-param (car (cdr arg0)) arg1) (command-get-param arg0 arg1)))
+    ((and
+      (pair? param)
+      (= (car param) 'seconds)
+    )
+      (seconds (command-get-float (car (cdr param)) 0.0))
+    )
+
+    ((and
+      (pair? param)
+      (= (car param) 'meters)
+    )
+      (meters (command-get-float (car (cdr param)) 0.0))
+    )
+
+    ((and
+      (pair? param)
+      (= (car param) 'deg)
+    )
+      (degrees (command-get-float (car (cdr param)) 0.0))
+    )
+
+    ((and
+      (pair? param)
+      (= (car param) 'static-vectorm)
+    )
+      (let ((vec (new 'static 'vector)))
+        (set-vector! vec
+          (meters (command-get-float (car (cdr param)) 0.0))
+          (meters (command-get-float (car (cdr (cdr param))) 0.0))
+          (meters (command-get-float (car (cdr (cdr (cdr param)))) 0.0))
+          1.0
+        )
+
+       (the-as object vec)
+      )
+    )
+
+    ((type-type? (rtype-of param) binteger)
+      (/ (the-as int param) 8)
+    )
+
+    ((type-type? (rtype-of param) bfloat)
+      (-> (the-as bfloat param) data)
+    )
+
+    (else
+      param
+    )
+  )
+)
+
+(defun command-get-quoted-param ((param object) (fallback object))
+  (if (and
+    (pair? param)
+    (= (car param) 'quote)
+  )
+    (command-get-param (car (cdr param)) fallback)
+    (command-get-param param fallback)
+  )
+)
 
 (defmethod reset! ((this load-state))
   (set! (-> this want 0 name) #f)
@@ -1134,38 +1225,98 @@
   (mem-copy! (&-> this type) (&-> *backup-load-state* type) 2092)
   0)
 
-;; ERROR: Failed load: (set! a0-1 (l.wu (+ a0-0 -4))) at op 11
-(defun command-list-get-process ((arg0 object))
+;; Get a process from a command param.
+;; If this fails, return #f.
+;; Options, if the param is:
+;; - a process, return the param
+;; - 'target, return *target*
+;; - 'sidekick, return the sidekick process from *target*
+;; - 'self, return the current process
+;; - 'parent, return the parent of the current process
+;; - 'camera, return *camera*
+;; a string, return the process of the entity with a matching name, if none match:
+;; a string, return the child of the current process with a matching art group name
+(defun command-list-get-process ((proc-param object))
   (with-pp
-    (set! arg0
-          (cond
-            ((null? arg0) #f)
-            ((type-type? (rtype-of arg0) process) (empty) arg0)
-            ((= arg0 'target) *target*)
-            ((= arg0 'sidekick) (if *target* (ppointer->process (-> *target* sidekick))))
-            ((= arg0 'self) pp)
-            ((= arg0 'parent) (ppointer->process (-> pp parent)))
-            ((= arg0 'camera) *camera*)
-            ((type-type? (rtype-of arg0) string)
-             (let ((v1-14 (process-by-ename (the-as string arg0))))
-               (cond
-                 (v1-14 (empty) v1-14)
-                 (else
-                  (let ((s5-0 (ppointer->process (-> pp child))))
-                    (while s5-0
-                      (let* ((s3-0 s5-0)
-                             (s4-0 (if (and (nonzero? s3-0) (type-type? (-> s3-0 type) process-drawable)) s3-0)))
-                        (when (and s4-0
-                                   (nonzero? (-> (the-as process-drawable s4-0) draw))
-                                   (nonzero? (-> (the-as process-drawable s4-0) draw art-group))
-                                   (string= (the-as string arg0) (-> (the-as process-drawable s4-0) draw art-group name)))
-                          (set! arg0 s4-0)
-                          (goto cfg-56)))
-                      (set! s5-0 (ppointer->process (-> s5-0 brother)))))
-                  (the-as process #f)))))
-            (else #f)))
-    (label cfg-56)
-    (the-as process arg0)))
+    (set! proc-param
+      (cond
+        ((null? proc-param)
+          #f
+        )
+
+        ((type-type? (rtype-of proc-param) process)
+          proc-param
+        )
+
+        ((= proc-param 'target)
+          *target*
+        )
+
+        ((= proc-param 'sidekick)
+          (if *target*
+            (ppointer->process (-> *target* sidekick))
+          )
+        )
+
+        ((= proc-param 'self)
+          pp
+        )
+
+        ((= proc-param 'parent)
+          (ppointer->process (-> pp parent))
+        )
+
+        ((= proc-param 'camera)
+          *camera*
+        )
+
+        ((type-type? (rtype-of proc-param) string)
+          (let ((proc (process-by-ename (the-as string proc-param))))
+            (cond
+              (proc
+                proc
+              )
+
+              (else
+                (let ((child (ppointer->process (-> pp child))))
+                  (while child
+                    (let* (
+                      (current-child child)
+                      (current-draw-proc (ensure-type current-child process-drawable))
+                    )
+                      (when (and
+                        current-draw-proc
+                        (nonzero? (-> (the-as process-drawable current-draw-proc) draw))
+                        (nonzero? (-> (the-as process-drawable current-draw-proc) draw art-group))
+                        (string=
+                          (the-as string proc-param)
+                          (-> (the-as process-drawable current-draw-proc) draw art-group name)
+                        )
+                      )
+                        (set! proc-param current-draw-proc)
+                        (return (the-as process proc-param))
+                      )
+                    )
+
+                    (set! child (ppointer->process (-> child brother)))
+                  )
+                )
+
+                (the-as process #f)
+              )
+            )
+          )
+        )
+
+        (else
+          #f
+        )
+      )
+    )
+
+    (the-as process proc-param)
+  )
+)
 
 (defmethod execute-commands-up-to ((this load-state) (arg0 float))
   (while (not (null? (-> this command-list)))
@@ -1184,168 +1335,490 @@
     (set! (-> this command-list) (cdr (-> this command-list))))
   0)
 
-(defmethod execute-command ((this load-state) (arg0 pair))
-  (local-vars (v1-26 int) (v1-57 int))
+(defmethod execute-command ((this load-state) (command-pair pair))
   (with-pp
     (cond
-      ((null? arg0))
-      ((pair? arg0)
-       (let ((v1-4 (car arg0))
-             (gp-0 (cdr arg0)))
-         (cond
-           ((= v1-4 'set!)
-            (let ((s5-1 (command-get-param (car gp-0) #f)))
-              (if s5-1 (set! (-> (the-as symbol s5-1) value) (command-get-param (car (cdr gp-0)) #f)))))
-           ((= v1-4 'eval) ((the-as (function int) (command-get-param (car gp-0) #f))))
-           ((= v1-4 'want-vis) (want-vis this (the-as symbol (command-get-param (car gp-0) #f))))
-           ((= v1-4 'want-levels)
-            (want-levels this
-                         (the-as symbol (command-get-param (car gp-0) #f))
-                         (the-as symbol (command-get-param (car (cdr gp-0)) #f))))
-           ((= v1-4 'display-level)
-            (want-display-level this
-                                (the-as symbol (command-get-param (car gp-0) #f))
-                                (the-as symbol (command-get-param (car (cdr gp-0)) #f))))
-           ((= v1-4 'want-force-vis)
-            (want-force-vis this
-                            (the-as symbol (command-get-param (car gp-0) #f))
-                            (the-as symbol (command-get-param (car (cdr gp-0)) #f))))
-           ((= v1-4 'want-force-inside)
-            (set-force-inside! this
-                               (the-as symbol (command-get-param (car gp-0) #f))
-                               (the-as symbol (command-get-param (car (cdr gp-0)) #f))))
-           ((= v1-4 'alive)
-            (let ((s4-5 (command-get-param (car gp-0) #f)))
-              (when s4-5
-                (let ((gp-1 (entity-by-name (the-as string s4-5))))
-                  (when gp-1
-                    (dotimes (v1-25 256)
-                      (when (not (-> this object-name v1-25))
-                        (set! (-> this object-name v1-25) (the-as symbol s4-5))
-                        (set! (-> this object-status v1-25) (the-as basic (-> gp-1 extra perm status)))
-                        (set! v1-26 v1-25)
-                        (goto cfg-29)))
-                    (set! v1-26 -1)
-                    (label cfg-29)
-                    (when (>= v1-26 0)
-                      (entity-birth-no-kill gp-1)
-                      (let ((a0-45 (-> gp-1 extra process)))
-                        (when a0-45
-                          (logclear! (-> a0-45 mask) (process-mask actor-pause))
-                          (logclear! (-> a0-45 mask) (-> *kernel-context* prevent-from-run))))))))))
-           ((= v1-4 'dead)
-            (let ((s3-4 (command-get-param (car gp-0) #f)))
-              (when s3-4
-                (let ((s4-6 (entity-by-name (the-as string s3-4))))
-                  (when s4-6
-                    (dotimes (gp-2 256)
-                      (when (string= (the-as string (-> this object-name gp-2)) (the-as string s3-4))
-                        (set! (-> s4-6 extra perm status) (the-as entity-perm-status (-> this object-status gp-2)))
-                        (if (-> s4-6 extra process) (kill! s4-6))
-                        (set! (-> this object-name gp-2) #f)
-                        (goto cfg-45)))))))
-            (label cfg-45))
-           ((= v1-4 'kill)
-            (let ((s4-7 (command-get-param (car gp-0) #f)))
-              (when s4-7
-                (let ((gp-3 (entity-by-name (the-as string s4-7))))
-                  (when gp-3
-                    (dotimes (v1-56 256)
-                      (when (not (-> this object-name v1-56))
-                        (set! (-> this object-name v1-56) (the-as symbol s4-7))
-                        (set! (-> this object-status v1-56) (the-as basic (-> gp-3 extra perm status)))
-                        (set! v1-57 v1-56)
-                        (goto cfg-56)))
-                    (set! v1-57 -1)
-                    (label cfg-56)
-                    (when (>= v1-57 0)
-                      (if (-> gp-3 extra process) (kill! gp-3))
-                      (logior! (-> gp-3 extra perm status) (entity-perm-status dead))))))))
-           ((= v1-4 'special)
-            (let ((a0-70 (command-get-param (car gp-0) #f)))
-              (when a0-70
-                (let ((s5-2 (entity-by-name (the-as string a0-70))))
-                  (if s5-2
-                    (set-or-clear-status! (the-as entity-actor s5-2)
-                                          (entity-perm-status bit-7)
-                                          (the-as symbol (command-get-param (car (cdr gp-0)) #f))))))))
-           ((= v1-4 'active)
-            (let ((gp-4 (command-get-param (car gp-0) #f)))
-              (while (!= (level-status *level* (the-as symbol gp-4)) 'active)
-                (suspend))))
-           ((= v1-4 'part-tracker)
-            (let* ((s5-4 (command-get-param (car gp-0) #f))
-                   (a0-81 (command-get-param (car (cdr gp-0)) #f))
-                   (gp-5 (entity-by-name (the-as string a0-81)))
-                   (s4-9 (lookup-part-group-by-name (symbol->string (the-as symbol s5-4))))
-                   (s5-5 (if (and (nonzero? s4-9) (type-type? (-> s4-9 type) sparticle-launch-group)) s4-9)))
-              (when (and gp-5 s5-5)
-                (let* ((s3-6 (-> gp-5 extra process))
-                       (s4-10 (if (and (nonzero? s3-6) (type-type? (-> s3-6 type) process-drawable)) (the-as process-drawable s3-6)))
-                       (s3-7 (get-process *default-dead-pool* part-tracker #x4000)))
-                  (when s3-7
-                    (let ((t9-41 (method-of-type part-tracker activate))
-                          (a0-86 s3-7)
-                          (a1-40 (ppointer->process (-> *setting-control* current movie))))
-                      (set! a1-40
-                            (cond
-                              (a1-40 (empty) a1-40)
-                              (else *entity-pool*)))
-                      (t9-41 (the-as part-tracker a0-86) a1-40 'part-tracker (the-as pointer #x70004000)))
-                    (run-now-in-process s3-7 part-tracker-init s5-5 -1 #f #f #f (if s4-10 (-> s4-10 root trans) (-> gp-5 extra trans)))
-                    (-> s3-7 ppointer))))))
-           ((= v1-4 'auto-save) (auto-save-command (the-as symbol (command-get-param (car gp-0) #f)) 0 0 *default-pool*))
-           ((= v1-4 'shadow)
-            (let ((s5-7 (command-list-get-process (car gp-0)))
-                  (v1-95 (command-get-quoted-param (car (cdr gp-0)) #f)))
-              (send-event s5-7 'shadow v1-95)))
-           ((= v1-4 'time-of-day)
-            (when *time-of-day-proc*
-              (let ((v1-99 (command-get-int (car gp-0) 0)))
-                (cond
-                  ((< v1-99 0) (set! (-> *time-of-day-proc* 0 time-ratio) 300.0))
-                  (else
-                   (set! (-> *time-of-day-proc* 0 hour) v1-99)
-                   (set! (-> *time-of-day-proc* 0 minute) 0)
-                   (set! (-> *time-of-day-proc* 0 frame) 0)
-                   (set! (-> *time-of-day-proc* 0 time-ratio) 0.0))))))
-           ((= v1-4 'save)
-            (mem-copy! (&-> *backup-load-state* type) (&-> this type) 2092)
-            (set! (-> *backup-load-state* command-list) '())
-            (dotimes (v1-112 256)
-              (if (-> *backup-load-state* object-name v1-112) (set! (-> *backup-load-state* object-name v1-112) #f))))
-           ((= v1-4 'setting-reset)
-            (set-setting! (the-as symbol (command-get-param (car gp-0) #f)) (command-get-param (car (cdr gp-0)) #f) 0.0 0))
-           ((= v1-4 'setting-unset) (remove-setting! (the-as symbol (command-get-param (car gp-0) #f))))
-           ;; og:preserve-this PAL patch here
-           ((= v1-4 'sfx-volume)
-            (set-setting! 'sfx-volume (command-get-param (car gp-0) #f) (command-get-float (car (cdr gp-0)) 0.0) 0))
-           ((= v1-4 'blackout)
-            (set-blackout-frames (the-as time-frame (the int (* 5.0000005 (the float (command-get-int (car gp-0) 0)))))))
-           ((= v1-4 'teleport) (set! *teleport* #t))
-           ((= v1-4 'joint)
-            (send-event (ppointer->process (-> *setting-control* current movie)) 'joint (command-get-param (car gp-0) #f))
-            (set! *teleport-count* 2))
-           ((= v1-4 'ambient)
-            (ambient-hint-spawn (the-as string (command-get-param (car (cdr gp-0)) #f))
-                                (the-as vector #f)
-                                *entity-pool*
-                                (the-as symbol (command-get-param (car gp-0) #f))))
-           ((= v1-4 'send-event)
-            (let ((s5-13 (command-list-get-process (car gp-0)))
-                  (s4-14 (command-get-quoted-param (car (cdr gp-0)) #f))
-                  (gp-6 (cdr (cdr gp-0))))
-              (when (and s5-13 (not (null? s4-14)))
-                (let ((s3-11 (new 'stack-no-clear 'event-message-block)))
-                  (set! (-> s3-11 from) pp)
-                  (let ((a0-142 gp-6)) (set! (-> s3-11 num-params) ((method-of-type (rtype-of a0-142) length) a0-142)))
-                  (set! (-> s3-11 message) (the-as symbol s4-14))
-                  (set! (-> s3-11 param 0) (the-as uint (command-get-quoted-param (car gp-6) #f)))
-                  (set! (-> s3-11 param 1) (the-as uint (command-get-quoted-param (car (cdr gp-6)) #f)))
-                  (set! (-> s3-11 param 2) (the-as uint (command-get-quoted-param (car (cdr (cdr gp-6))) #f)))
-                  (send-event-function s5-13 s3-11)))))))))
-    0
-    (none)))
+      ((null? command-pair))
+
+      ((pair? command-pair)
+        (let (
+          (command (car command-pair))
+          (params (cdr command-pair))
+        )
+          (cond
+            ;; Set a symbol to a value.
+            ;; Silently fails if the symbol is #f.
+            ;; Params:
+            ;; - Symbol to set.
+            ;;   Defaults to #f.
+            ;; - Value to set the symbol to.
+            ;;   Defaults to #f.
+            ((= command 'set!)
+              (let ((sym (command-get-param (car params) #f)))
+                (if sym
+                  (set! (-> (the-as symbol sym) value) (command-get-param (car (cdr params)) #f))
+                )
+              )
+            )
+
+            ;; Run a function.
+            ;; Params:
+            ;; - Function to run, returns an integer.
+            ;;   Defaults to #f.
+            ((= command 'eval)
+              ((the-as (function int) (command-get-param (car params) #f)))
+            )
+
+            ;; Ask for a vis to be loaded.
+            ;; Params:
+            ;; - Nick of the vis to load.
+            ;;   Defaults to #f.
+            ((= command 'want-vis)
+              (want-vis this (the-as symbol (command-get-param (car params) #f)))
+            )
+            
+            ;; Ask for levels to be loaded.
+            ;; Will not reload levels.
+            ;; Params:
+            ;; - Nick of the first level to load.
+            ;;   Defaults to #f.
+            ;; - Nick of the second level to load.
+            ;;   Defaults to #f.
+            ((= command 'want-levels)
+              (want-levels this
+                (the-as symbol (command-get-param (car params) #f))
+                (the-as symbol (command-get-param (car (cdr params)) #f))
+              )
+            )
+
+            ;; Ask for levels to be displayed.
+            ;; Fails if the level is not loaded.
+            ;; Params:
+            ;; - Nick of the level to display.
+            ;;   Defaults to #f.
+            ;; - #t/#f Whether to print an error message if this fails.
+            ;;   Defaults to #f.
+            ((= command 'display-level)
+              (want-display-level this
+                (the-as symbol (command-get-param (car params) #f))
+                (the-as symbol (command-get-param (car (cdr params)) #f))
+              )
+            )
+
+            ;; Force vis on a level.
+            ;; Fails if the level is not loaded.
+            ;; Params:
+            ;; - Nick of the level to force vis on.
+            ;;   Defaults to #f.
+            ;; - #t/#f Whether to force vis on the level.
+            ;;   Defaults to #f.
+            ((= command 'want-force-vis)
+              (want-force-vis this
+                (the-as symbol (command-get-param (car params) #f))
+                (the-as symbol (command-get-param (car (cdr params)) #f))
+              )
+            )
+
+            ;; Set whether to force every point to be considered inside a level
+            ;; Fails if the level is not loaded.
+            ;; Params:
+            ;; - Nick of the level.
+            ;;   Defaults to #f.
+            ;; - #t/#f Whether to force every point to be considered inside the level.
+            ;;   Defaults to #f.
+            ((= command 'want-force-inside)
+              (set-force-inside! this
+                (the-as symbol (command-get-param (car params) #f))
+                (the-as symbol (command-get-param (car (cdr params)) #f))
+              )
+            )
+
+            ;; Make sure an entity is alive.
+            ;; If the entity is not alive, birth it.
+            ;; Params:
+            ;; - Name of the entity to birth.
+            ;;   Defaults to #f.
+            ((= command 'alive)
+              (let ((entity-name (command-get-param (car params) #f)))
+                (when entity-name
+                  (let ((entity (entity-by-name (the-as string entity-name))))
+                    (when entity
+                      (let ((found-idx -1))
+                        (dotimes (i 256)
+                          (when (not (-> this object-name i))
+                            (set! (-> this object-name i) (the-as symbol entity-name))
+                            (set! (-> this object-status i) (the-as basic (-> entity extra perm status)))
+                            (set! found-idx i)
+
+                            (goto found-alive)
+                          )
+                        )
+
+                        (label found-alive)
+
+                        (when (>= found-idx 0)
+                          (entity-birth-no-kill entity)
+
+                          (let ((entity-process (-> entity extra process)))
+                            (when entity-process
+                              (logclear! (-> entity-process mask) (process-mask actor-pause))
+                              (logclear! (-> entity-process mask) (-> *kernel-context* prevent-from-run))
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            ;; Make sure an entity is dead.
+            ;; If the entity is not dead, kill it.
+            ;; Also frees the associated object in the load-state.
+            ;; Params:
+            ;; - Name of the entity to kill.
+            ;;   Defaults to #f.
+            ((= command 'dead)
+              (let ((entity-name (command-get-param (car params) #f)))
+                (when entity-name
+                  (let ((entity (entity-by-name (the-as string entity-name))))
+                    (when entity
+                      (dotimes (i 256)
+                        (when (string= (the-as string (-> this object-name i)) (the-as string entity-name))
+                          (set! (-> entity extra perm status) (the-as entity-perm-status (-> this object-status i)))
+                          (if (-> entity extra process)
+                            (kill! entity)
+                          )
+                          (set! (-> this object-name i) #f)
+
+                          (goto ensured-dead)
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+
+              (label ensured-dead)
+            )
+
+            ;; Make sure an entity is dead.
+            ;; If the entity is not dead, kill it.
+            ;; Leaves the entity with the `dead` perm status.
+            ;; Params:
+            ;; - Name of the entity to kill.
+            ;;   Defaults to #f.
+            ((= command 'kill)
+              (let ((entity-name (command-get-param (car params) #f)))
+                (when entity-name
+                  (let ((entity (entity-by-name (the-as string entity-name))))
+                    (when entity
+                      (let ((found-idx -1))
+                        (dotimes (i 256)
+                          (when (not (-> this object-name i))
+                            (set! (-> this object-name i) (the-as symbol entity-name))
+                            (set! (-> this object-status i) (the-as basic (-> entity extra perm status)))
+                            (set! found-idx i)
+
+                            (goto found-dead)
+                          )
+                        )
+
+                        (label found-dead)
+
+                        (when (>= found-idx 0)
+                          (if (-> entity extra process)
+                            (kill! entity)
+                          )
+                          (logior! (-> entity extra perm status) (entity-perm-status dead))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            ;; Sets or clears bit-7 from an entity's perm status.
+            ;; Params:
+            ;; - Name of the entity to set the perm status of.
+            ;;   Defaults to #f.
+            ;; - #t/#f Whether to set or clear bit-7 in the perm status.
+            ;;   Defaults to #f.
+            ((= command 'special)
+              (let ((entity-name (command-get-param (car params) #f)))
+                (when entity-name
+                  (let ((entity (entity-by-name (the-as string entity-name))))
+                    (if entity
+                      (set-or-clear-status! (the-as entity-actor entity)
+                        (entity-perm-status bit-7)
+                        (the-as symbol (command-get-param (car (cdr params)) #f))
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            ;; Wait for a level to be active.
+            ;; Params:
+            ;; - Name of the level to wait for.
+            ;;   Defaults to #f.
+            ((= command 'active)
+              (let ((level-name (command-get-param (car params) #f)))
+                (while (!= (level-status *level* (the-as symbol level-name)) 'active)
+                  (suspend)
+                )
+              )
+            )
+
+            ;; Initialize a particle tracker on top of an entity.
+            ;; The entity process must be a process-drawable.
+            ;; Params:
+            ;; - The name of the particle group to initialize the tracker with.
+            ;;   Defaults to #f.
+            ;; - The name of the entity to put the tracker on.
+            ;;   Defaults to #f.
+            ((= command 'part-tracker)
+              (let* (
+                (part-group-name (command-get-param (car params) #f))
+                (entity-name (command-get-param (car (cdr params)) #f))
+                (entity (entity-by-name (the-as string entity-name)))
+                (part-group (lookup-part-group-by-name (symbol->string (the-as symbol part-group-name))))
+                (launch-group (ensure-type part-group sparticle-launch-group))
+              )
+                (when (and
+                  entity
+                  launch-group
+                )
+                  (let* (
+                    (proc (-> entity extra process))
+                    (draw-proc (try-as process-drawable proc))
+                    (tracker (get-process *default-dead-pool* part-tracker #x4000))
+                  )
+                    (when tracker
+                      (let ((movie (ppointer->process (-> *setting-control* current movie))))
+                        (set! movie
+                          (cond
+                            (movie movie)
+                            (else *entity-pool*)
+                          )
+                        )
+                        (activate (the-as part-tracker tracker) movie 'part-tracker (the-as pointer #x70004000))
+                      )
+
+                      (run-now-in-process tracker
+                        part-tracker-init
+                        launch-group
+                        -1
+                        #f
+                        #f
+                        #f
+                        (if draw-proc
+                          (-> draw-proc root trans)
+                          (-> entity extra trans)
+                        )
+                      )
+
+                      (-> tracker ppointer)
+                    )
+                  )
+                )
+              )
+            )
+
+            ;; Trigger an auto-save.
+            ;; Params:
+            ;; - The desired mode of the auto-save, usually `auto-save`.
+            ;;   Defaults to #f.
+            ((= command 'auto-save)
+              (auto-save-command (the-as symbol (command-get-param (car params) #f)) 0 0 *default-pool*)
+            )
+
+            ;; Show or hide a shadow for a process by sending a 'shadow event.
+            ;; Params:
+            ;; - The process to send the event to.
+            ;;   Includes shortcuts. See `command-list-get-process` for details.
+            ;; - #t/#f Whether to show or hide the shadow.
+            ;;   Defaults to #f.
+            ((= command 'shadow)
+              (let (
+                (proc (command-list-get-process (car params)))
+                (enable (command-get-quoted-param (car (cdr params)) #f))
+              )
+                (send-event proc 'shadow enable)
+              )
+            )
+
+            ;; Set the current time of day.
+            ;; Setting the time of day freezes it.
+            ;; To unfreeze the time of day, use -1 as the param.
+            ;; Params:
+            ;; - The hour to set the time of day to, or -1.
+            ;;   Defaults to 0.
+            ((= command 'time-of-day)
+              (when *time-of-day-proc*
+                (let ((desired-hour (command-get-int (car params) 0)))
+                  (cond
+                    ((< desired-hour 0)
+                      (set! (-> *time-of-day-proc* 0 time-ratio) 300.0)
+                    )
+
+                    (else
+                      (set! (-> *time-of-day-proc* 0 hour) desired-hour)
+                      (set! (-> *time-of-day-proc* 0 minute) 0)
+                      (set! (-> *time-of-day-proc* 0 frame) 0)
+                      (set! (-> *time-of-day-proc* 0 time-ratio) 0.0)
+                    )
+                  )
+                )
+              )
+            )
+
+            ;; Save the current load state to the backup load state.
+            ;; No params.
+            ((= command 'save)
+              (mem-copy! (&-> *backup-load-state* type) (&-> this type) 2092)
+              (set! (-> *backup-load-state* command-list) '())
+              (dotimes (i 256)
+                (if (-> *backup-load-state* object-name i)
+                  (set! (-> *backup-load-state* object-name i) #f)
+                )
+              )
+            )
+
+            ;; Reset a setting.
+            ;; Params:
+            ;; - The name of the setting to reset.
+            ;;   Defaults to #f.
+            ;; - What mode to reset the setting in.
+            ;;   For details, look at `update-from-engine` in `settings.gc`.
+            ;;   Defaults to #f.
+            ((= command 'setting-reset)
+              (set-setting! (the-as symbol (command-get-param (car params) #f)) (command-get-param (car (cdr params)) #f) 0.0 0)
+            )
+
+            ;; Unset a setting. Removes it from consideration over the default value.
+            ;; Params:
+            ;; - The name of the setting to unset.
+            ;;   Defaults to #f.
+            ((= command 'setting-unset)
+              (remove-setting! (the-as symbol (command-get-param (car params) #f)))
+            )
+
+            ;; Set the SFX volume.
+            ;; Params:
+            ;; - The mode to set the SFX volume in.
+            ;;   Either 'rel or 'abs. For details, looks at `update-from-engine` in `settings.gc`.
+            ;;   Defaults to #f.
+            ;; - The value to set the SFX volume to.
+            ;;   Defaults to 0.0.
+            ((= command 'sfx-volume)
+              ;; og:preserve-this PAL patch here
+              (set-setting! 'sfx-volume (command-get-param (car params) #f) (command-get-float (car (cdr params)) 0.0) 0)
+            )
+
+            ;; Set the blackout time.
+            ;; Params:
+            ;; - The amount of time to set.
+            ;;   If 0, ends blackout immediately.
+            ;;   Does nothing if less then the current blackout time. 
+            ;;   Defaults to 0.
+            ((= command 'blackout)
+              ; * 5 converts from ticks to 60fps
+              (set-blackout-frames (the-as time-frame (the int (* 5.0 (the float (command-get-int (car params) 0))))))
+            )
+
+            ;; Set the next frame to be a teleport frame.
+            ;; This immediately sets mood values instead of interpolating them.
+            ;; No params.
+            ((= command 'teleport)
+              (set! *teleport* #t)
+            )
+
+            ;; Set the cam joint index of the current movie.
+            ;; Sets the next two frames to be teleport frames.
+            ;; Params:
+            ;; - The index to set the cam joint index to,
+            ;;   or the name of the joint to use the index of.
+            ;;   Defaults to #f.
+            ((= command 'joint)
+              (send-event
+                (ppointer->process (-> *setting-control* current movie))
+                'joint
+                (command-get-param (car params) #f)
+              )
+              (set! *teleport-count* 2)
+            )
+
+            ;; Spawn an ambient hint.
+            ;; Params:
+            ;; - The name of the sound to play.
+            ;;   Defaults to #f.
+            ;; - The mode of the hint to use.
+            ;;   Defaults to #f.
+            ((= command 'ambient)
+              (ambient-hint-spawn
+                (the-as string (command-get-param (car (cdr params)) #f))
+                (the-as vector #f)
+                *entity-pool*
+                (the-as symbol (command-get-param (car params) #f))
+              )
+            )
+
+            ;; Send an event. Can only send up to 3 params in the event.
+            ;; Params:
+            ;; - The process to send the event to.
+            ;;   Includes shortcuts. See `command-list-get-process` for details.
+            ;; - The message to send.
+            ;;   Defaults to #f.
+            ;; - The first parameter to send.
+            ;;   Defaults to #f.
+            ;; - The second parameter to send.
+            ;;   Defaults to #f.
+            ;; - The third parameter to send.
+            ;;   Defaults to #f.
+            ((= command 'send-event)
+              (let (
+                (proc (command-list-get-process (car params)))
+                (message (command-get-quoted-param (car (cdr params)) #f))
+                (event-params (cdr (cdr params)))
+              )
+                (when (and
+                  proc
+                  (not (null? message))
+                )
+                  (let ((message-block (new 'stack-no-clear 'event-message-block)))
+                    (set! (-> message-block from) pp)
+                    (set! (-> message-block message) (the-as symbol message))
+
+                    (set! (-> message-block num-params)
+                      ((method-of-type (rtype-of event-params) length) event-params)
+                    )
+                    (set! (-> message-block param 0)
+                      (the-as uint (command-get-quoted-param (car event-params) #f))
+                    )
+                    (set! (-> message-block param 1)
+                      (the-as uint (command-get-quoted-param (car (cdr event-params)) #f))
+                    )
+                    (set! (-> message-block param 2)
+                      (the-as uint (command-get-quoted-param (car (cdr (cdr event-params))) #f))
+                    )
+
+                    (send-event-function proc message-block)
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
+    (none)
+  )
+)
 
 (defun check-boundary ((arg0 load-boundary))
   (local-vars (s5-0 object))

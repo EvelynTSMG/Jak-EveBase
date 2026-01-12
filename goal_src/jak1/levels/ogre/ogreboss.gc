@@ -211,7 +211,7 @@
             (if (= (-> proc type) target) (send-event (ppointer->process (-> self parent-override)) 'victory)))
            (else
             (let* ((s4-0 proc)
-                   (t1-0 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) target)) s4-0)))
+                   (t1-0 (ensure-type s4-0 target)))
               (cond
                 (t1-0
                  (let ((s4-1 (new 'stack-no-clear 'vector))

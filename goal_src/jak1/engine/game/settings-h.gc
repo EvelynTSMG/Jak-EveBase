@@ -140,8 +140,16 @@
       ;;   (set! argb (car args))
       ;;   (set! argf (cadr args))
       ;;   )
-      (#t (set! argb (car args)) (set! argf (cadr args)) (set! argi (caddr args))))
-    `(,func *setting-control* (with-pp pp) ,s ,argb ,argf ,argi)))
+      (#t
+        (set! argb (car args))
+        (set! argf (cadr args))
+        (set! argi (caddr args))
+      )
+    )
+    
+    `(,func *setting-control* (with-pp pp) ,s ,argb ,argf ,argi)
+  )
+)
 
 (defmacro add-setting! (s &rest args)
   `(setting-control-func! add-setting ,s ,@args))

@@ -673,7 +673,7 @@
       (case message
         (('touched)
          (let* ((s4-0 proc)
-                (v1-2 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) process-drawable)) s4-0)))
+                (v1-2 (ensure-type s4-0 process-drawable)))
            (when v1-2
              (let* ((v1-3 (-> (the-as mistycannon-missile v1-2) root))
                     (a1-2 (-> self root root-prim prim-core))

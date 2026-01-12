@@ -837,7 +837,7 @@
   (energyarm-init self)
   (let* ((v1-0 (-> self parent-overide))
          (s4-0 (if v1-0 (-> v1-0 0 self-override)))
-         (a0-3 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) energyhub)) s4-0)))
+         (a0-3 (ensure-type s4-0 energyhub)))
     (if a0-3 (set! (-> self root trans quad) (-> a0-3 root trans quad))))
   (initialize-skeleton self *energyarm-sg* '())
   (logclear! (-> self mask) (process-mask actor-pause))
@@ -972,7 +972,7 @@
       (let ((gp-0 0))
         (dotimes (s5-0 5)
           (let* ((s4-0 (handle->process (-> self arm s5-0)))
-                 (v1-10 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) energyarm)) (the-as energyarm s4-0))))
+                 (v1-10 (try-as energyarm s4-0)))
             (if (and v1-10 (handle->process (-> v1-10 ball))) (+! gp-0 1))))
         (cond
           ((zero? gp-0) (energyhub-set-lava-height -122880.0) (go energyhub-stop))

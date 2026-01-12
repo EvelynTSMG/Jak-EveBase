@@ -231,10 +231,10 @@
   arg0)
 
 (defbehavior check-blue-suck eco-collectable ((arg0 process-drawable))
-  (let ((v1-1 (if (and (nonzero? arg0) (type-type? (-> arg0 type) process-drawable)) arg0)))
+  (let ((v1-1 (ensure-type arg0 process-drawable)))
     (when v1-1
       (let* ((gp-1 (-> v1-1 root))
-             (v1-3 (if (and (nonzero? gp-1) (type-type? (-> gp-1 type) collide-shape)) gp-1)))
+             (v1-3 (ensure-type gp-1 collide-shape)))
         (when v1-3
           (let ((a0-5 (-> self root root-prim prim-core))
                 (a1-2 (-> (the-as collide-shape v1-3) root-prim prim-core)))
@@ -244,10 +244,10 @@
 
 (defbehavior add-blue-motion eco-collectable ((arg0 symbol) (arg1 symbol) (arg2 symbol) (arg3 symbol))
   (let* ((gp-0 (handle->process (-> self target)))
-         (v1-4 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable)) gp-0)))
+         (v1-4 (ensure-type gp-0 process-drawable)))
     (when v1-4
       (let* ((gp-1 (-> (the-as process-drawable v1-4) root))
-             (v1-6 (if (and (nonzero? gp-1) (type-type? (-> gp-1 type) collide-shape)) (the-as collide-shape gp-1))))
+             (v1-6 (try-as collide-shape gp-1)))
         (when v1-6
           (let ((s2-0 (-> self root root-prim prim-core))
                 (gp-2 (-> v1-6 root-prim prim-core)))
@@ -873,7 +873,7 @@
 
 (defbehavior fuel-cell-animate fuel-cell ()
   (let* ((gp-0 self)
-         (s5-0 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) fuel-cell)) gp-0)))
+         (s5-0 (ensure-type gp-0 fuel-cell)))
     (cond
       (s5-0
        (set! (-> s5-0 victory-anim) (fuel-cell-pick-anim s5-0))
@@ -1799,10 +1799,10 @@
       (when (-> self show-particles)
         (when (nonzero? (-> self collect-effect))
           (let* ((s5-0 (handle->process arg0))
-                 (gp-0 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+                 (gp-0 (ensure-type s5-0 process-drawable)))
             (when gp-0
               (let* ((s4-0 (-> (the-as process-drawable gp-0) root))
-                     (s5-1 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) collide-shape)) s4-0)))
+                     (s5-1 (ensure-type s4-0 collide-shape)))
                 (when s5-1
                   (process-spawn part-tracker
                                  :init

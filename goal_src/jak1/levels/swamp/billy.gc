@@ -363,7 +363,7 @@
       (case message
         (('billy-rat-needs-destination)
          (let* ((gp-0 proc)
-                (v1-2 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) billy-rat)) gp-0)))
+                (v1-2 (ensure-type gp-0 billy-rat)))
            (when v1-2
              (set! (-> (the-as billy-rat v1-2) dest-type) (the-as uint 1))
              (get-random-point (-> self path-waypts) (-> (the-as billy-rat v1-2) destination)))))))
@@ -562,7 +562,7 @@
              (else (play-ambient (-> self ambient) "BIL-TA4B" #t (the-as vector #f))))))
         (('billy-rat-needs-destination)
          (let* ((s5-0 proc)
-                (gp-0 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) billy-rat)) (the-as billy-rat s5-0))))
+                (gp-0 (try-as billy-rat s5-0)))
            (when gp-0
              (let ((f0-6 (rand-float-gen)))
                (cond
@@ -588,7 +588,7 @@
                       (s5-1 (the-as process-tree #f)))
                   (while s2-0
                     (let* ((s1-0 (ppointer->process s2-0))
-                           (v1-47 (if (and (nonzero? s1-0) (type-type? (-> s1-0 type) billy-snack)) s1-0)))
+                           (v1-47 (ensure-type s1-0 billy-snack)))
                       (cond
                         ((not v1-47))
                         ((< (-> (the-as billy-snack v1-47) num-rats) s3-0)

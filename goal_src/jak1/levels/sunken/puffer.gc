@@ -82,7 +82,7 @@
     (('touch 'attack)
      (when (and (= arg2 'attack) (!= (-> self cprims-type) 2))
        (let* ((gp-0 arg0)
-              (v1-7 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable)) gp-0)))
+              (v1-7 (ensure-type gp-0 process-drawable)))
          (when v1-7
            (let ((f0-4 (atan (- (-> (the-as process-drawable v1-7) root trans x) (-> self root trans x))
                              (- (-> (the-as process-drawable v1-7) root trans z) (-> self root trans z)))))

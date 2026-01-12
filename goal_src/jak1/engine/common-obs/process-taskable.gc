@@ -136,7 +136,7 @@
 
 (defmethod close-anim-file! ((this process-taskable))
   (let* ((gp-0 (play-anim! this #f))
-         (v1-2 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) spool-anim)) gp-0)))
+         (v1-2 (ensure-type gp-0 spool-anim)))
     (if v1-2 (file-status *art-control* (-> (the-as spool-anim v1-2) name) 0))))
 
 (defmethod get-accept-anim ((this process-taskable) (arg0 symbol))

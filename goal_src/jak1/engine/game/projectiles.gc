@@ -42,10 +42,10 @@
                             (when (logtest? (process-mask crate enemy attackable) (-> arg0 mask))
                               (let* ((gp-0 *search-info*)
                                      (s4-0 arg0)
-                                     (s5-0 (if (and (nonzero? s4-0) (type-type? (-> s4-0 type) process-drawable)) s4-0)))
+                                     (s5-0 (ensure-type s4-0 process-drawable)))
                                 (when s5-0
                                   (let* ((s3-0 (-> s5-0 root))
-                                         (s4-1 (if (and (nonzero? s3-0) (type-type? (-> s3-0 type) collide-shape)) s3-0)))
+                                         (s4-1 (ensure-type s3-0 collide-shape)))
                                     (when (the-as collide-shape-moving s4-1)
                                       (let* ((s3-1 (-> s4-1 root-prim prim-core))
                                              (f30-0 (- (vector-vector-distance (-> gp-0 point) (-> s3-1 world-sphere)) (-> s3-1 world-sphere w))))
@@ -856,7 +856,7 @@
   (set! (-> this part) (create-launch-control (part-group eco-blue) this))
   (set! (-> this root root-prim collide-with) (collide-kind background))
   (let* ((s5-1 (handle->process (-> this last-target)))
-         (v1-20 (if (and (nonzero? s5-1) (type-type? (-> s5-1 type) process-drawable)) s5-1)))
+         (v1-20 (ensure-type s5-1 process-drawable)))
     (if v1-20 (set! (-> this joint-num) (rand-vu-int-range 3 (+ (-> (the-as process-drawable v1-20) node-list length) -1)))))
   0
   (none))
@@ -917,7 +917,7 @@
 
 (defmethod projectile-method-28 ((this projectile-blue))
   (let* ((s5-0 (handle->process (-> this last-target)))
-         (v1-4 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+         (v1-4 (ensure-type s5-0 process-drawable)))
     (if v1-4 (vector<-cspace! (-> this target) (-> (the-as process-drawable v1-4) node-list data (-> this joint-num)))))
   (if (< (vector-vector-distance (-> this target) (-> this root trans)) 4096.0)
     (go (method-of-object this projectile-impact)))

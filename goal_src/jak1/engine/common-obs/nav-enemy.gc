@@ -385,7 +385,7 @@ nav-enemy-default-event-handler
       (when s4-0
         (dotimes (s3-0 (-> (the-as collide-shape-prim-group s4-0) num-prims))
           (let* ((s2-0 (-> (the-as collide-shape-prim-group (+ (* s3-0 4) (the-as int s4-0))) prims 0))
-                 (v1-6 (if (and (nonzero? s2-0) (type-type? (-> s2-0 type) collide-shape-prim-sphere)) s2-0)))
+                 (v1-6 (ensure-type s2-0 collide-shape-prim-sphere)))
             (when v1-6
               (if (or (not s5-1)
                       (< (-> (the-as collide-shape-prim-sphere v1-6) transform-index)
@@ -402,7 +402,7 @@ nav-enemy-default-event-handler
 (defbehavior nav-enemy-set-hit-from-direction nav-enemy ((arg0 process))
   (let* ((gp-0 (-> self hit-from-dir))
          (s5-0 arg0)
-         (v1-1 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+         (v1-1 (ensure-type s5-0 process-drawable)))
     (set! (-> gp-0 quad) (-> *null-vector* quad))
     (when v1-1
       (vector-! gp-0 (-> self collide-info trans) (-> (the-as process-drawable v1-1) root trans))

@@ -108,31 +108,54 @@
            (vector-! arg0 (-> this cverts (the int (+ 1.0 f0-4))) (-> this cverts (the int f0-4))))))))
   (vector-normalize! arg0 1.0))
 
-(defmethod path-control-method-14 ((this path-control) (arg0 vector) (arg1 float))
-  (eval-path-curve-angle this arg0 (* arg1 (the float (+ (-> this curve num-cverts) -1)))))
+(defmethod path-control-method-14 ((this path-control) (tangent-dest vector) (t float))
+  (eval-path-curve-angle this
+    tangent-dest
+    (* t (the float (+ (-> this curve num-cverts) -1)))
+  )
+)
 
-(defmethod path-control-method-14 ((this curve-control) (arg0 vector) (arg1 float))
+(defmethod path-control-method-14 ((this curve-control) (tangent-dest vector) (t float))
   (when (not (logtest? (-> this flags) (path-control-flag not-found)))
-    (let ((s4-0 (new 'stack-no-clear 'vector)))
-      (curve-evaluate! arg0 arg1 (-> this cverts) (-> this curve num-cverts) (-> this curve knots) (-> this curve num-knots))
+    (let ((neighbor-value (new 'stack-no-clear 'vector)))
+      (curve-evaluate!
+        tangent-dest
+        t
+        (-> this cverts)
+        (-> this curve num-cverts)
+        (-> this curve knots)
+        (-> this curve num-knots)
+      )
+
       (cond
-        ((< arg1 0.99)
-         (curve-evaluate! s4-0
-                          (+ 0.01 arg1)
-                          (-> this cverts)
-                          (-> this curve num-cverts)
-                          (-> this curve knots)
-                          (-> this curve num-knots))
-         (vector-! arg0 s4-0 arg0))
+        ((< t 0.99)
+          (curve-evaluate!
+            neighbor-value
+            (+ 0.01 t)
+            (-> this cverts)
+            (-> this curve num-cverts)
+            (-> this curve knots)
+            (-> this curve num-knots)
+          )
+          (vector-! tangent-dest neighbor-value tangent-dest)
+        )
         (else
-         (curve-evaluate! s4-0
-                          (+ -0.01 arg1)
-                          (-> this cverts)
-                          (-> this curve num-cverts)
-                          (-> this curve knots)
-                          (-> this curve num-knots))
-         (vector-! arg0 arg0 s4-0)))))
-  (vector-normalize! arg0 1.0))
+          (curve-evaluate!
+            neighbor-value
+            (+ -0.01 t)
+            (-> this cverts)
+            (-> this curve num-cverts)
+            (-> this curve knots)
+            (-> this curve num-knots)
+          )
+          (vector-! tangent-dest tangent-dest neighbor-value)
+        )
+      )
+    )
+  )
+
+  (vector-normalize! tangent-dest 1.0)
+)
 
 (defmethod eval-path-curve-angle ((this curve-control) (arg0 vector) (arg1 float))
   (path-control-method-14 this arg0 (/ arg1 (the float (+ (-> this curve num-cverts) -1)))))

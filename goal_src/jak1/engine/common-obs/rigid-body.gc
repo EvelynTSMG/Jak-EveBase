@@ -346,7 +346,7 @@
      (when (time-elapsed? (-> self player-bonk-timeout) (-> self info player-force-timeout))
        (set-time! (-> self player-bonk-timeout))
        (let* ((s5-0 arg0)
-              (v1-7 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+              (v1-7 (ensure-type s5-0 process-drawable)))
          (when v1-7
            (set! (-> self player-impulse) (the-as collide-shape-prim-mesh #t))
            (set! (-> self player-force-position quad) (-> (the-as process-drawable v1-7) root trans quad))
@@ -362,7 +362,7 @@
             (when (time-elapsed? (-> self player-bonk-timeout) (-> self info player-force-timeout))
               (set-time! (-> self player-bonk-timeout))
               (let* ((gp-1 arg0)
-                     (v1-24 (if (and (nonzero? gp-1) (type-type? (-> gp-1 type) process-drawable)) gp-1)))
+                     (v1-24 (ensure-type gp-1 process-drawable)))
                 (when v1-24
                   (set! (-> self player-impulse) (the-as collide-shape-prim-mesh #t))
                   (set! (-> self player-force-position quad) (-> (the-as process-drawable v1-24) root trans quad))
@@ -370,7 +370,7 @@
                     (vector-float*! (-> self player-force) *y-vector* (- f0-9)))))))
            ((= (-> arg3 param 1) 'explode)
             (let* ((gp-2 arg0)
-                   (v1-34 (if (and (nonzero? gp-2) (type-type? (-> gp-2 type) process-drawable)) gp-2)))
+                   (v1-34 (ensure-type gp-2 process-drawable)))
               (when v1-34
                 (set! (-> self player-impulse) (the-as collide-shape-prim-mesh #t))
                 (set! (-> self player-force-position quad) (-> (the-as process-drawable v1-34) root trans quad))

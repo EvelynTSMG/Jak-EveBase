@@ -172,7 +172,7 @@
   (when this
     (countdown (s5-0 (-> this length))
       (let* ((art-elt (-> this data s5-0))
-             (janim (if (and (nonzero? art-elt) (type-type? (-> art-elt type) art-joint-anim)) (the-as art-joint-anim art-elt)))
+             (janim (try-as art-joint-anim art-elt))
              (success #f))
         (when janim
           ;; a countdown with a label right at the start
@@ -207,7 +207,7 @@
   (when this
     (countdown (s5-0 (-> this length))
       (let* ((art-elt (-> this data s5-0))
-             (janim (if (and (nonzero? art-elt) (type-type? (-> art-elt type) art-joint-anim)) (the-as art-joint-anim art-elt)))
+             (janim (try-as art-joint-anim art-elt))
              (success #f))
         (when janim
           (let ((s2-0 3))

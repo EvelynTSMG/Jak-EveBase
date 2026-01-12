@@ -137,7 +137,7 @@
   (set! (-> self root) (new 'process 'trsqv))
   (set! (-> self root trans quad) (-> arg0 quad))
   (when (logtest? (-> self flags) (pov-camera-flag inherit-orientation))
-    (let ((v1-20 (if (and (nonzero? arg4) (type-type? (-> arg4 type) process-drawable)) arg4)))
+    (let ((v1-20 (ensure-type arg4 process-drawable)))
       (quaternion-copy! (-> self root quat) (-> v1-20 root quat))))
   (initialize-skeleton self arg1 '())
   (logior! (-> self draw status) (draw-status skip-bones))

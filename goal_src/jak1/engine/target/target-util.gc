@@ -799,7 +799,7 @@
         ((not (logtest? s4-0 (attack-mask vector)))
          (let* ((s3-0 pp)
                 (s2-0 (handle->process (-> this attacker)))
-                (v1-39 (if (and (nonzero? s2-0) (type-type? (-> s2-0 type) process-drawable)) s2-0)))
+                (v1-39 (ensure-type s2-0 process-drawable)))
            (when v1-39
              (set! (-> this trans quad) (-> (the-as process-drawable v1-39) root trans quad))
              (vector-! (-> this vector)
@@ -808,7 +808,7 @@
              (logior! (-> this mask) (attack-mask vector)))))
         (else
          (let* ((s3-1 (handle->process (-> this attacker)))
-                (a0-16 (if (and (nonzero? s3-1) (type-type? (-> s3-1 type) process-drawable)) s3-1)))
+                (a0-16 (ensure-type s3-1 process-drawable)))
            (if a0-16 (set! (-> this trans quad) (-> (the-as process-drawable a0-16) root trans quad))))
          (set! (-> this vector quad) (-> arg0 vector quad))
          (if (not (logtest? s4-0 (attack-mask shove-back))) (set! (-> this shove-back) (vector-xz-length (-> this vector))))

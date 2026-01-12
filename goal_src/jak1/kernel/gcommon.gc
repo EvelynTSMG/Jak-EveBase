@@ -274,6 +274,33 @@
       (set! child-type (-> child-type parent))))
   #f)
 
+(defmacro ensure-type (child parent-type)
+  (with-gensyms (temp)
+    `(let ((,temp ,child))
+      (if (and
+        (nonzero? ,temp)
+        (type-type? (-> ,temp type) ,parent-type)
+      )
+        ,temp
+      )
+    )
+  )
+)
+
+(defmacro try-as (type obj)
+  (with-gensyms (temp)
+    `(let ((,temp ,obj))
+      (if (and
+        (nonzero? ,temp)
+        (type-type? (-> ,temp type) ,type)
+      )
+        (the-as ,type ,temp)
+      )
+    )
+  )
+)
+
+
 (defun find-parent-method ((child-type type) (method-id int))
   "Search the type tree for a parent type with a different method
   from the child, for the given method ID.
@@ -296,7 +323,7 @@
 (defmacro as-type (this type)
   "Macro to _safely_ convert to a different type, returning #f if the type doesn't match.
    Does a runtime type check so it's expensive."
-  `(if (and (nonzero? ,this) (type-type? (-> ,this type) ,type)) (the-as ,type ,this)))
+  `(try-as ,type ,this))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pairs, lists, etc

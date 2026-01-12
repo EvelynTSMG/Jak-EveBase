@@ -670,7 +670,7 @@
     (transform-float-point s4-0 (the-as vector4w (-> s5-0 quad)))
     (let* ((v1-1 (-> self link))
            (s4-1 (and (-> v1-1 next) (-> v1-1 next extra process)))
-           (v1-5 (if (and (nonzero? s4-1) (type-type? (-> s4-1 type) periscope)) s4-1)))
+           (v1-5 (ensure-type s4-1 periscope)))
       (when (or (not v1-5) (-> (the-as periscope v1-5) raised?))
         (cond
           ((>= (-> s5-0 vector 0 z) 0)
@@ -1375,7 +1375,7 @@
         (until gp-1
           (let* ((v1-13 (-> self link))
                  (s5-0 (and (-> v1-13 next) (-> v1-13 next extra process)))
-                 (v1-17 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) periscope)) s5-0)))
+                 (v1-17 (ensure-type s5-0 periscope)))
             (if v1-17 (set! gp-1 (-> (the-as periscope v1-17) raised?))))
           (suspend)))
       (process-entity-status! self (entity-perm-status complete) #t)

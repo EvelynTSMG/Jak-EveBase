@@ -607,7 +607,7 @@
              ((>= (-> self hits) 1) (go swamp-tetherrock-break))
              (else
               (let* ((s5-0 proc)
-                     (gp-0 (if (and (nonzero? s5-0) (type-type? (-> s5-0 type) process-drawable)) s5-0)))
+                     (gp-0 (ensure-type s5-0 process-drawable)))
                 (process-spawn part-tracker
                                :init
                                part-tracker-init
