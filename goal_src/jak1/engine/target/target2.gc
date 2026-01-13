@@ -348,10 +348,16 @@
              (vf6 :class vf))
         (init-vf0-vector)
         ;; og:preserve-this - High FPS Fix
-        (when (and (recently-pressed? r2 circle square)
-                   (has-eco? (pickup-type eco-yellow))
-                   (time-elapsed? (-> self control unknown-dword82) (seconds 0.5))
-                   (not *pause-lock*))
+        (when (and
+          (or
+            ;mod: Allow r2 to be held instead of spammed
+            (cpad-hold? (target-cpad) r2)
+            (recently-pressed? circle square)
+          )
+          (has-eco? (pickup-type eco-yellow))
+          (time-elapsed? (-> self control unknown-dword82) (seconds 0.5))
+          (not *pause-lock*)
+        )
           (let ((gp-1 (vector-float*! (new-stack-vector0)
                                       (-> *math-camera* inv-camera-rot vector 2)
                                       (the-as float (-> *TARGET-bank* yellow-projectile-speed))))
@@ -427,10 +433,16 @@
              (vf6 :class vf))
         (init-vf0-vector)
         ;; og:preserve-this - High FPS Fix
-        (when (and (recently-pressed? r2 circle square)
-                   (time-elapsed? (-> self control unknown-dword82) (seconds 0.45))
-                   (has-eco? (pickup-type eco-yellow))
-                   (not *pause-lock*))
+        (when (and
+          (or
+            ;mod: Allow r2 to be held instead of spammed
+            (cpad-hold? (target-cpad) r2)
+            (recently-pressed? circle square)
+          )
+          (time-elapsed? (-> self control unknown-dword82) (seconds 0.45))
+          (has-eco? (pickup-type eco-yellow))
+          (not *pause-lock*)
+        )
           (let ((gp-1 (vector-float*! (new-stack-vector0)
                                       (-> *math-camera* inv-camera-rot vector 2)
                                       (the-as float (-> *TARGET-bank* yellow-projectile-speed))))
