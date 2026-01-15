@@ -156,6 +156,17 @@
     )
 
     (new 'static 'game-option
+      :option-type (game-option-type confirmation)
+      :name (text-id warp-to-checkpoint)
+      :scale #t
+      :on-confirm (lambda ()
+        (initialize! *game-info* 'checkpoint-warp (the-as game-save #f) (the-as string #f))
+
+        (none)
+      )
+    )
+
+    (new 'static 'game-option
       :option-type (game-option-type menu)
       :name (text-id load-game)
       :scale #t
@@ -226,6 +237,17 @@
       :name (text-id mod-options)
       :scale #t
       :param3 (game-option-menu mod-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type confirmation)
+      :name (text-id warp-to-checkpoint)
+      :scale #t
+      :on-confirm (lambda ()
+        (initialize! *game-info* 'checkpoint-warp (the-as game-save #f) (the-as string #f))
+
+        (none)
+      )
     )
 
     (new 'static 'game-option

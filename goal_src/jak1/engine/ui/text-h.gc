@@ -825,6 +825,10 @@
   (pad-square #x2003)
 
   (save-and-load-game #x3000)
+
+  ; extra mod text
+  (warp-to-checkpoint #x3001)
+
   ;; GAME-TEXT-ID ENUM ENDS
   )
 
