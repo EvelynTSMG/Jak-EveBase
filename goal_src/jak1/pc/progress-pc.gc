@@ -4034,7 +4034,15 @@
                   (set-height! desc-ctx 25)
                   (set! (-> desc-ctx origin x) (the float (- option-x (-> obj left-x-offset))))
                   (set! (-> desc-ctx origin y) 5.0)
-                  (set-scale! desc-ctx (* 0.6 arg2))
+
+                  ; The text is just as big on 4x3, but there's less screen space
+                  ; So we need to scale it down to fit within the same amount of lines!
+                  ; Sorry 4x3 users
+                  (if (= (get-aspect-ratio) 'aspect16x9)
+                    (set-scale! desc-ctx (* 0.6 arg2))
+                    (set-scale! desc-ctx (* 0.45 arg2))
+                  )
+
                   (print-game-text option-desc desc-ctx #f 128 30)
                 )
               )
