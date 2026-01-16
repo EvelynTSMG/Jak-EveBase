@@ -7,9 +7,8 @@ and a fork of the offical [Mod Base](https://github.com/OpenGOAL-Mods/OG-Mod-Bas
 EveBase implements various changes and fixes to the vanilla game and the code backend
 to make both playing and developing mods more pleasant.
 
-## Changes
-- Shooting yellow eco in first person now allows **R2** to be held to shoot,
-  instead of requiring separate button presses for each shot.
+## Additions
+- Options can now have descriptions associated with them
 - Added **Mod Options**:
   - **Double-Jump Ability** determines when you can double-jump.
     - *Near Peak* behaves like vanilla,
@@ -26,6 +25,10 @@ to make both playing and developing mods more pleasant.
   - Attempting to exit Fire Canyon, Mountain Pass, or Lave Tube will warp you
     to either the beginning or the end of each level, depending on which is closer.
     It will always choose the beginning if the level has not been completed.
+
+## Changes
+- Shooting yellow eco in first person now allows **R2** to be held to shoot,
+  instead of requiring separate button presses for each shot.
 
 ## Fixes
 - Jak now properly uses the crouching hitbox when rolling and rolljumping.
