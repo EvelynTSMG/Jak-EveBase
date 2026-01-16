@@ -389,14 +389,14 @@
         :index 2
         :status 'reserved
 
-        :tfrag-tex-foreground-sink-group (new 'static dma-foreground-sink-group
-          :sink (new 'static array dma-foreground-sink 3
+        :tfrag-tex-foreground-sink-group (new 'static 'dma-foreground-sink-group
+          :sink (new 'static 'array dma-foreground-sink 3
             (new 'static 'dma-foreground-sink
               :bucket (bucket-id merc-alpha-tex)
               :foreground-texture-level 2
             )
 
-            (new 'static generic-dma-foreground-sink
+            (new 'static 'generic-dma-foreground-sink
               :bucket (bucket-id generic-alpha-tex)
               :foreground-texture-level 2
               :foreground-output-bucket 1
@@ -404,15 +404,15 @@
           )
         )
 
-        :pris-tex-foreground-sink-group (new 'static dma-foreground-sink-group
-          :sink (new 'static array dma-foreground-sink 3
-            (new 'static dma-foreground-sink
+        :pris-tex-foreground-sink-group (new 'static 'dma-foreground-sink-group
+          :sink (new 'static 'array dma-foreground-sink 3
+            (new 'static 'dma-foreground-sink
               :bucket (bucket-id merc-pris-common)
               :foreground-texture-page 1
               :foreground-texture-level 2
             )
 
-            (new 'static generic-dma-foreground-sink
+            (new 'static 'generic-dma-foreground-sink
               :bucket (bucket-id generic-pris-common)
               :foreground-texture-page 1
               :foreground-texture-level 2
@@ -421,15 +421,15 @@
           )
         )
 
-        :water-tex-foreground-sink-group (new 'static dma-foreground-sink-group
-          :sink (new 'static array dma-foreground-sink 3
+        :water-tex-foreground-sink-group (new 'static 'dma-foreground-sink-group
+          :sink (new 'static 'array dma-foreground-sink 3
             (new 'static 'dma-foreground-sink
               :bucket (bucket-id merc-water0)
               :foreground-texture-page 2
               :foreground-texture-level 2
             )
 
-            (new 'static generic-dma-foreground-sink
+            (new 'static 'generic-dma-foreground-sink
               :bucket (bucket-id generic-water0)
               :foreground-texture-page 2
               :foreground-texture-level 2
