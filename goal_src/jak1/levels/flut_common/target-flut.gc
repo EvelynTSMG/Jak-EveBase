@@ -5,177 +5,11 @@
 (require "engine/target/target-death.gc")
 (require "engine/anim/aligner.gc")
 (require "engine/common-obs/water.gc")
+(require "levels/flut_common/target-flut-h.gc")
 (require "levels/flut_common/flutflut.gc")
 (require "engine/common-obs/nav-enemy-h.gc")
 
 ;; DECOMP BEGINS
-
-(deftype flut-info (basic)
-  ((entity        entity-actor)
-   (flut-trans    vector :inline)
-   (flut-quat     vector :inline)
-   (flut-scale    vector :inline)
-   (stick-lock    basic)
-   (flap-sound-id sound-id)))
-
-
-(deftype flut-bank (basic)
-  (
-    (jump-height-min        meters)
-    (jump-height-max        meters)
-    (double-jump-height-min meters)
-    (double-jump-height-max meters)
-    (air-attack-speed       meters)
-    (coyote-time            time-frame)
-  )
-)
-
-
-(define *FLUT-bank*
-  (new 'static 'flut-bank
-    :jump-height-min (meters 5)
-    :jump-height-max (meters 7)
-    :double-jump-height-min (meters 1)
-    :double-jump-height-max (meters 2)
-    :air-attack-speed (meters 20)
-    :coyote-time (seconds 0.5)
-  )
-)
-
-(define *flut-walk-mods*
-  (new 'static
-       'surface
-       :name 'run
-       :turnv 54613.332
-       :turnvv 524288.0
-       :tiltv 65536.0
-       :tiltvv 131072.0
-       :transv-max 81920.0
-       :target-speed 81920.0
-       :seek0 1.5
-       :seek90 3.0
-       :seek180 2.0
-       :fric 1.0
-       :nonlin-fric-dist 0.1
-       :slip-factor 1.0
-       :slide-factor 1.0
-       :slope-up-factor 1.0
-       :slope-down-factor 1.0
-       :slope-slip-angle 1.0
-       :impact-fric 1.0
-       :bend-factor 1.0
-       :bend-speed 1.0
-       :alignv 1.0
-       :slope-up-traction 1.0
-       :align-speed 1.0
-       :flags (surface-flags no-turn-around)))
-
-(define *flut-jump-mods*
-  (new 'static
-       'surface
-       :name 'jump
-       :turnv 131072.0
-       :turnvv 54613.332
-       :tiltv 32768.0
-       :tiltvv 131072.0
-       :transv-max 81920.0
-       :target-speed 81920.0
-       :seek0 0.9
-       :seek90 1.5
-       :seek180 1.5
-       :fric 0.2
-       :nonlin-fric-dist 1.0
-       :slip-factor 1.0
-       :slide-factor 1.0
-       :slope-up-factor 1.0
-       :slope-down-factor 1.0
-       :slope-slip-angle 1.0
-       :impact-fric 1.0
-       :bend-factor 1.0
-       :bend-speed 1.0
-       :alignv 1.0
-       :slope-up-traction 1.0
-       :align-speed 1.0
-       :mode 'air
-       :flags (surface-flags jump)))
-
-(define *flut-double-jump-mods*
-  (new 'static
-       'surface
-       :name 'jump-double
-       :turnv 131072.0
-       :turnvv 54613.332
-       :tiltv 32768.0
-       :tiltvv 131072.0
-       :transv-max 81920.0
-       :target-speed 81920.0
-       :seek0 0.9
-       :seek90 1.5
-       :seek180 1.5
-       :fric 0.1
-       :nonlin-fric-dist 10.0
-       :slip-factor 1.0
-       :slide-factor 1.0
-       :slope-up-factor 1.0
-       :slope-down-factor 1.0
-       :slope-slip-angle 1.0
-       :impact-fric 1.0
-       :bend-factor 1.0
-       :bend-speed 1.0
-       :alignv 1.0
-       :slope-up-traction 1.0
-       :align-speed 1.0
-       :mode 'air
-       :flags (surface-flags jump)))
-
-(define *flut-run-attack-mods*
-  (new 'static
-       'surface
-       :name 'wheel-flip
-       :tiltv 32768.0
-       :tiltvv 131072.0
-       :transv-max 122880.0
-       :target-speed 122880.0
-       :seek90 0.5
-       :seek180 0.15
-       :slip-factor 1.0
-       :slide-factor 1.0
-       :slope-up-factor 0.25
-       :slope-down-factor 1.0
-       :slope-slip-angle 1.0
-       :impact-fric 1.0
-       :bend-factor 1.0
-       :bend-speed 1.0
-       :alignv 1.0
-       :slope-up-traction 1.0
-       :align-speed 1.0
-       :mode 'attack
-       :flags (surface-flags no-turn-around no-rotate-toward-transv attacking)))
-
-(define *flut-air-attack-mods*
-  (new 'static
-       'surface
-       :name 'flop
-       :tiltv 32768.0
-       :tiltvv 131072.0
-       :transv-max 122880.0
-       :target-speed 122880.0
-       :seek0 1.0
-       :seek90 0.3
-       :seek180 1.5
-       :slip-factor 1.0
-       :slide-factor 1.0
-       :slope-up-factor 0.25
-       :slope-down-factor 1.0
-       :slope-slip-angle 1.0
-       :impact-fric 1.0
-       :bend-factor 1.0
-       :bend-speed 1.0
-       :alignv 1.0
-       :slope-up-traction 1.0
-       :align-speed 1.0
-       :mode 'attack
-       :flags (surface-flags jump attacking)))
 
 (defbehavior target-flut-post-post target ()
   (vector+! (-> self flut flut-trans) (-> self control trans) (-> self control unknown-vector12))
@@ -299,87 +133,146 @@
 
 (defstate target-flut-start (target)
   :event target-flut-standard-event-handler
-  :exit
-    (behavior ()
-      (when (not (or (= (-> self next-state name) 'target-flut-stance)
-                     (= (-> self next-state name) 'target-flut-walk)
-                     (= (-> self next-state name) 'target-flut-jump)
-                     (= (-> self next-state name) 'target-flut-double-jump)
-                     (= (-> self next-state name) 'target-flut-hit-ground)
-                     (= (-> self next-state name) 'target-flut-falling)
-                     (= (-> self next-state name) 'target-flut-running-attack)
-                     (= (-> self next-state name) 'target-flut-air-attack)
-                     (= (-> self next-state name) 'target-flut-air-attack-hit-ground)
-                     (= (-> self next-state name) 'target-flut-hit)
-                     (= (-> self next-state name) 'target-flut-death)
-                     (= (-> self next-state name) 'target-flut-get-on)
-                     (= (-> self next-state name) 'target-flut-get-off)
-                     (= (-> self next-state name) 'target-flut-get-off-jump)
-                     (= (-> self next-state name) 'target-flut-grab)
-                     (= (-> self next-state name) 'target-flut-clone-anim)))
-        (let ((v1-33 (-> self manipy)))
-          (when v1-33
-            (deactivate (-> v1-33 0))
-            (set! (-> self manipy) (the-as (pointer manipy) #f))))
-        (logclear! (-> self control root-prim prim-core action) (collide-action flut))
-        (set! (-> self control unknown-surface00) *walk-mods*)
-        (logclear! (-> self state-flags) (state-flags use-alt-cam-pos))
-        (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-        (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
-        (target-collide-set! 'normal (the-as float 0.0))
-        (set! (-> self control reaction) target-collision-reaction)
-        (set! (-> self control unknown-vector12 quad) (the-as uint128 0))
-        (remove-setting! 'sound-flava)
-        (target-exit)))
-  :code
-    (behavior ((arg0 handle))
+
+  :exit (behavior ()
+    (when (not
+      (or
+        (= (-> self next-state name) 'target-flut-stance)
+        (= (-> self next-state name) 'target-flut-walk)
+        (= (-> self next-state name) 'target-flut-jump)
+        (= (-> self next-state name) 'target-flut-double-jump)
+        (= (-> self next-state name) 'target-flut-hit-ground)
+        (= (-> self next-state name) 'target-flut-falling)
+        (= (-> self next-state name) 'target-flut-running-attack)
+        (= (-> self next-state name) 'target-flut-air-attack)
+        (= (-> self next-state name) 'target-flut-air-attack-hit-ground)
+        (= (-> self next-state name) 'target-flut-hit)
+        (= (-> self next-state name) 'target-flut-death)
+        (= (-> self next-state name) 'target-flut-get-on)
+        (= (-> self next-state name) 'target-flut-get-off)
+        (= (-> self next-state name) 'target-flut-get-off-jump)
+        (= (-> self next-state name) 'target-flut-grab)
+        (= (-> self next-state name) 'target-flut-clone-anim)
+      )
+    )
+
+      (let ((v1-33 (-> self manipy)))
+        (when v1-33
+          (deactivate (-> v1-33 0))
+          (set! (-> self manipy) (the-as (pointer manipy) #f))
+        )
+      )
+
+      (logclear! (-> self control root-prim prim-core action) (collide-action flut))
+      (set! (-> self control unknown-surface00) *walk-mods*)
+      (logclear! (-> self state-flags) (state-flags use-alt-cam-pos))
+
+      (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
+      (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+
+      (target-collide-set! 'normal (the-as float 0.0))
+      (set! (-> self control reaction) target-collision-reaction)
+      (set! (-> self control unknown-vector12 quad) (the-as uint128 0))
+
+      (remove-setting! 'sound-flava)
       (target-exit)
-      (set! *display-profile* #f)
-      (set! *display-entity-errors* #f)
-      (set-setting! 'sound-flava #f 30.0 (music-flava flutflut))
-      (if (zero? (-> self flut)) (set! (-> self flut) (new 'process 'flut-info)))
-      (set! (-> self flut stick-lock) #f)
-      (set! (-> self flut flap-sound-id) (new-sound-id))
-      (set! (-> self flut entity) #f)
-      (let ((v1-11 (handle->process arg0)))
-        (if (and (not *allow-flutflut-anywhere*) v1-11) ;; OG-modbase dont track entity, prevents crash on level deload
-          (set! (-> self flut entity) (-> v1-11 entity))))
-      (target-collide-set! 'flut (the-as float 0.0))
-      (set! (-> self control transv quad) (the-as uint128 0))
-      (set! (-> self control xz-vel-mag) 0.0)
-      (logior! (-> self control root-prim prim-core action) (collide-action flut))
-      (let ((s5-0 (-> self entity)))
-        (set! (-> self entity) (-> self flut entity))
-        (set! (-> self manipy)
-              (manipy-spawn (-> self control trans) (-> self entity) *flutflut-sg* 'collide-shape-moving :to self))
-        (set! (-> self entity) s5-0))
-      (when (-> self manipy)
-        (send-event (ppointer->process (-> self manipy))
-                    'trans-hook
-                    (lambda :behavior flutflut ()
-                      (let* ((a0-0 (-> self parent-override))
-                             (v1-0 (if a0-0 (-> a0-0 0 self-override))))
-                        (set! (-> self root trans quad) (-> v1-0 flut flut-trans quad))
-                        (let ((a0-4 (-> v1-0 flut flut-quat quad))) (set! (-> self root quat vec quad) a0-4))
-                        (set! (-> self root scale quad) (-> v1-0 flut flut-scale quad))
-                        (set! (-> self root ground-pat material) (the-as int (-> v1-0 control ground-pat material)))
-                        (set! (-> self draw light-index) (the-as uint 255))
-                        (let ((a0-13 (-> v1-0 draw color-mult quad))) (set! (-> self draw color-mult quad) a0-13))
-                        (let ((a0-15 (-> v1-0 draw color-emissive quad))) (set! (-> self draw color-emissive quad) a0-15))
-                        (set! (-> self draw secondary-interp) (-> v1-0 draw secondary-interp)))))
-        (send-event (ppointer->process (-> self manipy)) 'anim-mode 'loop)
-        (send-event (ppointer->process (-> self manipy)) 'art-joint-anim "flut-get-on" 0.0)
-        (send-event (ppointer->process (-> self manipy)) 'blend-shape #t)
-        (send-event (ppointer->process (-> self manipy))
-                    'eval
-                    (lambda :behavior target ()
-                      (set! (-> self attack-info intersection z) (the-as float #f))
-                      (let ((v1-1 (-> *target-shadow-control* settings shadow-dir quad)))
-                        (set! (-> *flutflut-shadow-control* settings shadow-dir quad) v1-1))
-                      (let ((v0-0 *flutflut-shadow-control*)) (set! (-> self draw shadow-ctrl) v0-0) v0-0))))
-      (remove-exit)
-      (go target-flut-get-on arg0))
-  :post target-post)
+    )
+  )
+
+  :code (behavior ((arg0 handle) (quick-mount? symbol))
+    (target-exit)
+    (set! *display-profile* #f)
+    (set! *display-entity-errors* #f)
+    (set-setting! 'sound-flava #f 30.0 (music-flava flutflut))
+    
+    (if (zero? (-> self flut))
+      (set! (-> self flut) (new 'process 'flut-info))
+    )
+    (set! (-> self flut stick-lock) #f)
+    (set! (-> self flut flap-sound-id) (new-sound-id))
+    (set! (-> self flut entity) #f)
+    (set! (-> self flut quick-mounted?) quick-mount?)
+
+    (let ((v1-11 (handle->process arg0)))
+      ;; OG-modbase dont track entity, prevents crash on level deload
+      (if (and
+        (not *allow-flutflut-anywhere*)
+        v1-11
+      )
+        (set! (-> self flut entity) (-> v1-11 entity))
+      )
+    )
+    (target-collide-set! 'flut (the-as float 0.0))
+    (set! (-> self control transv quad) (the-as uint128 0))
+    (set! (-> self control xz-vel-mag) 0.0)
+    (logior! (-> self control root-prim prim-core action) (collide-action flut))
+
+    (let ((s5-0 (-> self entity)))
+      (set! (-> self entity) (-> self flut entity))
+      (set! (-> self manipy)
+        (manipy-spawn
+          (-> self control trans)
+          (-> self entity)
+          *flutflut-sg*
+          'collide-shape-moving
+          :to self
+        )
+      )
+      (set! (-> self entity) s5-0)
+    )
+
+    (when (-> self manipy)
+      (send-event
+        (ppointer->process (-> self manipy))
+        'trans-hook
+        (lambda :behavior flutflut ()
+          (let* (
+            (a0-0 (-> self parent-override))
+            (v1-0
+              (if a0-0
+                (-> a0-0 0 self-override)
+              )
+            )
+          )
+            (set! (-> self root trans quad) (-> v1-0 flut flut-trans quad))
+            (set! (-> self root quat vec quad) (-> v1-0 flut flut-quat quad))
+            (set! (-> self root scale quad) (-> v1-0 flut flut-scale quad))
+            (set! (-> self root ground-pat material) (the-as int (-> v1-0 control ground-pat material)))
+            (set! (-> self draw light-index) (the-as uint 255))
+            (set! (-> self draw color-mult quad) (-> v1-0 draw color-mult quad))
+            (set! (-> self draw color-emissive quad) (-> v1-0 draw color-emissive quad))
+            (set! (-> self draw secondary-interp) (-> v1-0 draw secondary-interp))
+          )
+        )
+      )
+
+      (send-event (ppointer->process (-> self manipy)) 'anim-mode 'loop)
+      (send-event (ppointer->process (-> self manipy)) 'art-joint-anim "flut-get-on" 0.0)
+      (send-event (ppointer->process (-> self manipy)) 'blend-shape #t)
+      (send-event
+        (ppointer->process (-> self manipy))
+        'eval
+        (lambda :behavior target ()
+          (set! (-> self attack-info intersection z) (the-as float #f))
+
+          (set!
+            (-> *flutflut-shadow-control* settings shadow-dir quad)
+            (-> *target-shadow-control* settings shadow-dir quad)
+          )
+
+          (set! (-> self draw shadow-ctrl) *flutflut-shadow-control*)
+          
+          *flutflut-shadow-control*
+        )
+      )
+    )
+
+    (remove-exit)
+    (go target-flut-get-on arg0)
+  )
+
+  :post target-post
+)
 
 (defstate target-flut-stance (target)
   :event target-flut-standard-event-handler
@@ -1198,15 +1091,17 @@
 
 (defstate target-flut-get-on (target)
   :event target-generic-event-handler
-  :exit
-    (-> target-flut-start
-        exit)
+
+  :exit (-> target-flut-start exit)
+
   :code
-    (behavior ((arg0 handle))
+    (behavior ((flut-handle handle))
       (set! (-> self control transv quad) (the-as uint128 0))
       (set! (-> self alt-cam-pos quad) (-> (&-> (-> self control) unknown-qword00) 0))
+
       (logior! (-> self state-flags) (state-flags use-alt-cam-pos))
       (set-time! (-> self state-time))
+
       (let ((gp-0 (new 'stack-no-clear 'vector)))
         (set! (-> gp-0 quad) (-> self control trans quad))
         (let ((s5-0 (new 'stack-no-clear 'vector)))
@@ -1214,17 +1109,29 @@
           (quaternion-copy! (-> self control unknown-quaternion02) (-> self control quat))
           (quaternion-copy! (-> self control unknown-quaternion03) (-> self control unknown-quaternion00))
           (set! (-> self control unknown-uint20) (the-as uint (-> self control unknown-vector11 y)))
-          (let* ((s3-0 (handle->process arg0))
-                 (s4-1 (ensure-type s3-0 process-drawable)))
-            (when s4-1
-              (set! (-> s5-0 quad) (-> (the-as process-drawable s4-1) root trans quad))
-              (quaternion-copy! (-> self control unknown-quaternion03) (-> (the-as process-drawable s4-1) root quat))
-              (send-event s4-1 'trans (-> self flut flut-trans))
-              (quaternion-copy! (the-as quaternion (-> self flut flut-quat)) (-> (the-as process-drawable s4-1) root quat))
-              (set! (-> self flut flut-scale quad) (-> (the-as process-drawable s4-1) root scale quad))
-              (set! (-> self control unknown-int21) (the-as int (-> self flut flut-trans y)))))
+          (let* (
+            (flut-proc (handle->process flut-handle))
+            (flut (try-as process-drawable flut-proc))
+          )
+            (when flut
+              (set! (-> s5-0 quad) (-> flut root trans quad))
+              (quaternion-copy! (-> self control unknown-quaternion03) (-> flut root quat))
+              (send-event flut 'trans (-> self flut flut-trans))
+              (quaternion-copy! (the-as quaternion (-> self flut flut-quat)) (-> flut root quat))
+              (set! (-> self flut flut-scale quad) (-> flut root scale quad))
+              (set! (-> self control unknown-int21) (the-as int (-> self flut flut-trans y)))
+            )
+          )
           (set! (-> self control unknown-vector102 quad) (-> gp-0 quad))
-          (set! (-> self control unknown-vector103 quad) (-> s5-0 quad))))
+          (set! (-> self control unknown-vector103 quad) (-> s5-0 quad))
+        )
+      )
+
+      (when (-> self flut quick-mounted?)
+        (send-event (ppointer->process (-> self manipy)) 'anim-mode 'clone-anim)
+        (goto skip-anim)
+      )
+
       (let ((gp-1 #f))
         (sound-play "uppercut")
         (ja-channel-push! 1 (seconds 0.05))
@@ -1232,31 +1139,51 @@
         (until (ja-done? 0)
           (when (and (not gp-1) (= (-> self skel root-channel 0) (-> self skel channel)))
             (send-event (ppointer->process (-> self manipy)) 'anim-mode 'clone-anim)
-            (set! gp-1 #t))
+            (set! gp-1 #t)
+          )
+          
           (set! (-> self control transv quad) (the-as uint128 0))
           (suspend)
-          (ja :num! (seek! (ja-aframe (the-as float 24.0) 0)))))
+
+          (ja :num! (seek! (ja-aframe (the-as float 24.0) 0)))
+        )
+      )
+
+      (label skip-anim)
+
       (sound-play "flut-coo")
       (logclear! (-> self state-flags) (state-flags use-alt-cam-pos))
+
       (set! (-> self control transv quad) (the-as uint128 0))
       (quaternion-copy! (-> self control quat) (-> self control unknown-quaternion00))
       (rot->dir-targ! (-> self control))
-      (go target-flut-stance))
-  :post
-    (behavior ()
-      (let ((gp-0 (new 'stack-no-clear 'vector))
-            (f30-0 (fmin 1.0 (* 0.0044444446 (the float (- (current-time) (-> self state-time)))))))
-        (vector-lerp! gp-0 (-> self control unknown-vector102) (-> self control unknown-vector103) f30-0)
-        (set! (-> gp-0 y)
-              (lerp (-> self control unknown-vector102 y)
-                    (-> self control unknown-vector103 y)
-                    (fmax 0.0 (fmin 1.0 (* 0.006666667 (the float (+ (- (the-as int (-> self state-time))) (current-time))))))))
-        (move-to-point! (-> self control) gp-0)
-        (quaternion-slerp! (-> self control unknown-quaternion00)
-                           (-> self control unknown-quaternion02)
-                           (-> self control unknown-quaternion03)
-                           f30-0))
-      (target-no-move-post)))
+
+      (go target-flut-stance)
+  )
+
+  :post (behavior ()
+    (let (
+      (gp-0 (new 'stack-no-clear 'vector))
+      (f30-0 (fmin 1.0 (* 0.0044444446 (the float (- (current-time) (-> self state-time))))))
+    )
+      (vector-lerp! gp-0 (-> self control unknown-vector102) (-> self control unknown-vector103) f30-0)
+      (set! (-> gp-0 y)
+        (lerp
+          (-> self control unknown-vector102 y) (-> self control unknown-vector103 y)
+          (fclamp (/ (the float (+ (- (the-as int (-> self state-time))) (current-time))) (fsec 0.5)) 0.0 1.0)
+        )
+      )
+      (move-to-point! (-> self control) gp-0)
+      (quaternion-slerp!
+        (-> self control unknown-quaternion00)
+        (-> self control unknown-quaternion02)
+        (-> self control unknown-quaternion03)
+        f30-0
+      )
+    )
+    (target-no-move-post)
+  )
+)
 
 (defstate target-flut-get-off (target)
   :event target-generic-event-handler

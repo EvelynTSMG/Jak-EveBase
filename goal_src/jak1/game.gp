@@ -503,6 +503,7 @@
    "racer_common/racer-states.gc"
    "racer_common/collide-reaction-racer.gc"
 
+   "flut_common/target-flut-h.gc"
    "flut_common/flut-part.gc"
    "flut_common/flutflut.gc"
    "flut_common/target-flut.gc"
@@ -2115,7 +2116,7 @@
 (goal-src-sequence
  ;; prefix
  "engine/"
- :deps ("$OUT/obj/battlecontroller.o" "$OUT/obj/snow-bunny.o" "$OUT/obj/baby-spider.o" "$OUT/obj/sage-village3.o" "$OUT/obj/sage-finalboss.o" "$OUT/obj/assistant-citadel.o" "$OUT/obj/assistant-lavatube.o" "$OUT/obj/robocave-part.o" "$OUT/obj/driller-lurker.o" "$OUT/obj/training-part.o" "$OUT/obj/rolling-race-ring.o" "$OUT/obj/beach-part.o" "$OUT/obj/sculptor.o" "$OUT/obj/sunken-fish.o" "$OUT/obj/billy.o" "$OUT/obj/sidekick-human.o" "$OUT/obj/flying-lurker.o" "$OUT/obj/target-racer-h.o" "$OUT/obj/firecanyon-obs.o" "$OUT/obj/target-flut.o" "$OUT/obj/hud-classes-pc.o" "$OUT/obj/collide-reaction-racer.o" "$OUT/obj/plant-boss.o" "$OUT/obj/beach-obs.o" "$OUT/obj/sunken-elevator.o" "$OUT/obj/jungle-part.o" "$OUT/obj/sequence-a-village1.o" "$OUT/obj/ticky.o")
+ :deps ("$OUT/obj/battlecontroller.o" "$OUT/obj/snow-bunny.o" "$OUT/obj/baby-spider.o" "$OUT/obj/sage-village3.o" "$OUT/obj/sage-finalboss.o" "$OUT/obj/assistant-citadel.o" "$OUT/obj/assistant-lavatube.o" "$OUT/obj/robocave-part.o" "$OUT/obj/driller-lurker.o" "$OUT/obj/training-part.o" "$OUT/obj/rolling-race-ring.o" "$OUT/obj/beach-part.o" "$OUT/obj/sculptor.o" "$OUT/obj/sunken-fish.o" "$OUT/obj/billy.o" "$OUT/obj/sidekick-human.o" "$OUT/obj/flying-lurker.o" "$OUT/obj/target-racer-h.o" "$OUT/obj/firecanyon-obs.o" "$OUT/obj/target-flut-h.o" "$OUT/obj/target-flut.o" "$OUT/obj/hud-classes-pc.o" "$OUT/obj/collide-reaction-racer.o" "$OUT/obj/plant-boss.o" "$OUT/obj/beach-obs.o" "$OUT/obj/sunken-elevator.o" "$OUT/obj/jungle-part.o" "$OUT/obj/sequence-a-village1.o" "$OUT/obj/ticky.o")
  "mods/mod-settings.gc"
  "mods/mod-common-functions.gc"
  "mods/mod-custom-code.gc"

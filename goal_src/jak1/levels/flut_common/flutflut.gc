@@ -4,6 +4,7 @@
 (require "levels/common/blocking-plane.gc")
 (require "engine/common-obs/generic-obs.gc")
 (require "engine/entity/ambient.gc")
+(require "levels/flut_common/target-flut-h.gc")
 
 ;; DECOMP BEGINS
 
@@ -121,48 +122,169 @@
 
 (defstate idle (flutflut)
   :virtual #t
-  :event
-    (-> (method-of-type flutflut wait-for-start)
-        event)
-  :enter
-    (behavior ()
-      (blocking-plane-destroy)
-      (if (not *allow-flutflut-anywhere*) (blocking-plane-spawn (the-as curve-control (-> self path-target))))
-      (none))
-  :exit
-    (-> (method-of-type flutflut wait-for-start)
-        exit)
-  :code
-    (behavior ()
-      (ja-channel-set! 1)
-      (ja :group! flut-saddle-flut-idle-ja)
-      (set! (-> self root root-prim prim-core action) (collide-action solid attackable-unused))
-      (set! (-> self root root-prim prim-core offense) (collide-offense indestructible))
-      (loop
-        (if (and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action flut)))
-          (go-virtual wait-for-return))
-        (when (logtest? (-> self draw status) (draw-status was-drawn))
-          (if (and *target* (>= 40960.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-            (level-hint-spawn (text-id swamp-flutflut-hint) "sksp0160" (the-as entity #f) *entity-pool* (game-task none))))
-        (when (and (and *target* (>= 20480.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
-                   (not (movie?))
-                   (not (level-hint-displayed?))
-                   (!= (-> self condition) 4))
-          (hide-hud)
-          (level-hint-surpress!)
-          (kill-current-level-hint '() '(sidekick voicebox) 'exit)
-          (when (and (hud-hidden?) (can-grab-display? self))
-            (let ((gp-0 (new 'stack 'font-context *font-default-matrix* 32 160 0.0 (font-color default) (font-flags shadow kerning))))
-              (set-width! gp-0 440)
-              (set-height! gp-0 80)
-              (set! (-> gp-0 flags) (font-flags shadow kerning large))
-              (print-game-text (lookup-text! *common-text* (text-id press-to-use) #f) gp-0 #f 128 22))
-              (if (and (cpad-pressed? 0 circle) (send-event *target* 'change-mode 'flut self))
-                (go-virtual pickup (method-of-object self wait-for-return)))))
-        (flutflut-effect)
-        (suspend)
-        (ja :num! (loop!))))
-  :post ja-post)
+
+  :event (-> (method-of-type flutflut wait-for-start) event)
+
+  :enter (behavior ()
+    (blocking-plane-destroy)
+    (if (not *allow-flutflut-anywhere*)
+      (blocking-plane-spawn (the-as curve-control (-> self path-target)))
+    )
+
+    (none)
+  )
+
+  :exit (-> (method-of-type flutflut wait-for-start) exit)
+
+  :code (behavior ()
+    (ja-channel-set! 1)
+    (ja :group! flut-saddle-flut-idle-ja)
+
+    (set! (-> self root root-prim prim-core action) (collide-action solid attackable-unused))
+    (set! (-> self root root-prim prim-core offense) (collide-offense indestructible))
+
+    (loop
+      (if (and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action flut)))
+        (go-virtual wait-for-return)
+      )
+
+      (when (logtest? (-> self draw status) (draw-status was-drawn))
+        (if (and *target* (>= 40960.0 (vector-vector-distance (-> self root trans) (-> *target* control trans))))
+          (level-hint-spawn (text-id swamp-flutflut-hint) "sksp0160" (the-as entity #f) *entity-pool* (game-task none))
+        )
+      )
+
+      (when (and
+        (-> *pc-settings* mod quick-mount?)
+        *target*
+        (!= (-> *target* next-state name) 'target-flut-start)
+      )
+        (let (
+          (height-diff (- (-> *target* control trans y) (-> self root trans y)))
+          (target-rotation
+            (vector-z-quaternion!
+              (new 'stack-no-clear 'vector)
+              (-> *target* control quat)
+            )
+          )
+          (flut-rotation (new 'stack-no-clear 'vector))
+        )
+          (set! (-> target-rotation y) 0.0)
+          (vector-normalize! target-rotation 1.0)
+
+          (set! (-> flut-rotation quad) (-> self root rot quad))
+          (set! (-> flut-rotation y) 0.0)
+          (vector-normalize! flut-rotation 1.0)
+
+          (when *display-target-marks*
+            (let ((quick-mount-req-center (new 'stack-no-clear 'vector)))
+              ; Bottom of cylinder
+              (set! (-> quick-mount-req-center quad) (-> self root trans quad))
+              (+! (-> quick-mount-req-center y) (-> *FLUT-bank* quick-mount-req-min-height))
+
+              (add-debug-circle
+                #t
+                (bucket-id debug)
+                quick-mount-req-center
+                (-> *FLUT-bank* quick-mount-req-size)
+                (new 'static 'rgba :r #xff :g #xff :b #xff :a #x40)
+                (the-as matrix #f)
+              )
+
+              ; Top of cylinder
+              (set! (-> quick-mount-req-center quad) (-> self root trans quad))
+              (+! (-> quick-mount-req-center y) (-> *FLUT-bank* quick-mount-req-max-height))
+
+              (add-debug-circle
+                #t
+                (bucket-id debug)
+                quick-mount-req-center
+                (-> *FLUT-bank* quick-mount-req-size)
+                (new 'static 'rgba :r #xff :g #xff :b #xff :a #x40)
+                (the-as matrix #f)
+              )
+            )
+          )
+
+          ; Quick-mounting conditions:
+          ; Jak is facing roughly the same way as the flutflut (within 60°)
+          ; Jak is roughly directly above the flutflut
+          ; Jak is falling with sufficient velocity
+          (when (and
+            ; Rotation condition has been disabled because it was annoying
+            #t;(<= 0.5 (vector-dot target-rotation flut-rotation))
+
+            (> (-> *FLUT-bank* quick-mount-req-size) (vector-vector-xz-distance (-> self root trans) (-> *target* control trans)))
+            (> height-diff (-> *FLUT-bank* quick-mount-req-min-height))
+            (< height-diff (-> *FLUT-bank* quick-mount-req-max-height))
+            ;; (> (-> *target* control trans y) (-> self root trans y))
+            ;; (> (-> self root trans y) (-> temp y))
+
+            (> (-> *FLUT-bank* quick-mount-req-yvel) (-> *target* control transv y))
+          )
+            (format
+              0
+              "Quick-mounting!~%  Distance: ~m~%  Flut Height: ~m~%  Target Height: ~m~%  Allowed height: ~m—~m~%  Target Vel: ~m~%"
+              (vector-vector-xz-distance (-> self root trans) (-> *target* control trans))
+              (-> self root trans y)
+              (-> *target* control trans y)
+              (+ (-> self root trans y) (-> *FLUT-bank* quick-mount-req-min-height))
+              (+ (-> self root trans y) (-> *FLUT-bank* quick-mount-req-max-height))
+              (-> *target* control transv y)
+            )
+            (hide-hud)
+            (level-hint-surpress!)
+            (kill-current-level-hint '() '(sidekick voicebox) 'exit)
+
+            (when (send-event *target* 'change-mode 'flut self #t)
+              (go-virtual pickup (method-of-object self wait-for-return))
+            )
+          )
+        )
+      )
+
+      (when (and
+        (and
+          *target*
+          (>= 20480.0 (vector-vector-distance (-> self root trans) (-> *target* control trans)))
+        )
+        (not (movie?))
+        (not (level-hint-displayed?))
+        (!= (-> self condition) 4)
+      )
+        (hide-hud)
+        (level-hint-surpress!)
+        (kill-current-level-hint '() '(sidekick voicebox) 'exit)
+
+        (when (and
+          (hud-hidden?)
+          (can-grab-display? self)
+        )
+          (let ((gp-0 (new 'stack 'font-context *font-default-matrix* 32 160 0.0 (font-color default) (font-flags shadow kerning))))
+            (set-width! gp-0 440)
+            (set-height! gp-0 80)
+            (set! (-> gp-0 flags) (font-flags shadow kerning large))
+            (print-game-text (lookup-text! *common-text* (text-id press-to-use) #f) gp-0 #f 128 22)
+          )
+
+          (if (and
+            (cpad-pressed? 0 circle)
+            (send-event *target* 'change-mode 'flut self #f)
+          )
+            (go-virtual pickup (method-of-object self wait-for-return))
+          )
+        )
+      )
+
+      (flutflut-effect)
+      (suspend)
+
+      (ja :num! (loop!))
+    )
+  )
+
+  :post ja-post
+)
 
 (defstate pickup (flutflut)
   :virtual #t
@@ -218,6 +340,8 @@
         (suspend))))
 
 (defmethod init-from-entity! ((this flutflut) (arg0 entity-actor))
+  (stack-size-set! (-> this main-thread) 512)
+
   (let ((s4-0 (new 'process 'collide-shape-moving this (collide-list-enum hit-by-player))))
     (set! (-> s4-0 dynam) (copy *standard-dynamics* 'process))
     (set! (-> s4-0 reaction) default-collision-reaction)

@@ -365,6 +365,7 @@
   "eichar-racer+0-ag.go"
   "tpage-1119.go"
   ;; keep flutflut stuff loaded
+  "target-flut-h.o"
   "flut-part.o"
   "flutflut.o"
   "target-flut.o"

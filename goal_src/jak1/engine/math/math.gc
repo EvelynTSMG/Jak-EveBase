@@ -37,6 +37,11 @@
   `(* (meters ,x) (meters ,x))
 )
 
+(defmacro wrap-360-deg (x)
+  "Wraps a degrees value to [0, 65536)"
+  `(the float (sar (shl (the int ,x) 48) 48))
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; bitfield types
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

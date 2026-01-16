@@ -818,6 +818,9 @@
   (skip-cells #x1709)
   (skip-cells-desc #x170a)
 
+  (quick-mount #x170b)
+  (quick-mount-desc #x170c)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)

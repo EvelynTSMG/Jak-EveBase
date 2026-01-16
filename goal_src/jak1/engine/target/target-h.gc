@@ -84,7 +84,7 @@
    (target-flut-jump float float)
    target-flut-running-attack
    target-flut-stance
-   (target-flut-start handle)
+   (target-flut-start handle symbol)
    target-flut-walk
    target-grab
    (target-high-jump float float basic)
@@ -118,7 +118,7 @@
    (target-racing-hit handle attack-info)
    (target-racing-jump float float symbol)
    (target-racing-smack float symbol)
-   (target-racing-start handle)
+   (target-racing-start handle symbol)
    target-running-attack
    target-slide-down
    target-snowball

@@ -514,6 +514,7 @@
     (("doublejump-ability") (set! (-> settings doublejump-ability) (file-stream-read-symbol file)))
     (("always-max-jumps?") (set! (-> settings always-max-jumps?) (file-stream-read-symbol file)))
     (("skip-cells?") (set! (-> settings skip-cells?) (file-stream-read-symbol file)))
+    (("quick-mount?") (set! (-> settings quick-mount?) (file-stream-read-symbol file)))
     ;;[ADD-MOD-OPTION]; Add reading from file here
   )
 
@@ -524,6 +525,7 @@
   (format file " (doublejump-ability ~A)~%" (-> settings doublejump-ability))
   (format file " (always-max-jumps? ~A)~%" (-> settings always-max-jumps?))
   (format file " (skip-cells? ~A)~%" (-> settings skip-cells?))
+  (format file " (quick-mount? ~A)~%" (-> settings quick-mount?))
   ;;[ADD-MOD-OPTION]; Add writing to file here
 
   (none)

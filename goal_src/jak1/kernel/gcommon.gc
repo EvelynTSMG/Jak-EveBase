@@ -300,6 +300,19 @@
   )
 )
 
+(defmacro try-as-other (check-type cast-type obj)
+  (with-gensyms (temp)
+    `(let ((,temp ,obj))
+      (if (and
+        (nonzero? ,temp)
+        (type-type? (-> ,temp type) ,check-type)
+      )
+        (the-as ,cast-type ,temp)
+      )
+    )
+  )
+)
+
 
 (defun find-parent-method ((child-type type) (method-id int))
   "Search the type tree for a parent type with a different method
