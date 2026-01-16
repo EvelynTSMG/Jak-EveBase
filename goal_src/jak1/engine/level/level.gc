@@ -1460,3 +1460,75 @@
     (define *kernel-boot-message* 'play)
     (load-package "game" global)
     (play #t #t)))
+
+;; Find the continue point at the start of the current level
+(defun find-level-exit ()
+  (case (-> *game-info* current-continue level)
+    (('training) "training-start")
+    (('village1) "village1-hut")
+    (('beach) "beach-start")
+    (('jungle) "jungle-start")
+    (('jungleb) "jungle-start")
+    (('misty) "misty-start")
+
+    (('firecanyon)
+      (if (and
+        (task-complete? *game-info* (game-task firecanyon-end))
+        (<
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> firecanyon continues) 1)) trans))
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> firecanyon continues) 0)) trans))
+        )
+      )
+        "firecanyon-end"
+        "firecanyon-start"
+      )
+    )
+
+    (('village2) "village2-start")
+    (('sunken) "sunken-start")
+    (('sunkenb) "sunken-start")
+    (('swamp) "swamp-start")
+    (('rolling) "rolling-start")
+    
+    (('ogre)
+      (if (and
+        (task-complete? *game-info* (game-task ogre-end))
+        (<
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> ogre continues) 2)) trans))
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> ogre continues) 0)) trans))
+        )
+      )
+        "ogre-end"
+        "ogre-start"
+      )
+    )
+
+    (('village3) "village3-start")
+    (('snow) "snow-start")
+    (('maincave) "maincave-start")
+    (('darkcave) "darkcave-start")
+    (('robocave) "robocave-start")
+
+    (('lavatube)
+      (if (and
+        (task-complete? *game-info* (game-task lavatube-end))
+        (<
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> lavatube continues) 3)) trans))
+          (vector-vector-xz-distance (-> *target* control trans) (-> (the-as continue-point (ref (-> lavatube continues) 0)) trans))
+        )
+      )
+        "lavatube-end"
+        "lavatube-start"
+      )
+    )
+
+    (('citadel) "citadel-start")
+    (('finalboss) "finalboss-start")
+    (('demo) "demo-start")
+    (('title) "title-start")
+    (('halfpipe) "halfpipe")
+    (('test-zone) "test-zone-start")
+
+    (else "village1-hut")
+  )
+)

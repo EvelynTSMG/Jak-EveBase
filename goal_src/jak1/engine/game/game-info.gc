@@ -211,7 +211,16 @@
        (set! (-> this enter-level-time v1-53) 0)
        (set! (-> this in-level-time v1-53) 0)
        (set! (-> this level-opened v1-53) (the-as uint 0))
-       (nop!))))
+       (nop!)
+      )
+    )
+
+    (('checkpoint-warp)
+      (when continue-point-override
+        (set-continue! this continue-point-override)
+      )
+    )
+  )
   (case cause
     (('game 'try)
      ;; full restart, or ran out of lives

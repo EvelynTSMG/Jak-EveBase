@@ -831,6 +831,7 @@
 
   ; extra mod text
   (warp-to-checkpoint #x3001)
+  (exit-level #x3002)
 
   ;; GAME-TEXT-ID ENUM ENDS
   )

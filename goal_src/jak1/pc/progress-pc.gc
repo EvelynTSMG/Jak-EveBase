@@ -167,6 +167,17 @@
     )
 
     (new 'static 'game-option
+      :option-type (game-option-type confirmation)
+      :name (text-id exit-level)
+      :scale #t
+      :on-confirm (lambda ()
+        (initialize! *game-info* 'checkpoint-warp (the-as game-save #f) (find-level-exit))
+
+        (none)
+      )
+    )
+
+    (new 'static 'game-option
       :option-type (game-option-type menu)
       :name (text-id load-game)
       :scale #t
@@ -245,6 +256,17 @@
       :scale #t
       :on-confirm (lambda ()
         (initialize! *game-info* 'checkpoint-warp (the-as game-save #f) (the-as string #f))
+
+        (none)
+      )
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type confirmation)
+      :name (text-id exit-level)
+      :scale #t
+      :on-confirm (lambda ()
+        (initialize! *game-info* 'checkpoint-warp (the-as game-save #f) (find-level-exit))
 
         (none)
       )
