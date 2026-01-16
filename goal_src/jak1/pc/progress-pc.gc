@@ -4038,9 +4038,8 @@
                   ; The text is just as big on 4x3, but there's less screen space
                   ; So we need to scale it down to fit within the same amount of lines!
                   ; Sorry 4x3 users
-                  (if (= (get-aspect-ratio) 'aspect16x9)
-                    (set-scale! desc-ctx (* 0.6 arg2))
-                    (set-scale! desc-ctx (* 0.45 arg2))
+                  (let ((scale (/ (-> *pc-settings* aspect-ratio) (/ 16.0 9.0))))
+                    (set-scale! desc-ctx (* 0.6 scale arg2))
                   )
 
                   (print-game-text option-desc desc-ctx #f 128 30)
