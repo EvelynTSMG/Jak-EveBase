@@ -362,7 +362,11 @@
     (behavior ()
       (set-time! (-> self state-time))
       (set! (-> self wiggled?) #f)
-      (sleep (-> self ticker) (-> self timeout))
+      ; Roughly re-align the timeout with the time the player would normally have
+      (if (-> *pc-settings* mod skip-camera-pans?)
+        (sleep (-> self ticker) (- (-> self timeout) (seconds 1.5)))
+        (sleep (-> self ticker) (-> self timeout))
+      )
       (set! (-> self plat-id) -1)
       (send-to-all (-> self link) 'trigger)
       (set! (-> self plat-id) 0)
@@ -370,59 +374,68 @@
         (let ((v1-7 (-> self button-id)))
           (cond
             ((zero? v1-7)
-             (let ((a0-4 (process-spawn sunkencam
-                                        :init
-                                        pov-camera-init-by-other
-                                        (-> self root trans)
-                                        *sunkencam-sg*
-                                        "qbert-show-door-open"
-                                        0
-                                        #f
-                                        '()
-                                        :to
-                                        self)))
-               (set! (-> (the-as sunkencam (-> a0-4 0)) seq) (the-as uint 3))))
+              (when (not (-> *pc-settings* mod skip-camera-pans?))
+                (let ((a0-4 (process-spawn sunkencam
+                                            :init
+                                            pov-camera-init-by-other
+                                            (-> self root trans)
+                                            *sunkencam-sg*
+                                            "qbert-show-door-open"
+                                            0
+                                            #f
+                                            '()
+                                            :to
+                                            self)))
+                  (set! (-> (the-as sunkencam (-> a0-4 0)) seq) (the-as uint 3))))
+              )
             ((= v1-7 1)
-             (let ((v1-13 (process-spawn sunkencam
-                                         :init
-                                         pov-camera-init-by-other
-                                         (-> self root trans)
-                                         *sunkencam-sg*
-                                         "qbert-show-door-open"
-                                         0
-                                         #f
-                                         '()
-                                         :to
-                                         self)))
-               (set! (-> (the-as sunkencam (-> v1-13 0)) seq) (the-as uint 4)))
-             (set! gp-0 -1))
+              (when (not (-> *pc-settings* mod skip-camera-pans?))
+                (let ((v1-13 (process-spawn sunkencam
+                                            :init
+                                            pov-camera-init-by-other
+                                            (-> self root trans)
+                                            *sunkencam-sg*
+                                            "qbert-show-door-open"
+                                            0
+                                            #f
+                                            '()
+                                            :to
+                                            self)))
+                  (set! (-> (the-as sunkencam (-> v1-13 0)) seq) (the-as uint 4)))
+              )
+              (set! gp-0 -1))
             ((= v1-7 2)
-             (let ((a0-17 (process-spawn sunkencam
-                                         :init
-                                         pov-camera-init-by-other
-                                         (-> self root trans)
-                                         *sunkencam-sg*
-                                         "qbert-show-door-open"
-                                         0
-                                         #f
-                                         '()
-                                         :to
-                                         self)))
-               (set! (-> (the-as sunkencam (-> a0-17 0)) seq) (the-as uint 5))))
+              (when (not (-> *pc-settings* mod skip-camera-pans?))
+                (let ((a0-17 (process-spawn sunkencam
+                                            :init
+                                            pov-camera-init-by-other
+                                            (-> self root trans)
+                                            *sunkencam-sg*
+                                            "qbert-show-door-open"
+                                            0
+                                            #f
+                                            '()
+                                            :to
+                                            self)))
+                  (set! (-> (the-as sunkencam (-> a0-17 0)) seq) (the-as uint 5))))
+              )
             ((= v1-7 3)
-             (let ((v1-24 (process-spawn sunkencam
-                                         :init
-                                         pov-camera-init-by-other
-                                         (-> self root trans)
-                                         *sunkencam-sg*
-                                         "qbert-show-door-open"
-                                         0
-                                         #f
-                                         '()
-                                         :to
-                                         self)))
-               (set! (-> (the-as sunkencam (-> v1-24 0)) seq) (the-as uint 6)))
-             (set! gp-0 -1))))
+              (when (not (-> *pc-settings* mod skip-camera-pans?))
+                (let ((v1-24 (process-spawn sunkencam
+                                            :init
+                                            pov-camera-init-by-other
+                                            (-> self root trans)
+                                            *sunkencam-sg*
+                                            "qbert-show-door-open"
+                                            0
+                                            #f
+                                            '()
+                                            :to
+                                            self)))
+                  (set! (-> (the-as sunkencam (-> v1-24 0)) seq) (the-as uint 6)))
+              )
+              (set! gp-0 -1)))
+        )
         (if (< gp-0 0) (set! (-> self plat-id) 32))
         (set! (-> self plat-id-dir) gp-0)))
   :exit
@@ -434,7 +447,13 @@
       (when (completed? (-> self ticker))
         (send-to-all (-> self link) 'untrigger)
         (go square-platform-master-idle))
-      (when (reached-delay? (-> self ticker) (-> self delay-til-wiggle))
+      (when (reached-delay?
+        (-> self ticker)
+        (if (-> *pc-settings* mod skip-camera-pans?)
+          (- (-> self delay-til-wiggle) (seconds 1.5))
+          (-> self delay-til-wiggle)
+        )
+      )
         (when (not (-> self wiggled?))
           (set! (-> self wiggled?) #t)
           (send-to-all (-> self link) 'bounce)))

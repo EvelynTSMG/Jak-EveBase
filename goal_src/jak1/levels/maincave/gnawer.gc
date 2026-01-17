@@ -782,7 +782,10 @@
         (dotimes (v1-6 10)
           (let ((a1-3 (-> self segments v1-6))) (vector+! (-> a1-3 world-pos) (-> a1-3 world-pos) gp-0)))
         (vector+! (-> self root trans) (-> self root trans) gp-0))
-      (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0)
+      )
+    )
   :code
     (behavior ()
       (logclear! (-> self mask) (process-mask actor-pause))
@@ -802,9 +805,13 @@
       (case message
         (('notify)
          (if (and (= (-> proc type) money) (= (-> block param 0) 'pickup)) (gnawer-method-30 self (the-as process-drawable proc))))))
-  :trans
-    (behavior ()
-      (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0))
+
+  :trans (behavior ()
+    (when (not (-> *pc-settings* mod skip-camera-pans?))
+      (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0)
+    )
+  )
+
   :code
     (behavior ()
       (local-vars (sv-128 symbol))
@@ -859,28 +866,48 @@
   :code
     (behavior ()
       (when (not (task-complete? *game-info* (-> self entity extra perm task)))
-        (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0)
+        (when (not (-> *pc-settings* mod skip-camera-pans?))
+          (spool-push *art-control* "maincavecam-gnawer-fuel-cell" 0 self -1.0)
+        )
         (logclear! (-> self mask) (process-mask actor-pause))
         (process-entity-status! self (entity-perm-status bit-3) #t)
-        (let ((gp-0 (new 'stack-no-clear 'vector)))
-          (set-vector! gp-0 4503813.0 46363.85 -12796366.0 1.0)
-          (let ((s5-0 (the-as maincavecam (get-process *default-dead-pool* maincavecam #x4000))))
-            (set! (-> (the-as maincavecam
-                              (-> (when s5-0
-                                    (let ((t9-4 (method-of-type maincavecam activate))) (t9-4 s5-0 self 'maincavecam (the-as pointer #x70004000)))
-                                    (run-now-in-process s5-0
-                                                        pov-camera-init-by-other
-                                                        gp-0
-                                                        *maincavecam-sg*
-                                                        (new 'static 'spool-anim :name "maincavecam-gnawer-fuel-cell" :index 3 :parts 1 :command-list '())
-                                                        0
-                                                        self
-                                                        '())
-                                    (-> s5-0 ppointer))
-                                  0))
-                      seq)
-                  (the-as uint 0))))
-        0
+        (cond
+          ((-> *pc-settings* mod skip-camera-pans?)
+            ; We have to spawn the power cell ourselves, since maincavecam usually handles that for us
+            (let ((a0-7 (new 'stack-no-clear 'vector)))
+              (set-vectorm! a0-7 1099.27 18.11 -3124.54 1.0)
+              (birth-pickup-at-point
+                a0-7
+                (pickup-type fuel-cell)
+                (the float (-> self entity extra perm task))
+                #f
+                self
+                (the-as fact-info #f)
+              )
+            )
+          )
+          
+          (else
+            (let ((gp-0 (new 'stack-no-clear 'vector)))
+              (set-vector! gp-0 4503813.0 46363.85 -12796366.0 1.0)
+              (let ((s5-0 (the-as maincavecam (get-process *default-dead-pool* maincavecam #x4000))))
+                (set! (-> (the-as maincavecam
+                                  (-> (when s5-0
+                                        (let ((t9-4 (method-of-type maincavecam activate))) (t9-4 s5-0 self 'maincavecam (the-as pointer #x70004000)))
+                                        (run-now-in-process s5-0
+                                                            pov-camera-init-by-other
+                                                            gp-0
+                                                            *maincavecam-sg*
+                                                            (new 'static 'spool-anim :name "maincavecam-gnawer-fuel-cell" :index 3 :parts 1 :command-list '())
+                                                            0
+                                                            self
+                                                            '())
+                                        (-> s5-0 ppointer))
+                                      0))
+                          seq)
+                      (the-as uint 0))))
+          )
+        )
         (sound-play "cell-prize")
         (until (not (-> self child))
           (suspend)))

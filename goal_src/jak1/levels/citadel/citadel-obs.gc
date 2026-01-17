@@ -1052,9 +1052,13 @@
                 (entity-birth-no-kill s4-0)
                 (suspend)
                 (send-event (if s4-0 (-> s4-0 extra process)) 'trigger))))))
-      (let ((gp-2 (ppointer->handle (process-spawn pov-camera (-> self root trans) *citadelcam-sg* "citadelcam-stair-plats" 0 #f '() :to self))))
-        (while (handle->process (the-as handle gp-2))
-          (suspend)))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (let ((gp-2 (ppointer->handle (process-spawn pov-camera (-> self root trans) *citadelcam-sg* "citadelcam-stair-plats" 0 #f '() :to self))))
+          (while (handle->process (the-as handle gp-2))
+            (suspend)
+          )
+        )
+      )
       (level-hint-spawn (text-id citadel-plat) "sksp0387" (the-as entity #f) *entity-pool* (game-task none))
       (go citadelcam-idle)))
 
@@ -1074,19 +1078,24 @@
     (behavior ()
       (level-hint-spawn (text-id citadel-battle) "sksp0383" (the-as entity #f) *entity-pool* (game-task none))
       (suspend)
-      (let ((gp-1 (ppointer->handle (process-spawn pov-camera
-                                                   (-> (entity-by-name "citadelcam-1") extra trans)
-                                                   *citadelcam-sg*
-                                                   "citadel-bunnies"
-                                                   0
-                                                   #f
-                                                   '()
-                                                   :to
-                                                   self))))
-        (send-event (handle->process (the-as handle gp-1)) 'mask 2048)
-        (while (handle->process (the-as handle gp-1))
-          (logclear! (-> *target* state-flags) (state-flags invulnerable))
-          (suspend)))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (let ((gp-1 (ppointer->handle (process-spawn pov-camera
+                                                    (-> (entity-by-name "citadelcam-1") extra trans)
+                                                    *citadelcam-sg*
+                                                    "citadel-bunnies"
+                                                    0
+                                                    #f
+                                                    '()
+                                                    :to
+                                                    self))))
+          (send-event (handle->process (the-as handle gp-1)) 'mask 2048)
+          (while (handle->process (the-as handle gp-1))
+            (logclear! (-> *target* state-flags) (state-flags invulnerable))
+            (suspend)
+          )
+        )
+      )
+
       (go-virtual battlecontroller-active)))
 
 (defstate battlecontroller-die (citb-battlecontroller)

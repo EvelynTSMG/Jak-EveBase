@@ -587,9 +587,17 @@
         (entity-birth-no-kill sv-24)
         (apply-all (-> self link) actor-link-dead-hook (& sv-16))
         (when (and sv-16 sv-24)
-          (process-grab? *target*)
-          (suspend-for (seconds 1))
-          (process-release? *target*)
+          (cond
+            ((-> *pc-settings* mod skip-camera-pans?)
+              (sound-play "cell-prize")
+            )
+
+            (else
+              (process-grab? *target*)
+              (suspend-for (seconds 1))
+              (process-release? *target*)
+            )
+          )
           (while (let ((a1-4 (new 'stack-no-clear 'event-message-block)))
                    (set! (-> a1-4 from) self)
                    (set! (-> a1-4 num-params) 0)

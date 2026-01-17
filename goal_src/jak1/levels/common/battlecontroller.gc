@@ -255,7 +255,10 @@ battlecontroller-default-event-handler
                      (>= (-> self activate-distance) (vector-vector-distance (-> self root trans) (-> *target* control trans))))
             (set! (-> self noticed-player) #t)
             (battlecontroller-battle-begin)
-            (when (not (-> self prespawn))
+            (when (and
+              (not (-> self prespawn))
+              (not (-> *pc-settings* mod skip-camera-pans?))
+            )
               (battlecontroller-fill-all-spawners)
               (suspend)
               0)

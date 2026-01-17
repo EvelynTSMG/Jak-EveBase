@@ -408,18 +408,28 @@
   :virtual #t
   :code
     (behavior ()
-      (ambient-hint-spawn "gamcam30" (the-as vector #f) *entity-pool* 'camera)
+      ;; (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (ambient-hint-spawn "gamcam30" (the-as vector #f) *entity-pool* 'camera)
+      ;; )
+
       (ja :group! junglecam-precurbridgecam-ja)
       (ja-no-eval :group! junglecam-precurbridgecam-ja :num! (seek! (ja-aframe 0.0 0)) :frame-num 0.0)
       (until (ja-done? 0)
         (suspend)
-        (ja :num! (seek! (ja-aframe 0.0 0))))
+        (ja :num! (seek! (ja-aframe 0.0 0)))
+      )
+
       (send-event (ppointer->process (-> self parent)) 'go)
+      
       (ja-no-eval :num! (seek!))
       (while (not (ja-done? 0))
         (suspend)
-        (ja-eval))
-      (go-virtual pov-camera-done-playing)))
+        (ja-eval)
+      )
+
+      (go-virtual pov-camera-done-playing)
+  )
+)
 
 (deftype precurbridge-span (structure) ())
 
@@ -465,6 +475,9 @@
              (logclear! (-> self mask) (process-mask platform))
              (let ((gp-1 (entity-by-name "junglecam-1")))
                (cond
+                 ((-> *pc-settings* mod skip-camera-pans?)
+                  (go precurbridge-activate)
+                 )
                  (gp-1
                   (process-spawn precurbridgecam
                                  :init
@@ -496,7 +509,12 @@
       (until (ja-done? 0)
         (if (rand-vu-percent? 0.1) (spawn-projectile-blue *target*))
         (suspend)
-        (ja :num! (seek! max 0.25)))
+
+        (if (-> *pc-settings* mod skip-camera-pans?)
+          (ja :num! (seek! max 0.5))
+          (ja :num! (seek! max 0.25))
+        )
+      )
       (go precurbridge-active #f))
   :post rider-post)
 

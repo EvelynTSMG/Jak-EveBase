@@ -1463,7 +1463,10 @@
 (defun mistycam-spawn ()
   (with-pp
     (let ((gp-0 (entity-actor-lookup (-> pp entity) 'alt-actor 0)))
-      (when gp-0
+      (when (and
+        gp-0
+        (not (-> *pc-settings* mod skip-camera-pans?))
+      )
         (let* ((gp-1 (ppointer->handle (process-spawn pov-camera
                                                       (-> gp-0 extra trans)
                                                       *mistycam-sg*
@@ -1489,9 +1492,11 @@
   :virtual #t
   :code
     (behavior ()
-      (let ((gp-1 (ppointer->handle (process-spawn pov-camera (-> self root trans) *mistycam-sg* "lurkerattack" 0 #f '() :to self))))
-        (while (handle->process (the-as handle gp-1))
-          (suspend)))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (let ((gp-1 (ppointer->handle (process-spawn pov-camera (-> self root trans) *mistycam-sg* "lurkerattack" 0 #f '() :to self))))
+          (while (handle->process (the-as handle gp-1))
+            (suspend)))
+      )
       (go-virtual battlecontroller-active)))
 
 (defmethod battlecontroller-method-27 ((this misty-battlecontroller))
@@ -1558,11 +1563,18 @@
   :code
     (behavior ()
       (process-drawable-birth-fuel-cell (the-as entity #f) (the-as vector #f) #f)
-      (when (and *target* (-> self play-cutscene?))
+      (when (and
+        *target*
+        (-> self play-cutscene?)
+        (not (-> *pc-settings* mod skip-camera-pans?))
+      )
         (ambient-hint-spawn "gamcam02" (the-as vector #f) *entity-pool* 'camera)
         (let ((gp-1 (ppointer->handle (process-spawn pov-camera (-> self root trans) *mistycam-sg* "mistycam-balloon-fuel-cell" 0 #f '() :to self))))
           (while (handle->process (the-as handle gp-1))
-            (suspend))))
+            (suspend)
+          )
+        )
+      )
       (while (-> self child)
         (suspend))
       (go boat-fuelcell-die)))

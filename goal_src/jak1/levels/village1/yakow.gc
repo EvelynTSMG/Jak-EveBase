@@ -154,15 +154,17 @@ yakow-default-event-handler
          (close-specific-task! (-> self entity extra perm task) (task-status need-hint))
          (close-specific-task! (-> self entity extra perm task) (task-status need-introduction))
          (close-specific-task! (-> self entity extra perm task) (task-status need-reminder))
-         (if gp-0 (yakow-cam))
-         ;; og:preserve-this PAL patch here
-         (process-spawn-function process
-           (lambda :behavior process ()
-             (while (or (-> *setting-control* current ambient) (-> *setting-control* current movie) (-> *setting-control* current hint))
-               (suspend))
-             (level-hint-spawn (text-id village1-yakow-resolution) "sksp018a" (the-as entity #f) *entity-pool* (game-task none)))
-           :to
-           self))
+         (when (not (-> *pc-settings* mod skip-camera-pans?))
+          (if gp-0 (yakow-cam))
+          ;; og:preserve-this PAL patch here
+          (process-spawn-function process
+            (lambda :behavior process ()
+              (while (or (-> *setting-control* current ambient) (-> *setting-control* current movie) (-> *setting-control* current hint))
+                (suspend))
+              (level-hint-spawn (text-id village1-yakow-resolution) "sksp018a" (the-as entity #f) *entity-pool* (game-task none)))
+            :to
+            self))
+         )
         (else (open-specific-task! (-> self entity extra perm task) (task-status need-reminder))))
       sv-16)))
 

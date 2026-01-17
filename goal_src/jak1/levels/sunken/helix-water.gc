@@ -190,18 +190,20 @@
           (until v1-7
             (suspend)
             (set! v1-7 (or (not *target*) (not (logtest? (-> *target* state-flags) (state-flags grabbed))))))))
-      (let ((v1-11 (process-spawn sunkencam
-                                  :init
-                                  pov-camera-init-by-other
-                                  (-> self spawn-trans)
-                                  *sunkencam-sg*
-                                  "qbert-show-door-open"
-                                  0
-                                  #f
-                                  '()
-                                  :to
-                                  self)))
-        (set! (-> (the-as (pointer sunkencam) v1-11) 0 seq) (the-as uint 2)))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (let ((v1-11 (process-spawn sunkencam
+                                    :init
+                                    pov-camera-init-by-other
+                                    (-> self spawn-trans)
+                                    *sunkencam-sg*
+                                    "qbert-show-door-open"
+                                    0
+                                    #f
+                                    '()
+                                    :to
+                                    self)))
+          (set! (-> (the-as (pointer sunkencam) v1-11) 0 seq) (the-as uint 2)))
+      )
       (let ((a1-5 (new 'stack-no-clear 'event-message-block)))
         (set! (-> a1-5 from) self)
         (set! (-> a1-5 num-params) 0)

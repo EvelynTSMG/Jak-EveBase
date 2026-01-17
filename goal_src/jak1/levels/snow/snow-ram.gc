@@ -237,18 +237,70 @@
       (when (and (not (task-complete? *game-info* (-> self entity extra perm task))) (-> self give-fuel-cell-anim))
         (logclear! (-> self mask) (process-mask actor-pause))
         (process-entity-status! self (entity-perm-status bit-3) #t)
-        (let ((v1-14 (process-spawn snowcam
-                                    :init
-                                    pov-camera-init-by-other
-                                    (-> self root trans)
-                                    *snowcam-sg*
-                                    (-> self give-fuel-cell-anim)
-                                    0
-                                    self
-                                    '()
-                                    :to
-                                    self)))
-          (set! (-> (the-as (pointer snowcam) v1-14) 0 seq) (the-as uint 1)))
+
+        (cond
+          ((-> *pc-settings* mod skip-camera-pans?)
+            (set-vector! (res-lump-struct (-> self entity) 'movie-pos vector)
+              (-> self fuel-cell-dest-pos x)
+              (-> self fuel-cell-dest-pos y)
+              (-> self fuel-cell-dest-pos z)
+              (-> self fuel-cell-dest-pos w)
+            )
+
+            ; We have to spawn the power cell ourselves
+            (let ((fuel-cell-start-pos (new 'stack-no-clear 'vector)))
+              ; Find a good spot for the cell
+              (case (-> self ram-id)
+                ((1)
+                  (set-vectorm-xyz! fuel-cell-start-pos 755.96 196.69 -3305.53)
+                )
+
+                ((2)
+                  (set-vectorm-xyz! fuel-cell-start-pos 688.57 259.13 -3338.06)
+                )
+
+                ((3)
+                  (set-vectorm-xyz! fuel-cell-start-pos 1027.71 253.60 -3328.09)
+                )
+
+                (else
+                  ; We somehow don't match any known ram id
+                  (set! (-> fuel-cell-start-pos quad) (-> self root trans quad))
+                )
+              )
+            
+              (birth-pickup-at-point
+                fuel-cell-start-pos
+                (pickup-type fuel-cell)
+                (the float (-> self entity extra perm task))
+                #f
+                self
+                (the-as fact-info #f)
+              )
+            )
+
+          )
+
+          (else
+            (let (
+              (v1-14
+                (process-spawn snowcam
+                  :init pov-camera-init-by-other
+                  (-> self root trans)
+                  *snowcam-sg*
+                  (-> self give-fuel-cell-anim)
+                  0
+                  self
+                  '()
+                  :to self
+                )
+              )
+            )
+              (set! (-> (the-as (pointer snowcam) v1-14) 0 seq) (the-as uint 1))
+            )
+          )
+        )
+
         (sound-play "cell-prize")
         (logior! (-> self mask) (process-mask sleep-code))
         (suspend)
@@ -313,21 +365,38 @@
   (nav-mesh-connect this (-> this root) (the-as nav-control #f))
   (set! (-> this part) (create-launch-control (part-group ram-hit-wall) this))
   (set! (-> this part2) (create-launch-control (part-group ram-wheel-puffs) this))
+  
+  ; We have to add a movie-pos tag to the res-lump in case the player is skipping camera pans
+  (add-data! (-> this entity)
+    (new 'static 'res-tag
+      :name 'movie-pos
+      :elt-type vector
+      :key-frame -1000000000.0
+      :elt-count 1
+    )
+    (the pointer (new 'static 'vector))
+  )
+
   (set! (-> this ram-id) (res-lump-value arg0 'extra-id int))
+
   (case (-> this ram-id)
     ((1)
-     (set! (-> this give-fuel-cell-anim)
-           (new 'static 'spool-anim :name "snowcam-ram-boss-in-cave-fuel-cell" :index 7 :parts 1 :command-list '()))
-     (set-vector! (-> this fuel-cell-dest-pos) 3137396.8 803676.2 -13560558.0 1.0))
+      (set! (-> this give-fuel-cell-anim)
+            (new 'static 'spool-anim :name "snowcam-ram-boss-in-cave-fuel-cell" :index 7 :parts 1 :command-list '()))
+      (set-vector! (-> this fuel-cell-dest-pos) 3137396.8 803676.2 -13560558.0 1.0)
+    )
     ((2)
-     (set! (-> this give-fuel-cell-anim)
-           (new 'static 'spool-anim :name "snowcam-ram-boss-ice-pond-fuel-cell" :index 8 :parts 1 :command-list '()))
-     (set-vector! (-> this fuel-cell-dest-pos) 2790289.5 1058152.5 -13639766.0 1.0))
+      (set! (-> this give-fuel-cell-anim)
+            (new 'static 'spool-anim :name "snowcam-ram-boss-ice-pond-fuel-cell" :index 8 :parts 1 :command-list '()))
+      (set-vector! (-> this fuel-cell-dest-pos) 2790289.5 1058152.5 -13639766.0 1.0)
+    )
     ((3)
-     (set! (-> this give-fuel-cell-anim)
-           (new 'static 'spool-anim :name "snowcam-ram-boss-snow-ball-fuel-cell" :index 9 :parts 1 :command-list '()))
-     (set-vector! (-> this fuel-cell-dest-pos) 4208423.0 1037348.9 -13591491.0 1.0))
+      (set! (-> this give-fuel-cell-anim)
+            (new 'static 'spool-anim :name "snowcam-ram-boss-snow-ball-fuel-cell" :index 9 :parts 1 :command-list '()))
+      (set-vector! (-> this fuel-cell-dest-pos) 4208423.0 1037348.9 -13591491.0 1.0)
+    )
     (else (set! (-> this give-fuel-cell-anim) #f)))
+
   (let ((s4-1 #f))
     (if (nonzero? (-> this entity extra perm user-int8 0)) (set! s4-1 #t))
     (let ((s3-1 (= (res-lump-value arg0 'mode uint128) 1)))

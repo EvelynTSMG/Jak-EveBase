@@ -74,7 +74,8 @@
     (doublejump-ability symbol) ; 'near-peak or 'always
     (always-max-jumps?  symbol) ; whether jumps should always be the maximum height (as if X was held)
     (skip-cells?        symbol) ; whether power cell cutscenes should be automatically skipped
-    (quick-mount?        symbol) ; whether jumping onto the zoomer or flut flut should mount them
+    (skip-camera-pans?  symbol) ; whether camera pans (i.e. gamcams) should be skipped when possible
+    (quick-mount?       symbol) ; whether jumping onto the zoomer or flut flut should mount them
     ;;[ADD-MOD-OPTION]; Add mod option field here
   )
 
@@ -167,6 +168,7 @@
   (set! (-> settings mod doublejump-ability) 'near-peak)
   (set! (-> settings mod always-max-jumps?) #f)
   (set! (-> settings mod skip-cells?) #f)
+  (set! (-> settings mod skip-camera-pans?) #f)
   (set! (-> settings mod quick-mount?) #f)
   ;;[ADD-MOD-OPTION]; Add default setting here
 

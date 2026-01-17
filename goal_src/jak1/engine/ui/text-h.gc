@@ -821,6 +821,9 @@
   (quick-mount #x170b)
   (quick-mount-desc #x170c)
 
+  (skip-camera-pans #x170d)
+  (skip-camera-pans-desc #x170e)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)

@@ -507,31 +507,63 @@
           (let ((t9-1 send-event-function)
                 (v1-2 (-> self alt-actor)))
             (t9-1 (if v1-2 (-> v1-2 extra process)) a1-1)))))
-  :code
-    (behavior ()
-      (let ((f30-0 (nav-enemy-rnd-float-range 0.9 1.1))
-            (gp-0 (new 'stack-no-clear 'vector)))
-        (vector+! gp-0 *lightning-mole-hole* (new 'static 'vector :x 81920.0 :y 40960.0))
-        (hide-hud-quick)
-        (if *target* (logior! (-> *target* mask) (process-mask sleep)))
-        (ambient-hint-spawn "gamcam20" (the-as vector #f) *entity-pool* 'camera)
-        (ja-channel-push! 1 (seconds 0.2))
-        (ja-no-eval :group! lightning-mole-dive-ja :num! (seek! max f30-0) :frame-num 0.0)
-        (until (ja-done? 0)
-          (let ((s5-0 (new 'stack-no-clear 'vector)))
-            (set! (-> *camera-other-fov* data) 11650.845)
-            (vector-! s5-0 *lightning-mole-hole* gp-0)
-            (vector-normalize! s5-0 1.0)
-            (forward-down->inv-matrix *camera-other-matrix* s5-0 (-> *camera* local-down)))
-          (set! (-> *camera-other-trans* quad) (-> gp-0 quad))
-          (set! (-> *camera-other-root* quad) (-> *lightning-mole-hole* quad))
-          (set! *camera-look-through-other* 2)
-          (suspend)
-          (ja :num! (seek! max f30-0))))
-      (lightning-mole-task-complete?)
-      (if *target* (logclear! (-> *target* mask) (process-mask sleep)))
-      (go lightning-mole-gone))
-  :post lightning-mole-hole-post)
+  :code (behavior ()
+    (let (
+      (f30-0 (nav-enemy-rnd-float-range 0.9 1.1))
+      (gp-0 (new 'stack-no-clear 'vector))
+    )
+      (vector+! gp-0 *lightning-mole-hole* (new 'static 'vector :x 81920.0 :y 40960.0))
+      (hide-hud-quick)
+
+      (cond
+        ((-> *pc-settings* mod skip-camera-pans?)
+          (ja-channel-push! 1 (seconds 0.2))
+          (ja-no-eval :group! lightning-mole-dive-ja :num! (seek! max f30-0) :frame-num 0.0)
+          (until (ja-done? 0)
+            (suspend)
+            (ja :num! (seek! max f30-0))
+          )
+
+          (lightning-mole-task-complete?)
+        )
+
+        (else
+          (if *target*
+            (logior! (-> *target* mask) (process-mask sleep))
+          )
+
+          (ambient-hint-spawn "gamcam20" (the-as vector #f) *entity-pool* 'camera)
+          (ja-channel-push! 1 (seconds 0.2))
+          (ja-no-eval :group! lightning-mole-dive-ja :num! (seek! max f30-0) :frame-num 0.0)
+          (until (ja-done? 0)
+            (let ((s5-0 (new 'stack-no-clear 'vector)))
+              (set! (-> *camera-other-fov* data) 11650.845)
+              (vector-! s5-0 *lightning-mole-hole* gp-0)
+              (vector-normalize! s5-0 1.0)
+              (forward-down->inv-matrix *camera-other-matrix* s5-0 (-> *camera* local-down))
+            )
+            (set! (-> *camera-other-trans* quad) (-> gp-0 quad))
+            (set! (-> *camera-other-root* quad) (-> *lightning-mole-hole* quad))
+            (set! *camera-look-through-other* 2)
+            (suspend)
+            (ja :num! (seek! max f30-0))
+          )
+
+          (lightning-mole-task-complete?)
+
+          (if *target*
+            (logclear! (-> *target* mask) (process-mask sleep))
+          )
+        )
+      )
+    )
+
+
+    (go lightning-mole-gone)
+  )
+
+  :post lightning-mole-hole-post
+)
 
 (defstate lightning-mole-head-for-hole (lightning-mole)
   :enter

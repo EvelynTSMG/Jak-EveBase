@@ -468,6 +468,13 @@
 
     (new 'static 'game-option
       :option-type (game-option-type on-off)
+      :name (text-id skip-camera-pans)
+      :desc (text-id skip-camera-pans-desc)
+      :scale #t
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type on-off)
       :name (text-id quick-mount)
       :desc (text-id quick-mount-desc)
       :scale #t
@@ -2310,7 +2317,8 @@
   (set! (-> *mod-options* 0 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *mod-options* 1 value-to-modify) (&-> *pc-settings* mod always-max-jumps?))
   (set! (-> *mod-options* 2 value-to-modify) (&-> *pc-settings* mod skip-cells?))
-  (set! (-> *mod-options* 3 value-to-modify) (&-> *pc-settings* mod quick-mount?))
+  (set! (-> *mod-options* 3 value-to-modify) (&-> *pc-settings* mod skip-camera-pans?))
+  (set! (-> *mod-options* 4 value-to-modify) (&-> *pc-settings* mod quick-mount?))
   ;;[ADD-MOD-OPTION]; Set your option's value-to-modify here — carousels use `(&-> *progress-carousell* int-backup)`
 
 

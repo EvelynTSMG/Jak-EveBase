@@ -1,5 +1,6 @@
-You can read the original README for the OpenGOAL project [here](https://github.com/open-goal/jak-project/blob/master/README.md).\
-You can read the original README for the OpenGOAL Mod Base [here](https://github.com/OpenGOAL-Mods/OG-Mod-Base/blob/main/README.md).
+> [!NOTE]
+> You can read the original README for the OpenGOAL project [here](https://github.com/open-goal/jak-project/blob/master/README.md).\
+> You can read the original README for the OpenGOAL Mod Base [here](https://github.com/OpenGOAL-Mods/OG-Mod-Base/blob/main/README.md).
 
 # EveBase
 EveBase is an opinionated base template for OpenGOAL mods,
@@ -17,6 +18,8 @@ to make both playing and developing mods more pleasant.
   - **Always Max Jumps** can force jumps to always go to their maximum height.
   - **Skip Cell Cutscenes** allows you to collect Power Cells like you would any other collectable,
     without stopping for a victory animation.
+  - **Skip Camera Pans** removes any short camera pans from the game.\
+    (Examples: lightning moles jumping into their hole, jungle mirrors being connected.)
   - **Quick-Mount Vehicles** allows you to simply jump onto the zoomer or Flut-Flut to mount them.
 - Added a **Warp To Checkpoint** button to the pause menu,
   which warps you to your last checkpoint.

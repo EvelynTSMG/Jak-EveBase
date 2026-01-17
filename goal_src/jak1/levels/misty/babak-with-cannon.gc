@@ -205,8 +205,10 @@ nav-enemy-default-event-handler
   :event nav-enemy-default-event-handler
   :trans
     (behavior ()
-      (if (and *target* (= (-> *target* current-level name) 'beach)) (spool-push *art-control* "beachcam-cannon" 0 self -1.0))
-      (if (and *target* (= (-> *target* current-level name) 'misty)) (spool-push *art-control* "mistycam-cannon" 0 self -1.0))
+      (when (not (-> *pc-settings* mod skip-camera-pans?))
+        (if (and *target* (= (-> *target* current-level name) 'beach)) (spool-push *art-control* "beachcam-cannon" 0 self -1.0))
+        (if (and *target* (= (-> *target* current-level name) 'misty)) (spool-push *art-control* "mistycam-cannon" 0 self -1.0))
+      )
       (call-parent-state-handler trans)))
 
 (defstate nav-enemy-fuel-cell (babak-with-cannon)
@@ -220,8 +222,21 @@ nav-enemy-default-event-handler
       (when (not (task-complete? *game-info* (-> self entity extra perm task)))
         (when (not (and (-> self entity) (logtest? (-> self entity extra perm status) (entity-perm-status complete))))
           (process-entity-status! self (entity-perm-status complete) #t)
-          (if (and *target* (= (-> *target* current-level name) 'beach)) (beachcam-spawn))
-          (if (and *target* (= (-> *target* current-level name) 'misty)) (mistycam-spawn)))
+          (if (and
+            *target*
+            (= (-> *target* current-level name) 'beach)
+            (not (-> *pc-settings* mod skip-camera-pans?))
+          )
+            (beachcam-spawn)
+          )
+          (if (and
+            *target*
+            (= (-> *target* current-level name) 'misty)
+            (not (-> *pc-settings* mod skip-camera-pans?))
+          )
+            (mistycam-spawn)
+          )
+        )
         (if (not (-> self child))
           (birth-pickup-at-point (-> self collide-info trans)
                                  (pickup-type fuel-cell)
@@ -235,6 +250,7 @@ nav-enemy-default-event-handler
 
 (defmethod common-post ((this babak-with-cannon))
   (cond
+    ((-> *pc-settings* mod skip-camera-pans?))
     ((= (level-status *level* 'beach) 'active) (spool-push *art-control* "beachcam-cannon" 0 this -99.0))
     ((= (level-status *level* 'misty) 'active) (spool-push *art-control* "mistycam-cannon" 0 this -99.0)))
   ((method-of-type nav-enemy common-post) this)
