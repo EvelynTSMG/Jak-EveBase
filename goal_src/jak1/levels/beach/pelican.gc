@@ -163,56 +163,122 @@
       (set! (-> self path-max) (the float (+ (-> self path curve num-cverts) -1)))
       (set! (-> self path-speed) (/ (* (-> *PELICAN-bank* circle-speed) (-> self path-max)) (path-distance (-> self path))))
       (set-roll-to-grav-2! (-> self root) -2730.6667))
-  :trans
-    (behavior ()
-      (pelican-path-update 728177.75 30 1.0 (/ (-> self path-max) (path-distance (-> self path))) #f)
-      (let ((f0-3 (+ (-> self path-pos) (* (-> self path-speed) (seconds-per-frame))))
-            (f1-2 (-> self path-max)))
-        (set! (-> self path-pos) (- f0-3 (* (the float (the int (/ f0-3 f1-2))) f1-2))))
-      (when (and (and *target* (>= 81920.0 (vector-vector-xz-distance (-> self path-vector) (-> *target* control trans))))
-                 (not (handle->process (-> self cam-tracker))))
-        (set! (-> self cam-tracker)
-              (ppointer->handle (process-spawn camera-tracker
-                                               :init
-                                               camera-tracker-init
-                                               (lambda :behavior camera-tracker ()
-                                                 (local-vars (a0-6 process-tree) (a1-5 event-message-block) (t9-6 (function process-tree event-message-block object)))
-                                                 (while (not (process-grab? *target*))
-                                                   (suspend))
-                                                 (send-event (ppointer->process (-> self parent)) 'position 4.0)
-                                                 (send-event (ppointer->process (-> self parent)) 'dive)
-                                                 (suspend)
-                                                 (suspend)
-                                                 (send-event *camera* 'blend-from-as-fixed)
-                                                 (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 0))
-                                                 (camera-change-to "camera-215" 0 #f)
-                                                 (until (t9-6 a0-6 a1-5)
-                                                   (suspend)
-                                                   (set! a1-5 (new 'stack-no-clear 'event-message-block))
-                                                   (set! (-> a1-5 from) self)
-                                                   (set! (-> a1-5 num-params) 0)
-                                                   (set! (-> a1-5 message) 'got-cell?)
-                                                   (set! t9-6 send-event-function)
-                                                   (set! a0-6 (ppointer->process (-> self parent))))
-                                                 (send-event *camera* 'point-of-interest #f)
-                                                 (while (!= (-> self message) 'release)
-                                                   (suspend))
-                                                 (set! (-> self message) #f)
-                                                 (while (not (process-release? (handle->process (-> self grab-target))))
-                                                   (suspend))
-                                                 (send-event *camera* 'blend-from-as-fixed)
-                                                 (camera-look-at (the-as pair *target*) (the-as uint 0))
-                                                 (camera-change-to (the-as string 'base) 150 #f)
-                                                 (none))
-                                               :to
-                                               self)))
-        (set! (-> self draw force-lod) 0)
-        0)
-      (when (and (-> self state-object) (>= (-> self path-pos) 6.0) (< (-> self path-pos) 7.0))
+  :trans (behavior ()
+    (pelican-path-update 728177.75 30 1.0 (/ (-> self path-max) (path-distance (-> self path))) #f)
+    (let (
+      (f0-3 (+ (-> self path-pos) (* (-> self path-speed) (seconds-per-frame))))
+      (f1-2 (-> self path-max))
+    )
+      (set! (-> self path-pos) (- f0-3 (* (the float (the int (/ f0-3 f1-2))) f1-2)))
+    )
+    
+    (when (and
+      *target*
+      (>= 81920.0 (vector-vector-xz-distance (-> self path-vector) (-> *target* control trans)))
+    )
+      (cond
+        ((-> *pc-settings* mod skip-camera-pans?)
+          (set! (-> self path-speed) (/ (* (-> *PELICAN-bank* circle-speed) (-> self path-max) 12.0) (path-distance (-> self path))))
+          (until (and
+            (>= (-> self path-pos) 6.0)
+            (<  (-> self path-pos) 7.0)
+          )
+            (when (and
+              (>= (-> self path-pos) 6.0)
+              (<  (-> self path-pos) 7.0)
+            )
+              (set! (-> self path-speed) (/ (* (-> *PELICAN-bank* circle-speed) (-> self path-max)) (path-distance (-> self path))))
+
+              (let ((v1-24 (-> self entity extra perm)))
+                (logior! (-> v1-24 status) (entity-perm-status user-set-from-cstage))
+                (set! (-> v1-24 user-int8 0) 2)
+              )
+
+              (go pelican-dive (-> self path-dive0) (-> self path-to-nest0) (-> *PELICAN-bank* to-nest0-time))
+            )
+
+            (suspend)
+          )
+          (suspend)
+        )
+
+        ((not (handle->process (-> self cam-tracker)))
+          (set! (-> self cam-tracker)
+            (ppointer->handle
+              (process-spawn camera-tracker
+                :init camera-tracker-init
+
+                (lambda :behavior camera-tracker ()
+                  (local-vars (a0-6 process-tree) (a1-5 event-message-block) (t9-6 (function process-tree event-message-block object)))
+
+                  (while (not (process-grab? *target*))
+                    (suspend)
+                  )
+
+                  (send-event (ppointer->process (-> self parent)) 'position 4.0)
+                  (send-event (ppointer->process (-> self parent)) 'dive)
+                  (suspend)
+
+                  (suspend)
+
+                  (send-event *camera* 'blend-from-as-fixed)
+                  (camera-look-at (the-as pair (ppointer->process (-> self parent))) (the-as uint 0))
+                  (camera-change-to "camera-215" 0 #f)
+
+                  (until (t9-6 a0-6 a1-5)
+                    (suspend)
+                    (set! a1-5 (new 'stack-no-clear 'event-message-block))
+                    (set! (-> a1-5 from) self)
+                    (set! (-> a1-5 num-params) 0)
+                    (set! (-> a1-5 message) 'got-cell?)
+                    (set! t9-6 send-event-function)
+                    (set! a0-6 (ppointer->process (-> self parent)))
+                  )
+
+                  (send-event *camera* 'point-of-interest #f)
+
+                  (while (!= (-> self message) 'release)
+                    (suspend)
+                  )
+
+                  (set! (-> self message) #f)
+
+                  (while (not (process-release? (handle->process (-> self grab-target))))
+                    (suspend)
+                  )
+
+                  (send-event *camera* 'blend-from-as-fixed)
+                  (camera-look-at (the-as pair *target*) (the-as uint 0))
+                  (camera-change-to (the-as string 'base) 150 #f)
+
+                  (none)
+                )
+
+                :to self
+              )
+            )
+          )
+        )
+      )
+
+      (set! (-> self draw force-lod) 0)
+
+      (when (and
+        (-> self state-object)
+        (>= (-> self path-pos) 6.0)
+        (< (-> self path-pos) 7.0)
+      )
         (let ((v1-24 (-> self entity extra perm)))
           (logior! (-> v1-24 status) (entity-perm-status user-set-from-cstage))
-          (set! (-> v1-24 user-int8 0) 2))
-        (go pelican-dive (-> self path-dive0) (-> self path-to-nest0) (-> *PELICAN-bank* to-nest0-time))))
+          (set! (-> v1-24 user-int8 0) 2)
+        )
+
+        (go pelican-dive (-> self path-dive0) (-> self path-to-nest0) (-> *PELICAN-bank* to-nest0-time))
+      )
+    )
+
+  )
+
   :code
     (behavior ()
       (suspend)
