@@ -711,22 +711,43 @@
       (flying-lurker-move)
       (flying-lurker-rotate)
 
-      (when (and
-        (-> self alt-actor)
-        (or
-          ; Lost: Lurkers won the race
-          (< (vector-vector-distance-squared (-> self root trans) (-> self alt-actor extra trans)) (meters-squared 20.0))
-
-          ; Lost: Fell too far behind
-          (and
-            *target*
-            (< (meters-squared 500.0) (vector-vector-distance-squared (-> self root trans) (target-pos 0)))
+      (let ((fail #f))
+        ; If we're close enough, the lurkers have won the race!
+        (when (-> self alt-actor)
+          (or! fail
+            (>
+              (meters-squared 20.0)
+              (vector-vector-distance-squared (-> self root trans) (-> self alt-actor extra trans))
+            )
           )
         )
-      )
-        (set-or-clear-status! (-> self alt-actor) (entity-perm-status dead) #f)
-        (entity-birth-no-kill (-> self alt-actor))
-        (try-send-event (-> self alt-actor) 'plunge :from self)
+
+        ; If the player is too far behind, the lurkers win immediately
+        ; to not make the player wait for an obvious loss
+        (when *target*
+          (or! fail
+            (and
+              ; Make sure target isn't close enough to the plunger to maybe win
+              (<
+                (meters-squared 100.0)
+                (vector-vector-distance-squared (-> self alt-actor extra trans) (target-pos 0))
+              )
+              (<
+                (meters-squared 500.0)
+                (vector-vector-distance-squared (-> self root trans) (target-pos 0))
+              )
+            )
+          )
+        )
+
+        (when (and
+          (-> self alt-actor)
+          fail
+        )
+          (set-or-clear-status! (-> self alt-actor) (entity-perm-status dead) #f)
+          (entity-birth-no-kill (-> self alt-actor))
+          (try-send-event (-> self alt-actor) 'plunge :from self)
+        )
       )
     )
   )

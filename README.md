@@ -36,6 +36,7 @@ to make both playing and developing mods more pleasant.
 
 ## Fixes
 - Jak now properly uses the crouching hitbox when rolling and rolljumping.
+- You can no longer fail the race in Mountain Pass by being too fast.
 
 ## Development
 EveBase comes with many comments to guide you on your modding journey.\
