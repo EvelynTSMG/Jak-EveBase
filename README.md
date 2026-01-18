@@ -32,6 +32,7 @@ to make both playing and developing mods more pleasant.
 ## Changes
 - Shooting yellow eco in first person now allows **R2** to be held to shoot,
   instead of requiring separate button presses for each shot.
+- Revamped first-person camera speed calculations to improve handling.
 
 ## Fixes
 - Jak now properly uses the crouching hitbox when rolling and rolljumping.
