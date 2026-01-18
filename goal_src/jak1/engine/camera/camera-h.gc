@@ -263,84 +263,88 @@
    cam-combiner-active))
 
 (deftype camera-slave (process)
-  ((trans                         vector :inline)
-   (fov                           float)
-   (fov0                          float)
-   (fov1                          float)
-   (fov-index                     cam-index :inline)
-   (tracking                      cam-rotation-tracker :inline)
-   (view-off-param                float)
-   (unknown-symbol                symbol :offset 412)
-   (view-off                      vector :inline)
-   (min-z-override                float)
-   (view-flat                     vector :inline)
-   (string-vel-dir                uint32)
-   (string-trans                  vector :inline)
-   (position-spline               tracking-spline :inline)
-   (pivot-pt                      vector :inline)
-   (pivot-rad                     float)
-   (circular-follow               vector :inline)
-   (max-angle-offset              float)
-   (max-angle-curr                float)
-   (options                       uint32)
-   (cam-entity                    entity)
-   (velocity                      vector :inline)
-   (desired-pos                   vector :inline)
-   (time-dist-too-far             uint32)
-   (los-state                     slave-los-state)
-   (good-point                    vector :inline)
-   (los-tgt-spline-pt             int32)
-   (los-tgt-spline-pt-incarnation int32)
-   (los-last-pos                  vector :inline)
-   (intro-curve                   curve :inline)
-   (intro-offset                  vector :inline)
-   (intro-t                       float)
-   (intro-t-step                  float)
-   (outro-exit-value              float)
-   (spline-exists                 basic)
-   (spline-curve                  curve :inline)
-   (spline-offset                 vector :inline)
-   (index                         cam-index :inline)
-   (saved-pt                      vector :inline)
-   (spline-tt                     float)
-   (spline-follow-dist            float)
-   (change-event-from             (pointer process-drawable))
-   (enter-has-run                 symbol)
-   (blend-from-type               uint64)
-   (blend-to-type                 uint64)
-   (have-phony-joystick           basic)
-   (phony-joystick-x              float)
-   (phony-joystick-y              float)
-   (string-min-val                vector :inline)
-   (string-max-val                vector :inline)
-   (string-val-locked             basic))
+  (
+    (trans                         vector :inline)
+    (fov                           float)
+    (fov0                          float)
+    (fov1                          float)
+    (fov-index                     cam-index :inline)
+    (tracking                      cam-rotation-tracker :inline)
+    (view-off-param                float)
+    (unknown-symbol                symbol :offset 412)
+    (view-off                      vector :inline)
+    (min-z-override                float)
+    (view-flat                     vector :inline)
+    (string-vel-dir                uint32)
+    (string-trans                  vector :inline)
+    (position-spline               tracking-spline :inline)
+    (pivot-pt                      vector :inline)
+    (pivot-rad                     float)
+    (circular-follow               vector :inline)
+    (max-angle-offset              float)
+    (max-angle-curr                float)
+    (options                       uint32)
+    (cam-entity                    entity)
+    (velocity                      vector :inline)
+    (desired-pos                   vector :inline)
+    (time-dist-too-far             uint32)
+    (los-state                     slave-los-state)
+    (good-point                    vector :inline)
+    (los-tgt-spline-pt             int32)
+    (los-tgt-spline-pt-incarnation int32)
+    (los-last-pos                  vector :inline)
+    (intro-curve                   curve :inline)
+    (intro-offset                  vector :inline)
+    (intro-t                       float)
+    (intro-t-step                  float)
+    (outro-exit-value              float)
+    (spline-exists                 basic)
+    (spline-curve                  curve :inline)
+    (spline-offset                 vector :inline)
+    (index                         cam-index :inline)
+    (saved-pt                      vector :inline)
+    (spline-tt                     float)
+    (spline-follow-dist            float)
+    (change-event-from             (pointer process-drawable))
+    (enter-has-run                 symbol)
+    (blend-from-type               uint64)
+    (blend-to-type                 uint64)
+    (have-phony-joystick           basic)
+    (phony-joystick-x              float)
+    (phony-joystick-y              float)
+    (string-min-val                vector :inline)
+    (string-max-val                vector :inline)
+    (string-val-locked             basic)
+  )
   (:states
-   *camera-base-mode*
-   cam-bike
-   cam-billy
-   cam-circular
-   cam-decel
-   cam-endlessfall
-   cam-eye
-   cam-fixed
-   cam-fixed-read-entity
-   cam-free-floating
-   cam-launcher-longfall
-   cam-launcher-shortfall
-   cam-lookat
-   cam-mistycannon
-   cam-orbit
-   cam-periscope
-   cam-point-watch
-   cam-pov
-   cam-pov-track
-   cam-pov180
-   cam-robotboss
-   cam-spline
-   cam-standoff
-   cam-standoff-read-entity
-   cam-stick
-   cam-string))
+    *camera-base-mode*
+    cam-bike
+    cam-billy
+    cam-circular
+    cam-decel
+    cam-endlessfall
+    cam-eye
+    cam-fixed
+    cam-fixed-read-entity
+    cam-free-floating
+    cam-launcher-longfall
+    cam-launcher-shortfall
+    cam-lookat
+    cam-mistycannon
+    cam-orbit
+    cam-periscope
+    cam-point-watch
+    cam-pov
+    cam-pov-track
+    cam-pov180
+    cam-robotboss
+    cam-spline
+    cam-standoff
+    cam-standoff-read-entity
+    cam-stick
+    cam-string
+  )
+)
 
 (deftype camera-master (process)
   ((master-options      uint32)

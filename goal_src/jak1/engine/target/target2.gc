@@ -311,34 +311,68 @@
   :post target-post)
 
 (defstate target-look-around (target)
-  :event
-    (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
-      (cond
-        ((and (= message 'query) (= (-> block param 0) 'mode)) (-> self state name))
-        ((let ((v1-4 message)) (= v1-4 'end-mode)) (go target-stance-look-around))
-        ((-> self control unknown-symbol30) (target-dangerous-event-handler proc argc message block))
-        (else (target-standard-event-handler proc argc message block))))
-  :enter
-    (behavior ()
-      (set! (-> self cam-user-mode) 'look-around)
-      (set! (-> self control unknown-surface00) *duck-mods*)
-      (logior! (-> self state-flags) (state-flags first-person-mode))
-      (send-event *camera* 'blend-from-as-fixed)
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (cond
+      ((and
+        (= message 'query)
+        (= (-> block param 0) 'mode)
+      )
+        (-> self state name)
+      )
+
+      ((= message 'end-mode)
+        (go target-stance-look-around)
+      )
+
+      ((-> self control unknown-symbol30)
+        (target-dangerous-event-handler proc argc message block)
+      )
+
+      (else
+        (target-standard-event-handler proc argc message block)
+      )
+    )
+  )
+
+  :enter (behavior ()
+    (set! (-> self cam-user-mode) 'look-around)
+    (set! (-> self control unknown-surface00) *duck-mods*)
+    (logior! (-> self state-flags) (state-flags first-person-mode))
+
+    (send-event *camera* 'blend-from-as-fixed)
+    (send-event *camera* 'no-intro)
+
+    (camera-change-to (the-as string 'cam-eye) 60 #f)
+
+    (let ((a0-5 (handle->process (-> self fp-hud))))
+      (if a0-5
+        (deactivate a0-5)
+      )
+    )
+
+    (set! (-> self fp-hud)
+      (ppointer->handle (process-spawn first-person-hud :to *dproc* :stack (&+ *fp-hud-stack* #x3800)))
+    )
+  )
+
+  :exit (behavior ()
+    (let ((a0-1 (handle->process (-> self fp-hud))))
+      (if a0-1
+        (send-event a0-1 'go-away)
+      )
+    )
+    
+    (set! (-> self cam-user-mode) 'normal)
+    (target-exit)
+
+    (when (send-event *camera* 'query-state cam-eye)
       (send-event *camera* 'no-intro)
-      (camera-change-to (the-as string 'cam-eye) 60 #f)
-      (let ((a0-5 (handle->process (-> self fp-hud)))) (if a0-5 (deactivate a0-5)))
-      (set! (-> self fp-hud)
-            (ppointer->handle (process-spawn first-person-hud :to *dproc* :stack (&+ *fp-hud-stack* #x3800)))))
-  :exit
-    (behavior ()
-      (let ((a0-1 (handle->process (-> self fp-hud)))) (if a0-1 (send-event a0-1 'go-away)))
-      (set! (-> self cam-user-mode) 'normal)
-      (target-exit)
-      (when (send-event *camera* 'query-state cam-eye)
-        (send-event *camera* 'no-intro)
-        (send-event *camera* 'force-blend (seconds 0.2))
-        (send-event *camera* 'clear-entity)
-        (camera-change-to (the-as string 'base) 60 #f)))
+      (send-event *camera* 'force-blend (seconds 0.2))
+      (send-event *camera* 'clear-entity)
+      (camera-change-to (the-as string 'base) 60 #f)
+    )
+  )
+
   :trans
     (behavior ()
       (local-vars (sv-48 vector))
