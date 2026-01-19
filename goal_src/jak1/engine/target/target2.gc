@@ -613,162 +613,363 @@
       (target-no-stick-post)))
 
 (defstate target-pole-cycle (target)
-  :event
-    (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
-      (if (and (= message 'query) (= (-> block param 0) 'mode))
-        (-> self state name)
-        (target-standard-event-handler proc argc message block)))
-  :enter
-    (behavior ((arg0 handle))
-      (set! (-> self control unknown-handle10) arg0)
-      (set-time! (-> self state-time))
-      (set! (-> self control unknown-surface00) *pole-mods*)
-      (logior! (-> self control root-prim prim-core action) (collide-action swingpole-active))
-      (target-collide-set! 'pole (the-as float 0.0))
-      (set! (-> self control unknown-vector102 quad) (-> self control transv quad))
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (if (and
+      (= message 'query)
+      (= (-> block param 0) 'mode)
+    )
+      (-> self state name)
+      (target-standard-event-handler proc argc message block)
+    )
+  )
+
+  :enter (behavior ((pole handle))
+    (set! (-> self control current-pole-handle) pole)
+    (set-time! (-> self state-time))
+    (set! (-> self control unknown-surface00) *pole-mods*)
+    (logior! (-> self control root-prim prim-core action) (collide-action swingpole-active))
+    (target-collide-set! 'pole (the-as float 0.0))
+    (set! (-> self control unknown-vector102 quad) (-> self control transv quad))
+    (set! (-> self control transv quad) (the-as uint128 0))
+    (send-event *camera* 'ease-in)
+    (set! (-> self control unknown-int21) (the-as int #f))
+  )
+
+  :exit (behavior ()
+    (target-collide-set! 'normal (the-as float 0.0))
+    (logclear! (-> self control root-prim prim-core action) (collide-action swingpole-active))
+    (set! (-> self control current-pole-handle) (the-as handle #f))
+  )
+
+  :trans (behavior ()
+    (when (and
+      (recently-pressed? circle)
+      (> (ja-aframe-num 0) 8.0)
+      (< (ja-aframe-num 0) 15.0)
+    )
+      ;(quaternion-rotate-y! (-> self control unknown-quaternion00) (-> self control unknown-quaternion00) (degrees 180.0))
+      (go target-pole-switch (-> *TARGET-bank* pole-switch-height))
+    )
+
+    ;; og:preserve-this - High FPS Fix
+    (when (and
+      (recently-pressed? x)
+      (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
+      (time-elapsed? (-> self state-time) (seconds 0.1))
+    )
       (set! (-> self control transv quad) (the-as uint128 0))
-      (send-event *camera* 'ease-in)
-      (set! (-> self control unknown-int21) (the-as int #f)))
-  :exit
-    (behavior ()
-      (target-collide-set! 'normal (the-as float 0.0))
-      (logclear! (-> self control root-prim prim-core action) (collide-action swingpole-active))
-      (set! (-> self control unknown-handle10) (the-as handle #f)))
-  :trans
-    (behavior ()
-      ;; og:preserve-this - High FPS Fix
-      (when (and (recently-pressed? x)
-                 (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
-                 (time-elapsed? (-> self state-time) (seconds 0.1)))
-        (set! (-> self control transv quad) (the-as uint128 0))
-        (cond
-          ((< 44.0 (ja-aframe-num 0))
-           (set-forward-vel (the-as float -49152.0))
-           (let ((gp-0 (new-stack-vector0)))
-             (let ((f0-2 (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
-               0.0
-               (vector-! gp-0 (-> self control transv) (vector-float*! gp-0 (-> self control dynam gravity-normal) f0-2)))
-             (let* ((f0-3 (vector-length gp-0))
-                    (f1-1 f0-3)
-                    (f2-0 -81920.0))
-               (vector+! (-> self control transv)
-                         (vector-float*! (-> self control transv) (-> self control dynam gravity-normal) f2-0)
-                         (vector-float*! gp-0 gp-0 (/ f0-3 f1-1)))))
-           (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
-           (go target-falling 'target-pole-cycle))
-          ((>= (ja-aframe-num 0) 14.0)
-           (remove-exit)
-           (go target-pole-flip-up 28672.0 28672.0 (* 1024.0 (- 26.0 (ja-aframe-num 0)))))
-          (else (remove-exit) (go target-pole-flip-forward (the-as float 14336.0) (the-as float 14336.0) (the-as float 57344.0))))))
-  :code
-    (behavior ((arg0 handle))
-      (target-compute-pole)
-      (set! (-> self control unknown-uint20)
-            (the-as uint
-                    (vector-dot (-> self control unknown-vector100)
-                                (vector-normalize! (-> self control unknown-vector102) (the-as float 1.0)))))
       (cond
-        ((ja-group? eichar-pole-jump-loop-ja)
-         (while (not (-> self control unknown-int21))
-           (ja :num! (seek!))
-           (suspend))
-         (ja :num-func num-func-identity :frame-num (ja-aframe (the-as float 37.0) 0)))
-        (else (while (not (-> self control unknown-int21)) (suspend)) (suspend) (ja-channel-push! 1 (seconds 0.15))))
+        ((< 44.0 (ja-aframe-num 0))
+          (set-forward-vel (the-as float -49152.0))
+
+          (let ((gp-0 (new-stack-vector0)))
+            (let ((f0-2 (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
+              (vector-! gp-0
+                (-> self control transv)
+                (vector-float*! gp-0 (-> self control dynam gravity-normal) f0-2)
+              )
+            )
+
+            (let* (
+              (f0-3 (vector-length gp-0))
+              (f1-1 f0-3)
+              (f2-0 -81920.0)
+            )
+              (vector+! (-> self control transv)
+                (vector-float*! (-> self control transv) (-> self control dynam gravity-normal) f2-0)
+                (vector-float*! gp-0 gp-0 (/ f0-3 f1-1))
+              )
+            )
+          )
+
+          (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
+          (go target-falling 'target-pole-cycle)
+        )
+
+        ((>= (ja-aframe-num 0) 14.0)
+          (remove-exit)
+          (go target-pole-flip-up
+            (-> *TARGET-bank* pole-flip-up-height)
+            (-> *TARGET-bank* pole-flip-up-height)
+            (meters (/ (- 26.0 (ja-aframe-num 0)) 4.0))
+          )
+        )
+
+        (else
+          (remove-exit)
+          (go target-pole-flip-forward
+            (-> *TARGET-bank* pole-flip-forward-height)
+            (-> *TARGET-bank* pole-flip-forward-height)
+            (meters 14.0)
+          )
+        )
+      )
+    )
+  )
+
+  :code (behavior ((pole handle))
+    (target-compute-pole)
+
+    (set! (-> self control unknown-uint20)
+      (the-as uint
+        (vector-dot
+          (-> self control unknown-vector100)
+          (vector-normalize! (-> self control unknown-vector102) 1.0)
+        )
+      )
+    )
+
+    (cond
+      ((ja-group? eichar-pole-jump-loop-ja)
+        (while (not (-> self control unknown-int21))
+          (ja :num! (seek!))
+          (suspend)
+        )
+        (ja :num-func num-func-identity :frame-num (ja-aframe (the-as float 37.0) 0))
+      )
+
+      (else
+        (while (not (-> self control unknown-int21))
+          (suspend)
+        )
+        (suspend)
+        (ja-channel-push! 1 (seconds 0.15))
+      )
+    )
+
+    (ja-no-eval :group! eichar-pole-cycle-ja :num! (seek!) :frame-num 0.0)
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek!))
+    )
+
+    (loop
+      (set! (-> self anim-seed)
+        (if (rand-vu-percent? 0.1)
+          0
+          1
+        )
+      )
+      
       (ja-no-eval :group! eichar-pole-cycle-ja :num! (seek!) :frame-num 0.0)
       (until (ja-done? 0)
         (suspend)
-        (ja :num! (seek!)))
-      (loop
-        (set! (-> self anim-seed) (the-as uint (if (rand-vu-percent? (the-as float 0.1)) 0 1)))
-        (ja-no-eval :group! eichar-pole-cycle-ja :num! (seek!) :frame-num 0.0)
-        (until (ja-done? 0)
-          (suspend)
-          (ja :num! (seek!)))))
-  :post target-no-move-post)
+        (ja :num! (seek!))
+
+        (when *display-target-marks*
+          (let ((debug-ctx (new 'stack 'font-context *font-default-matrix* 0 0 0.0 (font-color white) (font-flags shadow kerning))))
+            (set-width! debug-ctx 400)
+            (set-height! debug-ctx 50)
+            (set! (-> debug-ctx origin x) 5.0)
+            (set! (-> debug-ctx origin y) 20.0)
+
+
+            (print-game-text
+              (string-format "Pole Cycle:~%  ~F~%  ~F" (-> self skel root-channel 0 frame-num) (ja-aframe-num 0))
+              debug-ctx
+              #f
+              128
+              22
+            )
+          )
+        )
+      )
+    )
+  )
+
+  :post target-no-move-post
+)
+
+(defstate target-pole-switch (target)
+  :event target-standard-event-handler
+
+  :exit (-> target-pole-cycle exit)
+
+  :code (behavior ((height meters))
+    (ja-no-eval :group! eichar-pole-cycle-ja :num! #f :frame-num 14.0)
+    (go target-pole-switch-jump height)
+  )
+)
+
+(defstate target-pole-switch-jump (target)
+  :event target-standard-event-handler
+
+  :enter (behavior ((height meters))
+    (sound-play "jump")
+
+    (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
+
+    (set! (-> self control unknown-surface00) *pole-switch-jump-mods*)
+    (init-var-jump height height #t #t (-> self control transv))
+  )
+
+  :trans (behavior ()
+    (mod-var-jump #t #t #t (-> self control transv))
+  )
+
+  :code (behavior ((height meters))
+    (let (
+      (flip-direction
+        (if (rand-vu-percent? 0.5)
+          1.0
+          -1.0
+        )
+      )
+      (rotation-progress (degrees 0.0))
+      (rot-per-second (degrees 280.0))
+    )
+      (*! rot-per-second flip-direction)
+
+      ; Fix the player's position, since the animation lies
+      (quaternion-rotate-y!
+        (-> self control unknown-quaternion00)
+        (-> self control unknown-quaternion00)
+        (degrees 180.0)
+      )
+
+      (quaternion-rotate-z!
+        (-> self control unknown-quaternion00)
+        (-> self control unknown-quaternion00)
+        (degrees 180.0)
+      )
+
+      (until (>= rotation-progress (degrees 180.0))
+        (let ((rot (per-second rot-per-second)))
+          (quaternion-rotate-z!
+            (-> self control unknown-quaternion00)
+            (-> self control unknown-quaternion00)
+            rot
+          )
+          (+! rotation-progress rot)
+        )
+        (suspend)
+      )
+    )
+
+    (go target-falling #f)
+  )
+
+  :post target-post
+)
 
 (defstate target-pole-flip-up (target)
   :event target-standard-event-handler
-  :exit
-    (-> target-pole-cycle
-        exit)
-  :code
-    (behavior ((arg0 object) (arg1 object) (arg2 float))
+
+  :exit (-> target-pole-cycle exit)
+
+  :code (behavior ((height-min meters) (height-max meters) (velocity meters))
       (ja-no-eval :group! eichar-pole-flip-up-ja :num! (seek!) :frame-num (ja-aframe (+ 1.0 (fmin 17.0 (ja-aframe-num 0))) 0))
       (until (ja-done? 0)
         (suspend)
-        (ja :num! (seek!)))
-      (set-forward-vel arg2)
-      (go target-pole-flip-up-jump (the-as float arg0) (the-as float arg1)))
-  :post target-no-move-post)
+        (ja :num! (seek!))
+      )
+
+      (set-forward-vel velocity)
+      (go target-pole-flip-up-jump height-min height-max)
+  )
+
+  :post target-no-move-post
+)
 
 (defstate target-pole-flip-up-jump (target)
   :event target-standard-event-handler
-  :enter
-    (-> target-jump-forward
-        enter)
+
+  :enter (-> target-jump-forward enter)
+
   :exit target-exit
-  :trans
-    (behavior ()
-      ((-> target-jump-forward trans))
-      (vector-flatten! (-> self control transv) (-> self control transv) (-> self control unknown-vector100)))
-  :code
-    (behavior ((arg0 float) (arg1 float))
-      (sound-play "jump")
-      (send-event *camera* 'damp-up)
-      (ja :group! eichar-pole-jump-loop-ja :num! min)
-      (let ((f0-1 (target-height-above-ground))
-            (f1-1 (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
-        (while (not (and (< (fabs (/ f0-1 (/ f1-1 300))) 40.0) (and (< f1-1 0.0) (ja-min? 0))))
-          (suspend)
-          (ja :num! (loop!))
-          (set! f0-1 (target-height-above-ground))
-          (set! f1-1 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))))
-      (ja-channel-push! 1 (seconds 0.25))
-      (ja-no-eval :group! eichar-jump-loop-ja :num! (loop!) :frame-num 0.0)
-      (loop
+
+  :trans (behavior ()
+    ((-> target-jump-forward trans))
+    (vector-flatten! (-> self control transv) (-> self control transv) (-> self control unknown-vector100))
+  )
+
+  :code (behavior ((height-min meters) (height-max meters))
+    (sound-play "jump")
+    (send-event *camera* 'damp-up)
+    (ja :group! eichar-pole-jump-loop-ja :num! min)
+    (let (
+      (f0-1 (target-height-above-ground))
+      (f1-1 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
+    )
+      (while (not
+        (and
+          (< (fabs (/ f0-1 (/ f1-1 300))) 40.0)
+          (and
+            (< f1-1 0.0)
+            (ja-min? 0)
+          )
+        )
+      )
         (suspend)
-        (ja :group! eichar-jump-loop-ja :num! (loop!))))
-  :post target-post)
+        (ja :num! (loop!))
+
+        (set! f0-1 (target-height-above-ground))
+        (set! f1-1 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
+      )
+    )
+
+    (ja-channel-push! 1 (seconds 0.25))
+    (ja-no-eval :group! eichar-jump-loop-ja :num! (loop!) :frame-num 0.0)
+    (loop
+      (suspend)
+      (ja :group! eichar-jump-loop-ja :num! (loop!))
+    )
+  )
+
+  :post target-post
+)
 
 (defstate target-pole-flip-forward (target)
   :event target-standard-event-handler
-  :exit
-    (-> target-pole-cycle
-        exit)
-  :code
-    (behavior ((arg0 float) (arg1 float) (arg2 float))
-      (ja-no-eval :group!
-                  eichar-pole-flip-forward-ja
-                  :num!
-                  (seek! (ja-aframe (the-as float 16.0) 0))
-                  :frame-num
-                  (ja-aframe (+ 1.0 (ja-aframe-num 0)) 0))
-      (until (ja-done? 0)
-        (suspend)
-        (ja :num! (seek! (ja-aframe (the-as float 16.0) 0))))
-      (set-forward-vel arg2)
-      (go target-pole-flip-forward-jump arg0 arg1))
-  :post target-no-move-post)
+
+  :exit (-> target-pole-cycle exit)
+
+  :code (behavior ((height-min meters) (height-max meters) (velocity meters))
+    (ja-no-eval
+      :group! eichar-pole-flip-forward-ja
+      :num! (seek! (ja-aframe (the-as float 16.0) 0))
+      :frame-num (ja-aframe (+ 1.0 (ja-aframe-num 0)) 0)
+    )
+
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek! (ja-aframe (the-as float 16.0) 0)))
+    )
+
+    (set-forward-vel velocity)
+    (go target-pole-flip-forward-jump height-min height-max)
+  )
+
+  :post target-no-move-post
+)
 
 (defstate target-pole-flip-forward-jump (target)
   :event target-standard-event-handler
-  :enter
-    (behavior ((arg0 float) (arg1 float))
-      ((-> target-jump enter) arg0 arg1 (the-as surface #f))
-      (set! (-> self control unknown-surface00) *forward-pole-jump-mods*))
+
+  :enter (behavior ((height-min meters) (height-max meters))
+    ((-> target-jump enter) height-min height-max (the-as surface #f))
+    (set! (-> self control unknown-surface00) *forward-pole-jump-mods*)
+  )
+
   :exit target-exit
-  :trans
-    (behavior ()
-      ((-> target-jump-forward trans))
-      (vector-flatten! (-> self control transv) (-> self control transv) (-> self control unknown-vector100)))
-  :code
-    (behavior ((arg0 float) (arg1 float))
-      (sound-play "jump")
-      (until (ja-done? 0)
-        (suspend)
-        (ja :num! (seek!)))
-      ((the-as (function none :behavior target) (-> target-pole-flip-up-jump code))))
-  :post target-post)
+
+  :trans (behavior ()
+    ((-> target-jump-forward trans))
+    (vector-flatten! (-> self control transv) (-> self control transv) (-> self control unknown-vector100))
+  )
+
+  :code (behavior ((height-min meters) (height-max meters))
+    (sound-play "jump")
+    (until (ja-done? 0)
+      (suspend)
+      (ja :num! (seek!))
+    )
+
+    ((the-as (function none :behavior target) (-> target-pole-flip-up-jump code)))
+  )
+
+  :post target-post
+)
 
 (defstate target-edge-grab (target)
   :event
@@ -1768,7 +1969,7 @@
   :event target-generic-event-handler
   :enter
     (behavior ((arg0 string) (arg1 handle))
-      (set! (-> self control unknown-handle10) arg1)
+      (set! (-> self control current-pole-handle) arg1)
       (move-to-ground (-> self control)
                       (the-as float 40960.0)
                       (the-as float 40960.0)
@@ -1778,7 +1979,7 @@
       (set! (-> self neck flex-blend) 0.0))
   :exit
     (behavior ()
-      (send-event (handle->process (-> self control unknown-handle10)) 'end-mode)
+      (send-event (handle->process (-> self control current-pole-handle)) 'end-mode)
       (target-exit))
   :code
     (behavior ((arg0 string) (arg1 handle))
@@ -1801,7 +2002,7 @@
       ((-> target-grab event) proc argc message block))
   :enter
     (behavior ((arg0 handle))
-      (set! (-> self control unknown-handle10) arg0)
+      (set! (-> self control current-pole-handle) arg0)
       (set! (-> self control unknown-vector102 quad) (-> self control trans quad))
       (set! (-> self control unknown-uint20) (the-as uint #t))
       (quaternion-copy! (the-as quaternion (-> self control unknown-vector103)) (-> self control quat))

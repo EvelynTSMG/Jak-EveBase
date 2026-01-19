@@ -132,7 +132,7 @@
    (unknown-vector101         vector :inline :offset 2144)
    (unknown-dword40           time-frame :offset 2160)
    (unknown-dword41           time-frame :offset 2168)
-   (unknown-handle10          handle :offset 2176)
+   (current-pole-handle          handle :offset 2176)
    (unknown-uint20            uint32 :offset 2184)
    (unknown-spoolanim00       spool-anim :overlay-at unknown-uint20)
    (unknown-int20             int32 :overlay-at unknown-spoolanim00)

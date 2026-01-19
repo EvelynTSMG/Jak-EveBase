@@ -803,56 +803,125 @@
   (none))
 
 (defbehavior target-compute-pole target ()
-  (let* ((s4-0 (handle->process (-> self control unknown-handle10)))
-         (gp-0 (-> (the-as swingpole s4-0) dir)))
-    (set! (-> self control unknown-vector100 quad) (-> gp-0 quad))
-    (let ((s5-0 (new 'stack-no-clear 'vector)))
-      (let ((s3-0 (vector+float*! (new 'stack-no-clear 'vector)
-                                  (-> (the-as swingpole s4-0) root trans)
-                                  gp-0
-                                  (-> (the-as swingpole s4-0) edge-length)))
-            (s2-0 (vector+float*! (new 'stack-no-clear 'vector)
-                                  (-> (the-as swingpole s4-0) root trans)
-                                  gp-0
-                                  (- (-> (the-as swingpole s4-0) edge-length)))))
+  (let* (
+    (swingpole (the-as swingpole (handle->process (-> self control current-pole-handle))))
+    (pole-dir (-> swingpole dir))
+  )
+    (set! (-> self control unknown-vector100 quad) (-> pole-dir quad))
+    (let ((grab-point (new 'stack-no-clear 'vector)))
+      (let (
+        (pole-far-end
+          (vector+float*!
+            (new 'stack-no-clear 'vector)
+            (-> swingpole root trans)
+            pole-dir
+            (-> swingpole edge-length)
+          )
+        )
+        (pole-close-end
+          (vector+float*!
+            (new 'stack-no-clear 'vector)
+            (-> swingpole root trans)
+            pole-dir
+            (- (-> swingpole edge-length))
+          )
+        )
+      )
         (let ((v1-8 (new 'stack-no-clear 'vector)))
-          (vector+! v1-8 s3-0 s2-0)
+          (vector+! v1-8 pole-far-end pole-close-end)
           (vector-float*! v1-8 v1-8 0.5)
           (+! (-> v1-8 y) -6144.0)
-          (send-event *camera* 'ease-in 0.5 v1-8))
-        (vector-segment-distance-point! (-> self control unknown-vector90) s3-0 s2-0 s5-0)
+          (send-event *camera* 'ease-in 0.5 v1-8)
+        )
+
+        (vector-segment-distance-point! (-> self control unknown-vector90) pole-far-end pole-close-end grab-point)
+
         (when *display-edge-collision-marks*
-          (add-debug-vector #t
-                            (bucket-id debug-no-zbuf)
-                            (-> (the-as swingpole s4-0) root trans)
-                            (the-as vector (&-> s4-0 stack 16))
-                            (meters 3)
-                            (new 'static 'rgba :r #xff :b #xff :a #x80))
-          (add-debug-sphere #t
-                            (bucket-id debug-no-zbuf)
-                            (-> (the-as swingpole s4-0) root trans)
-                            (-> (the-as swingpole s4-0) range)
-                            (new 'static 'rgba :r #xff :g #xff :a #x80))
-          (add-debug-sphere #t (bucket-id debug) (-> self control unknown-vector90) 819.2 (new 'static 'rgba :r #xff :a #x80))
-          (add-debug-sphere #t (bucket-id debug-no-zbuf) s3-0 819.2 (new 'static 'rgba :g #xff :a #x80))
-          (add-debug-sphere #t (bucket-id debug-no-zbuf) s2-0 819.2 (new 'static 'rgba :g #xff :b #x40 :a #x80))
-          (add-debug-sphere #t (bucket-id debug-no-zbuf) s5-0 819.2 (new 'static 'rgba :b #xff :a #x80))))
-      (let ((s4-2 (vector-! (new-stack-vector0) s5-0 (-> self control unknown-vector90))))
+          (add-debug-vector
+            #t
+            (bucket-id debug-no-zbuf)
+            (-> swingpole root trans)
+            (the-as vector (&-> swingpole stack 16))
+            (meters 3)
+            (new 'static 'rgba :r #xff :b #xff :a #x80)
+          )
+
+          (add-debug-sphere
+            #t
+            (bucket-id debug-no-zbuf)
+            (-> swingpole root trans)
+            (-> swingpole range)
+            (new 'static 'rgba :r #xff :g #xff :a #x80)
+          )
+
+          (add-debug-sphere
+            #t
+            (bucket-id debug)
+            (-> self control unknown-vector90)
+            (meters 0.2)
+            (new 'static 'rgba :r #xff :a #x80)
+          )
+
+          (add-debug-sphere
+            #t
+            (bucket-id debug-no-zbuf)
+            pole-far-end
+            (meters 0.2)
+            (new 'static 'rgba :g #xff :a #x80)
+          )
+
+          (add-debug-sphere
+            #t
+            (bucket-id debug-no-zbuf)
+            pole-close-end
+            (meters 0.2)
+            (new 'static 'rgba :g #xff :b #x40 :a #x80)
+          )
+
+          (add-debug-sphere
+            #t
+            (bucket-id debug-no-zbuf)
+            grab-point
+            (meters 0.2)
+            (new 'static 'rgba :b #xff :a #x80)
+          )
+
+        )
+      )
+
+      (let ((s4-2 (vector-! (new-stack-vector0) grab-point (-> self control unknown-vector90))))
         (cond
-          ((and (< 2457.6 (vector-length s4-2)) (not (-> self control unknown-int21)))
-           (move-by-vector! (-> self control) (vector-normalize! s4-2 2457.6)))
+          ((and
+            (< (meters 0.6) (vector-length s4-2))
+            (not (-> self control unknown-int21))
+          )
+           (move-by-vector! (-> self control) (vector-normalize! s4-2 (meters 0.6)))
+          )
+
           (else
            (set! (-> self control unknown-int21) (the-as int #t))
-           (move-to-point! (-> self control) (vector-! (new 'stack-no-clear 'vector) s5-0 (-> self control unknown-vector91)))
-           (set! (-> self control unknown-vector52 quad) (-> self control trans quad))))))
-    (let ((s5-3 (vector-cross! (-> self control unknown-vector101) gp-0 (-> self control dynam gravity-normal))))
+           (move-to-point! (-> self control) (vector-! (new 'stack-no-clear 'vector) grab-point (-> self control unknown-vector91)))
+           (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
+          )
+        )
+      )
+    )
+
+    (let ((s5-3 (vector-cross! (-> self control unknown-vector101) pole-dir (-> self control dynam gravity-normal))))
       (if (>= 0.0 (vector-dot s5-3 (vector-z-quaternion! (new 'stack-no-clear 'vector) (-> self control unknown-quaternion00))))
-        (vector-negate! s5-3 s5-3))
-      (forward-up-nopitch->quaternion (-> self control dir-targ) s5-3 (-> self control dynam gravity-normal))))
+        (vector-negate! s5-3 s5-3)
+      )
+
+      (forward-up-nopitch->quaternion (-> self control dir-targ) s5-3 (-> self control dynam gravity-normal))
+    )
+  )
+
   (set-quaternion! (-> self control) (-> self control dir-targ))
   (do-joint-math! self)
   (update-transforms! (-> self control))
-  (none))
+
+  (none)
+)
 
 (defbehavior target-calc-camera-pos target ()
   (let ((gp-0 (new 'stack-no-clear 'vector)))
@@ -1168,7 +1237,7 @@
   (set! (-> self control unknown-float80) 0.0)
   (set! (-> self control unknown-float82) 32.0)
   (set! (-> self cam-user-mode) 'normal)
-  (set! (-> self control unknown-handle10) (the-as handle #f))
+  (set! (-> self control current-pole-handle) (the-as handle #f))
   (set! (-> self control unknown-handle00) (the-as handle #f))
   (set! (-> self control unknown-dword82) 0)
   (buzz-stop! 0)

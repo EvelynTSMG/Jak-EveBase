@@ -9,6 +9,8 @@ EveBase implements various changes and fixes to the vanilla game and the code ba
 to make both playing and developing mods more pleasant.
 
 ## Additions
+- You can now press circle while swinging on a pole to change directions!
+  (This requires timing the press for when Jak is horizontal, similar to a forward flip.)
 - Options can now have descriptions associated with them
 - Added **Mod Options**:
   - **Double-Jump Ability** determines when you can double-jump.

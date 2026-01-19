@@ -120,6 +120,9 @@
     (tongue-pull-speed-min        float)
     (tongue-pull-speed-max        float)
     (yellow-attack-timeout        time-frame)
+    (pole-switch-height           meters)
+    (pole-flip-up-height          meters)
+    (pole-flip-forward-height     meters)
   )
 )
 
@@ -206,6 +209,9 @@
     :tongue-pull-speed-min 0.15
     :tongue-pull-speed-max 0.22
     :yellow-attack-timeout (seconds 0.2)
+    :pole-switch-height (meters 3.5)
+    :pole-flip-up-height (meters 7.0)
+    :pole-flip-forward-height (meters 3.5)
   )
 )
 
