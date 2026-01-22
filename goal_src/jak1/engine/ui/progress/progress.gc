@@ -634,6 +634,7 @@
               (= screen (progress-screen accessibility-options))
               (= screen (progress-screen misc-options))
               (= screen (progress-screen mod-settings))
+              (= screen (progress-screen easter-egg-options))
               (= screen (progress-screen game-ps2-options))
               (= screen (progress-screen gfx-ps2-options))
               (= screen (progress-screen resolution))

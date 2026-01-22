@@ -824,6 +824,17 @@
   (skip-camera-pans #x170d)
   (skip-camera-pans-desc #x170e)
 
+  ; easter eggs
+  (easter-eggs #x1800)
+  (easter-eggs-desc #x1801)
+
+  (easter-eggs-disabled #x1802)
+  (easter-eggs-disabled-desc #x1803)
+  (easter-eggs-enabled #x1804)
+  (easter-eggs-enabled-desc #x1805)
+  (easter-eggs-permanent #x1806)
+  (easter-eggs-permanent-desc #x1807)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)

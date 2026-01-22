@@ -217,6 +217,7 @@
    (reset-ps2 (_type_ symbol) int)
    (reset-misc (_type_ symbol) int)
    (reset-mod (_type_ symbol) none)
+   (reset-easter-egg (_type_ symbol) none)
    (reset-camera (_type_ symbol) int)
    (reset-extra (_type_ symbol) int)
    (print-debug-misc (_type_) object)
@@ -310,6 +311,7 @@
   (reset-misc obj call-handlers)
   (reset-extra obj call-handlers)
   (reset-mod obj call-handlers)
+  (reset-easter-egg obj call-handlers)
   
   (none)
 )
@@ -408,7 +410,12 @@
   0)
 
 (defmethod reset-mod ((settings pc-settings) (call-handlers symbol))
-  "Set the default mod stetings"
+  "Set the default mod settings"
+  (none)
+)
+
+(defmethod reset-easter-egg ((settings pc-settings) (call-handlers symbol))
+  "Set the default easter egg settings"
   (none)
 )
 

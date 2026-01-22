@@ -107,6 +107,9 @@
 
 (define *carousell-frame-rate* *carousell-frame-rate-150fps*)
 
+(def-progress-carousell *carousell-easter-egg* (easter-eggs-disabled easter-eggs-enabled easter-eggs-permanent))
+(def-progress-carousell *carousell-easter-egg-desc* (easter-eggs-disabled-desc easter-eggs-enabled-desc easter-eggs-permanent-desc))
+
 (def-progress-carousell *carousell-doublejump-ability* (doublejump-ability-near-peak doublejump-ability-always))
 (def-progress-carousell *carousell-doublejump-ability-desc* (doublejump-ability-near-peak-desc doublejump-ability-always-desc))
 ;;[ADD-MOD-OPTION-CAROUSEL]; Add carousel definition here
@@ -153,6 +156,14 @@
       :name (text-id mod-options)
       :scale #t
       :param3 (game-option-menu mod-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id easter-eggs)
+      :desc (text-id easter-eggs-desc)
+      :scale #t
+      :param3 (game-option-menu easter-egg-options)
     )
 
     (new 'static 'game-option
@@ -250,6 +261,14 @@
       :name (text-id mod-options)
       :scale #t
       :param3 (game-option-menu mod-settings)
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id easter-eggs)
+      :desc (text-id easter-eggs-desc)
+      :scale #t
+      :param3 (game-option-menu easter-egg-options)
     )
 
     (new 'static 'game-option
@@ -486,6 +505,28 @@
       :scale #t
       :on-confirm (lambda ()
         (reset-mod *pc-settings* #t)
+        (none)
+      )
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type button)
+      :name (text-id back)
+      :scale #t
+    )
+  )
+)
+
+(define *easter-egg-options*
+  (new 'static 'boxed-array :type game-option
+    ;;[ADD-EASTER-EGG]; Add option for toggling the easter egg here
+
+    (new 'static 'game-option
+      :option-type (game-option-type confirmation)
+      :name (text-id restore-defaults)
+      :scale #t
+      :on-confirm (lambda ()
+        (reset-easter-egg *pc-settings* #t)
         (none)
       )
     )
@@ -2275,6 +2316,7 @@
   (set! (-> *options-remap* (progress-screen speedrun-il-options)) *speedrun-il-options*)
   (set! (-> *options-remap* (progress-screen speedrun-cat-ext-options)) *speedrun-cat-ext-options*)
   (set! (-> *options-remap* (progress-screen mod-settings)) *mod-options*)
+  (set! (-> *options-remap* (progress-screen easter-egg-options)) *easter-egg-options*)
   ;; set default params
   (set! (-> *progress-state* aspect-ratio-choice) (get-aspect-ratio))
   (set! (-> *progress-state* video-mode-choice) (get-video-mode))
@@ -2321,6 +2363,11 @@
   (set! (-> *mod-options* 4 value-to-modify) (&-> *pc-settings* mod quick-mount?))
   ;;[ADD-MOD-OPTION]; Set your option's value-to-modify here — carousels use `(&-> *progress-carousell* int-backup)`
 
+  ; Easter Egg options
+  ;;[ADD-EASTER-EGG]; Set your easter egg's value-to-modify to `(&-> *progress-carousell* int-backup)` here
+
+  ;;[ADD-EASTER-EGG]; Make sure these indices are still correct
+  ;;[ADD-EASTER-EGG]; Set your easter egg's easter-egg-to-modify here
 
   ;; input options
   (set! (-> *controller-options* 1 value-to-modify) (&-> *pc-settings* memcard-vibration?))
@@ -2517,6 +2564,7 @@
                       (game-option-type language-text)
 
                       ; Mod carousels!
+                      (game-option-type easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for the game-option-type here
                     )
@@ -2654,6 +2702,7 @@
                       (game-option-type language-text)
                       
                       ; Mod carousels!
+                      (game-option-type easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for the game-option-type here
                     )
@@ -3248,6 +3297,13 @@
                     )
 
                     ; Mod carousels!
+                    (((game-option-type easter-egg))
+                      (case (-> (the (pointer symbol) (-> options (-> progress option-index) easter-egg-to-modify)))
+                        (('disabled) (set! (-> *progress-carousell* int-backup) 0))
+                        (('enabled) (set! (-> *progress-carousell* int-backup) 1))
+                        (('permanent) (set! (-> *progress-carousell* int-backup) 2))
+                      )
+                    )
 
                     (((game-option-type doublejump-ability))
                       (case (-> *pc-settings* mod doublejump-ability)
@@ -3306,6 +3362,10 @@
                           (set! (-> *progress-carousell* current-carousell) *text-languages*)
                         )
                         ; Mod carousels!
+                        (((game-option-type easter-egg))
+                          (set! (-> *progress-carousell* current-carousell) *carousell-easter-egg*)
+                          (set! (-> *progress-carousell* current-desc-carousell) *carousell-easter-egg-desc*)
+                        )
                         (((game-option-type doublejump-ability))
                           (set! (-> *progress-carousell* current-carousell) *carousell-doublejump-ability*)
                           (set! (-> *progress-carousell* current-desc-carousell) *carousell-doublejump-ability-desc*)
@@ -3429,6 +3489,16 @@
                 )
 
                 ; Mod carousels!
+                (((game-option-type easter-egg))
+                  (set!
+                    (-> (the (pointer symbol) (-> options (-> progress option-index) easter-egg-to-modify)))
+                    (case (-> *progress-carousell* int-backup)
+                      ((0) 'disabled)
+                      ((1) 'enabled)
+                      ((2) 'permanent)
+                    )
+                  )
+                )
 
                 (((game-option-type doublejump-ability))
                   (case (-> *progress-carousell* int-backup)
@@ -3714,18 +3784,38 @@
                                       (lookup-text! *common-text* (text-id no) #f)))))
               ;; menu option or simple button. just draw its text!
               (((game-option-type menu) (game-option-type button))
-               (if (nonzero? (-> options index name))
-                 (set! option-str (lookup-text! *common-text* (-> options index name) #f))
-                 (set! option-str #f))
-               ;; if autosave disabled, update text and lock it
-               (when (and (not (-> *setting-control* default auto-save)) (= (text-id disable-auto-save) (-> options index name)))
-                 (set! option-str (lookup-text! *common-text* (text-id auto-save-disabled) #f))
-                 (true! locked?))
-               ;; checkpoint-select only unlocked after beating finalboss
-               (when (and (not (task-closed? (game-task finalboss-movies) (task-status need-reminder)))
-                          (= (text-id checkpoint-select) (-> options index name)))
-                 (set! option-str (lookup-text! *common-text* (text-id cheat-req-beat-game) #f))
-                 (true! locked?)))
+                (if (nonzero? (-> options index name))
+                  (set! option-str (lookup-text! *common-text* (-> options index name) #f))
+                  (set! option-str #f)
+                )
+
+                (if (and
+                  (not option-desc)
+                  (nonzero? (-> options index desc))
+                  (= (-> obj option-index) index)
+                )
+                  (set! option-desc (string-format2 (lookup-text! *common-text* (-> options index desc) #f)))
+                )
+
+                ;; if autosave disabled, update text and lock it
+                (when (and
+                  (not (-> *setting-control* default auto-save))
+                  (= (text-id disable-auto-save) (-> options index name))
+                )
+                  (set! option-str (lookup-text! *common-text* (text-id auto-save-disabled) #f))
+                  (true! locked?)
+                )
+
+                ;; checkpoint-select only unlocked after beating finalboss
+                (when (and
+                  (not (task-closed? (game-task finalboss-movies) (task-status need-reminder)))
+                  (= (text-id checkpoint-select) (-> options index name))
+                )
+                  (set! option-str (lookup-text! *common-text* (text-id cheat-req-beat-game) #f))
+                  (true! locked?)
+                )
+              )
+
               (((game-option-type button-music))
                ;; a button for the music player. has the text "locked" sometimes!
                (if (and (nonzero? (-> options index name)) (find-music-log (progress-get-music-by-index index)))
@@ -3842,6 +3932,7 @@
                       (game-option-type language-text)
 
                       ; Mod carousels!
+                      (game-option-type easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for game-option-type here
                     )
@@ -3905,7 +3996,10 @@
                              (string-format "~0L~S ~30L~S"
                                             (lookup-text! *common-text* (text-id 4x3) #f)
                                             (lookup-text! *common-text* (text-id 16x9) #f))))))
-                    (when (and (not option-desc) (nonzero? (-> options index desc)))
+                    (when (and
+                      (not option-desc)
+                      (nonzero? (-> options index desc))
+                    )
                       (set! option-desc (string-format2 (lookup-text! *common-text* (-> options index desc) #f)))
                     )
                  )
@@ -3925,6 +4019,7 @@
                       (game-option-type confirmation)
 
                       ; Mod carousels!
+                      (game-option-type easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for game-option-type here
                     )
@@ -4004,7 +4099,11 @@
                            (string-format "~S: ~S"
                                           (lookup-text! *common-text* (-> options index name) #f)
                                           (lookup-text! *common-text* (get-language-name (-> *pc-settings* text-language)) #f)))))
-                  (when (and (not option-desc) (nonzero? (-> options index desc)) (= (-> obj option-index) index))
+                  (when (and
+                    (not option-desc)
+                    (nonzero? (-> options index desc))
+                    (= (-> obj option-index) index)
+                  )
                     (set! option-desc (string-format2 (lookup-text! *common-text* (-> options index desc) #f)))
                   )
                  )
@@ -4200,6 +4299,7 @@
               (progress-screen title)
               (progress-screen sound-settings)
               (progress-screen mod-settings)
+              (progress-screen easter-egg-options)
               (progress-screen game-ps2-options)
               (progress-screen resolution)
               (progress-screen aspect-ratio)

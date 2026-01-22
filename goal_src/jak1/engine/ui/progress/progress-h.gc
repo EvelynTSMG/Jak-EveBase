@@ -135,6 +135,7 @@
       (memcard-saving-and-loading)
       (memcard-data-exists-save-and-load)
       ; EveBase additions
+      (easter-egg-options)
       (mod-settings)
       ;; the last one!
       (max)
@@ -171,6 +172,7 @@
       (binding-assignment)
       (confirmation)
       ; Extra Types for mod settings
+      (easter-egg)
       ;;[ADD-MOD-OPTION-CAROUSEL]
       (doublejump-ability)
     )
@@ -223,6 +225,7 @@
     (param1               float)
     (param2               float)
     (param3               game-option-menu)
+    (easter-egg-to-modify pointer) ; Only valid when option-type is easter-egg
     (value-to-modify      pointer)
     ;; fields below added in pc port
     (option-disabled-func (function symbol))

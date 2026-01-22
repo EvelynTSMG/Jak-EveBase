@@ -85,6 +85,17 @@
   )
 )
 
+(deftype easter-egg-settings (basic)
+  (
+    ;;[ADD-EASTER-EGG]; Add easter egg field here
+  )
+
+  (:methods
+    (handle-input-easter-egg-settings (easter-egg-settings file-stream) none)
+    (handle-output-easter-egg-settings (easter-egg-settings file-stream) none)
+  )
+)
+
 ;; The Jak 1 version of the pc-settings object.
 (deftype pc-settings-jak1 (pc-settings)
   (
@@ -97,6 +108,7 @@
     (money-starburst?    symbol) ;; add a starburst to the money
     (extra-hud?          symbol) ;; extra hud elements.
     (mod                 mod-settings :inline)
+    (easter-eggs         easter-egg-settings :inline)
     (secrets             pc-game-secrets :inline) ;; hidden goodies and additional secrets!
     (scenes-seen         uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
     (memcard-play-hints? symbol)
@@ -171,6 +183,13 @@
   (set! (-> settings mod skip-camera-pans?) #f)
   (set! (-> settings mod quick-mount?) #f)
   ;;[ADD-MOD-OPTION]; Add default setting here
+
+  (none)
+)
+
+(defmethod reset-easter-egg ((settings pc-settings-jak1) (call-handlers symbol))
+  "Set the default easter egg settings"
+  ;;[ADD-EASTER-EGG]; Add default setting here
 
   (none)
 )

@@ -1,0 +1,27 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(deftype easter-egg (basic)
+  (
+    (active? symbol)
+  )
+
+  (:methods
+    (should-activate? (_type_) symbol)
+    (is-active? (_type_) symbol)
+  )
+)
+
+(defmethod should-activate? easter-egg ((self easter-egg))
+  #f
+)
+
+(defmethod is-active? easter-egg ((self easter-egg))
+  (or
+    (= (-> self active?) 'permanent)
+    (and
+      (= (-> self active?) 'enabled)
+      (should-activate? self)
+    )
+  )
+)

@@ -30,6 +30,8 @@
   "dma-buffer.o"
   "dma-bucket.o"
   "dma-disasm.o"
+  "easter-eggs-h.o"
+  "easter-eggs.o"
   "pc-cheats.o" ;; added
   "pckernel-h.o" ;; added
   "pckernel-impl.o" ;; added

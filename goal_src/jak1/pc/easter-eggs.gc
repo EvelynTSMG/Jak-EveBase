@@ -1,0 +1,6 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(require "pc/easter-eggs-h.gc")
+
+;;[ADD-EASTER-EGG]; Add easter egg type here
