@@ -162,17 +162,37 @@
       (go helix-button-idle-up)))
 
 (defstate helix-button-idle-up (helix-button)
-  :event
-    (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
       (case message
         (('touch)
-         (when *target*
-           (when (logtest? (-> *target* control status) (cshape-moving-flags onsurf))
-             (cond
-               ((and (and (-> self entity) (logtest? (-> self entity extra perm status) (entity-perm-status complete)))
-                     (not (handle->process (-> self fcell-handle))))
-                (go helix-button-quick-activate))
-               (else (process-entity-status! self (entity-perm-status complete) #t) (go helix-button-activate))))))))
+          (when *target*
+            (when (logtest? (-> *target* control status) (cshape-moving-flags onsurf))
+              (cond
+                ((and
+                  (and
+                    (-> self entity)
+                    (logtest? (-> self entity extra perm status) (entity-perm-status complete))
+                  )
+                  (not (handle->process (-> self fcell-handle)))
+                )
+                  (go helix-button-quick-activate)
+                )
+
+                (else
+                  (process-entity-status! self (entity-perm-status complete) #t)
+
+                  (if (-> *pc-settings* mod skip-camera-pans?)
+                    (go helix-button-quick-activate)
+                    (go helix-button-activate)
+                  )
+                )
+            )
+          )
+        )
+      )
+    )
+  )
+
   :code
     (behavior ()
       (loop
@@ -190,7 +210,6 @@
           (until v1-7
             (suspend)
             (set! v1-7 (or (not *target*) (not (logtest? (-> *target* state-flags) (state-flags grabbed))))))))
-      (when (not (-> *pc-settings* mod skip-camera-pans?))
         (let ((v1-11 (process-spawn sunkencam
                                     :init
                                     pov-camera-init-by-other
@@ -203,7 +222,6 @@
                                     :to
                                     self)))
           (set! (-> (the-as (pointer sunkencam) v1-11) 0 seq) (the-as uint 2)))
-      )
       (let ((a1-5 (new 'stack-no-clear 'event-message-block)))
         (set! (-> a1-5 from) self)
         (set! (-> a1-5 num-params) 0)
@@ -279,6 +297,24 @@
   :trans rider-trans
   :code
     (behavior ()
+      (let (
+        (cell (handle->process (-> self fcell-handle)))
+        (target-free? #f)
+      )
+        (when cell
+          (send-event cell 'pickup)
+          (until target-free?
+            (suspend)
+
+            (set! target-free?
+              (or
+                (not *target*)
+                (not (logtest? (-> *target* state-flags) (state-flags grabbed)))
+              )
+            )
+          )
+        )
+      )
       (let ((a1-0 (new 'stack-no-clear 'event-message-block)))
         (set! (-> a1-0 from) self)
         (set! (-> a1-0 num-params) 0)
