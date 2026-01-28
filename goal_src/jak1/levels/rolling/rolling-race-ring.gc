@@ -676,28 +676,63 @@
                          (v1-30 (-> self link next)))
                      (t9-12 (if v1-30 (-> v1-30 extra process)) a1-9))))
                 ((last-ring? self)
-                 (let ((gp-2 (ppointer->handle (process-spawn othercam self 4 #f #t :to self)))
-                       (s5-2 (ppointer->handle (process-spawn fuel-cell :init fuel-cell-init-as-clone (process->handle self) (-> self entity extra perm task) :to self))))
-                   (if *target* (logior! (-> *target* mask) (process-mask sleep)))
-                   (close-specific-task! (-> self entity extra perm task) (task-status need-reminder))
-                   (logclear! (-> self draw status) (draw-status hidden))
-                   (logior! (-> self draw status) (draw-status skip-bones))
-                   (if (= (-> self entity extra perm task) (game-task rolling-ring-chase-2))
-                     (ja-play-spooled-anim (new 'static 'spool-anim :name "race-ring-second-anim" :index 4 :parts 2 :command-list '())
-                                           (the-as art-joint-anim #f)
-                                           (the-as art-joint-anim #f)
-                                           (the-as (function process-drawable symbol) false-func))
-                     (ja-play-spooled-anim (new 'static 'spool-anim :name "race-ring-anim" :index 3 :parts 2 :command-list '())
-                                           (the-as art-joint-anim #f)
-                                           (the-as art-joint-anim #f)
-                                           (the-as (function process-drawable symbol) false-func)))
-                   (logclear! (-> self draw status) (draw-status skip-bones))
-                   (logior! (-> self draw status) (draw-status hidden))
-                   (cond
-                     ((handle->process (the-as int gp-2)) (deactivate (-> gp-2 process 0)))
-                     (else))
-                   (if *target* (logclear! (-> *target* mask) (process-mask sleep)))
-                   (let ((a0-54 (handle->process s5-2))) (if a0-54 (send-event a0-54 'stop-cloning)))))
+                  (let (
+                    (cam (the-as handle #f))
+                    (cell-handle (ppointer->handle (process-spawn fuel-cell :init fuel-cell-init-as-clone (process->handle self) (-> self entity extra perm task) :to self)))
+                  )
+                    (when (not (-> *pc-settings* mod skip-camera-pans?))
+                      (set! cam (ppointer->handle (process-spawn othercam self 4 #f #t :to self)))
+
+                      (if *target*
+                        (logior! (-> *target* mask) (process-mask sleep))
+                      )
+                    )
+
+                    (close-specific-task! (-> self entity extra perm task) (task-status need-reminder))
+
+                    (logclear! (-> self draw status) (draw-status hidden))
+                    (logior! (-> self draw status) (draw-status skip-bones))
+
+                    (if (= (-> self entity extra perm task) (game-task rolling-ring-chase-2))
+                      (ja-play-spooled-anim
+                        (new 'static 'spool-anim :name "race-ring-second-anim" :index 4 :parts 2 :command-list '())
+                        (the-as art-joint-anim #f)
+                        (the-as art-joint-anim #f)
+                        (the-as (function process-drawable symbol) false-func)
+                      )
+
+                      (ja-play-spooled-anim
+                        (new 'static 'spool-anim :name "race-ring-anim" :index 3 :parts 2 :command-list '())
+                        (the-as art-joint-anim #f)
+                        (the-as art-joint-anim #f)
+                        (the-as (function process-drawable symbol) false-func)
+                      )
+                    )
+
+                    (logclear! (-> self draw status) (draw-status skip-bones))
+                    (logior! (-> self draw status) (draw-status hidden))
+
+                    (when (and
+                      (not (-> *pc-settings* mod skip-camera-pans?))
+                    )
+                      (if (handle->process (the-as int cam))
+                        (deactivate (-> cam process 0))
+                      )
+                      
+                      (if *target*
+                        (logclear! (-> *target* mask) (process-mask sleep))
+                      )
+                    )
+
+
+                    (let ((cell (handle->process cell-handle)))
+                      (if cell
+                        (send-event cell 'stop-cloning)
+                      )
+                    )
+                  )
+                )
+
                 (else
                  (entity-birth-no-kill (-> self link next))
                  (let ((a1-22 (new 'stack-no-clear 'event-message-block)))
