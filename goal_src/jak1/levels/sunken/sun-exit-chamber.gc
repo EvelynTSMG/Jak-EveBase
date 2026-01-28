@@ -545,18 +545,16 @@
         (if v1-1 (clear-collide-with-as (-> (the-as fuel-cell v1-1) root))))
       (close-specific-task! (game-task sunken-room) (task-status need-reminder))
       (send-event *target* 'reset-pickup 'eco)
-      (when (not (-> *pc-settings* mod skip-camera-pans?))
-        (let ((gp-0 (get-process *default-dead-pool* sunkencam #x4000)))
-          (set! (-> (the-as sunkencam
-                            (-> (when gp-0
-                                  (let ((t9-5 (method-of-type sunkencam activate)))
-                                    (t9-5 (the-as sunkencam gp-0) self 'sunkencam (the-as pointer #x70004000)))
-                                  (run-now-in-process gp-0 pov-camera-init-by-other (-> self root trans) *sunkencam-sg* "qbert-show-door-open" 0 #f '())
-                                  (-> gp-0 ppointer))
-                                0))
-                    seq)
-                (the-as uint 0)))
-      )
+      (let ((gp-0 (get-process *default-dead-pool* sunkencam #x4000)))
+        (set! (-> (the-as sunkencam
+                          (-> (when gp-0
+                                (let ((t9-5 (method-of-type sunkencam activate)))
+                                  (t9-5 (the-as sunkencam gp-0) self 'sunkencam (the-as pointer #x70004000)))
+                                (run-now-in-process gp-0 pov-camera-init-by-other (-> self root trans) *sunkencam-sg* "qbert-show-door-open" 0 #f '())
+                                (-> gp-0 ppointer))
+                              0))
+                  seq)
+              (the-as uint 0)))
       0
       (suspend)
       (set-time! (-> self state-time))
