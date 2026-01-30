@@ -263,13 +263,13 @@
       :param3 (game-option-menu mod-settings)
     )
 
-    (new 'static 'game-option
-      :option-type (game-option-type menu)
-      :name (text-id easter-eggs)
-      :desc (text-id easter-eggs-desc)
-      :scale #t
-      :param3 (game-option-menu easter-egg-options)
-    )
+    ;; (new 'static 'game-option
+    ;;   :option-type (game-option-type menu)
+    ;;   :name (text-id easter-eggs)
+    ;;   :desc (text-id easter-eggs-desc)
+    ;;   :scale #t
+    ;;   :param3 (game-option-menu easter-egg-options)
+    ;; )
 
     (new 'static 'game-option
       :option-type (game-option-type confirmation)
