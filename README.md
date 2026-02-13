@@ -9,9 +9,11 @@ EveBase implements various changes and fixes to the vanilla game and the code ba
 to make both playing and developing mods more pleasant.
 
 ## Known Issues
-- Exiting a level using the Exit Level button crashes in LPC after performing Button Clip
-  under specific circumstances.
-  - This crash can be avoided by warping to checkpoint before exiting the level
+- Exiting using the Exit Level button *may* crash in certain levels:
+  - LPC, after the first slide.
+    - Can be avoided by getting any checkpoint before the first slide and warping to it or dying.
+  - Spider Cave, in dark cave or robot cave.
+    - Can be avoided by getting any checkpoint in the main cave and warping to it or dying.
 - Skipping the Fisherman's cell cutscene causes the player to be spawned inside of the bridge.
   The player does *not* become stuck and is free to move around.
 
