@@ -11,7 +11,9 @@ to make both playing and developing mods more pleasant.
 ## Known Issues
 - Exiting a level using the Exit Level button crashes in LPC after performing Button Clip
   under specific circumstances.
+  - This crash can be avoided by warping to checkpoint before exiting the level
 - Skipping the Fisherman's cell cutscene causes the player to be spawned inside of the bridge.
+  The player does *not* become stuck and is free to move around.
 
 ## Additions
 - You can now press circle while swinging on a pole to change directions!
