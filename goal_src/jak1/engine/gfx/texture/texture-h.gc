@@ -185,7 +185,7 @@
    (entries texture-page-dir-entry 1 :inline))
   (:methods
    (relocate (_type_ kheap (pointer uint8)) none :replace)
-   (unlink-textures-in-heap! (_type_ kheap) int)))
+   (unlink-textures-in-heap! (_type_ kheap) none)))
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Relocate Later
