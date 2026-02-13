@@ -1506,8 +1506,8 @@
     (('village3) "village3-start")
     (('snow) "snow-start")
     (('maincave) "maincave-start")
-    (('darkcave) "darkcave-start")
-    (('robocave) "robocave-start")
+    (('darkcave) "maincave-start")
+    (('robocave) "maincave-start")
 
     (('lavatube)
       (if (and
