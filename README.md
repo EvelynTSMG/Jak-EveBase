@@ -8,6 +8,11 @@ and a fork of the offical [Mod Base](https://github.com/OpenGOAL-Mods/OG-Mod-Bas
 EveBase implements various changes and fixes to the vanilla game and the code backend
 to make both playing and developing mods more pleasant.
 
+## Known Issues
+- Exiting a level using the Exit Level button crashes in LPC after performing Button Clip
+  under specific circumstances.
+- Skipping the Fisherman's cell cutscene causes the player to be spawned inside of the bridge.
+
 ## Additions
 - You can now press circle while swinging on a pole to change directions!
   (This requires timing the press for when Jak is horizontal, similar to a forward flip.)
