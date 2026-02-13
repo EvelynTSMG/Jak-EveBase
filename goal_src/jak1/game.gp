@@ -1664,6 +1664,7 @@
 ;; requires a .glb model file in custom_assets/jak1/models/custom_levels
 ;; to also generate a collide-mesh, add :gen-mesh #t
 (build-actor "test-actor" :gen-mesh #t)
+(build-actor "valentines-heart" :gen-mesh #t)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code
@@ -1955,7 +1956,7 @@
  "game/task/hint-control.gc"
  "entity/ambient.gc"
  "debug/assert.gc"
- )
+)
 
 (goal-src "engine/common-obs/generic-obs.gc" "pc-anim-util" "assert")
 
@@ -2007,6 +2008,7 @@
  "common-obs/water.gc"
  "common-obs/collectables-part.gc"
  "common-obs/collectables.gc"
+ "common-obs/valentines-heart.gc"
  "game/task/task-control.gc"
  "common-obs/process-taskable.gc"
  "camera/pov-camera.gc"
@@ -2095,7 +2097,6 @@
 (goal-src "pc/features/autosplit.gc" "autosplit-h" "task-control-h" "progress-static")
 (goal-src "pc/features/speedruns.gc" "speedruns-h" "autosplit-h")
 (goal-src "pc/easter-eggs-h.gc")
-(goal-src "pc/easter-eggs.gc" "easter-eggs-h")
 (goal-src "pc/pc-cheats.gc" "dma-buffer")
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
 (goal-src "pc/pckernel-impl.gc" "pckernel-h" "pc-cheats" "easter-eggs-h")
