@@ -657,6 +657,7 @@
 
 (defmethod initialize ((obj pc-settings))
   "initial initialize method to be run after allocating"
+  (initialize-eggs obj)
   ;; load defaults not covered by the file
   (reset obj #f)
   ;; if saved settings are corrupted or not found, the object will be fully reset to use all defaults
@@ -668,6 +669,12 @@
   (set! (-> obj stick-sensitivity) (* 100.0 (pc-get-axis-scale)))
   (update-mouse-controls! obj)
   obj)
+
+(defmethod initialize-eggs ((obj pc-settings))
+  "Initialize easter eggs to their default values here"
+
+  (none)
+)
 
 (defmethod new pc-settings ((allocation symbol) (type-to-make type))
   "make a new pc-settings"

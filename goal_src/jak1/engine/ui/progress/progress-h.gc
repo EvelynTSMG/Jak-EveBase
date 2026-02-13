@@ -173,6 +173,7 @@
       (confirmation)
       ; Extra Types for mod settings
       (easter-egg)
+      (unlockable-easter-egg)
       ;;[ADD-MOD-OPTION-CAROUSEL]
       (doublejump-ability)
     )

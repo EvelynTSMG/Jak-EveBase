@@ -204,6 +204,7 @@
   (:methods
    (new (symbol type) _type_)
    (initialize (_type_) _type_)
+   (initialize-eggs (_type_) none)
    (update (_type_) none)
    (update-from-os (_type_) none)
    (update-to-os (_type_) none)

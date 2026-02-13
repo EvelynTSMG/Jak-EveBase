@@ -29,6 +29,10 @@
   (if (basically-not-zero? (fractional-part x)) (truncate (+ x 1)) (truncate x))
 )
 
+(defun fmod ((a float) (b float))
+  (fractional-part (/ a b))
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; various types utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

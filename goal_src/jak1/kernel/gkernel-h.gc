@@ -366,6 +366,14 @@
   (format #t "~Tpid: ~D~%" (-> this pid))
   this)
 
+(defmacro is-valid-handle? (handle)
+  `(and
+    ,handle
+    (nonzero? ,handle)
+    (handle->process ,handle)
+  )
+)
+
 (defmacro handle->process (handle)
   "Convert a handle to a process. If the process no longer exists, returns #f."
   `(let ((the-handle (the-as handle ,handle)))

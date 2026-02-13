@@ -835,6 +835,12 @@
   (easter-eggs-permanent #x1806)
   (easter-eggs-permanent-desc #x1807)
 
+  (egg-valentines-day #x1808)
+  (egg-valentines-day-desc #x1809)
+
+  (egg-christmas #x180a)
+  (egg-christmas-desc #x180b)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)
@@ -849,6 +855,7 @@
   (exit-level #x3003)
   (exit-level-desc #x3004)
 
+  (press-to-flirt #x3005)
 
   ;; GAME-TEXT-ID ENUM ENDS
   )

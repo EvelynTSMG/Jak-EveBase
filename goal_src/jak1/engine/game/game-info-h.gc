@@ -197,3 +197,17 @@
     (set! *game-info* temp)))
 
 (define-extern game-task->string (function game-task string))
+
+(define *last-load-time* (new 'static 'scf-time))
+
+(defun scf-load-day ()
+  (-> *last-load-time* day)
+)
+
+(defun scf-load-month ()
+  (-> *last-load-time* month)
+)
+
+(defun scf-load-year ()
+  (-> *last-load-time* year)
+)

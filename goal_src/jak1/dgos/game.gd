@@ -376,4 +376,8 @@
   ;; keep blocking-plane stuff loaded
   "blocking-plane.o"
   "ef-plane-ag.go"
+  
+  ; Easter Egg stuffs
+  "valentines-heart.o"
+  "valentines-heart-ag.go"
  ))

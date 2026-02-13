@@ -88,6 +88,9 @@
 (deftype easter-egg-settings (basic)
   (
     ;;[ADD-EASTER-EGG]; Add easter egg field here
+    ; Annual
+    (valentines egg-valentines-day)
+    (christmas egg-christmas)
   )
 
   (:methods
@@ -108,7 +111,7 @@
     (money-starburst?    symbol) ;; add a starburst to the money
     (extra-hud?          symbol) ;; extra hud elements.
     (mod                 mod-settings :inline)
-    (easter-eggs         easter-egg-settings :inline)
+    (easter-eggs         easter-egg-settings)
     (secrets             pc-game-secrets :inline) ;; hidden goodies and additional secrets!
     (scenes-seen         uint8 PC_SPOOL_LOG_LENGTH) ;; cutscenes that have been seen, by spool-anim (maybe use 8-char name or bits instead?)
     (memcard-play-hints? symbol)
@@ -189,7 +192,12 @@
 
 (defmethod reset-easter-egg ((settings pc-settings-jak1) (call-handlers symbol))
   "Set the default easter egg settings"
+  (format 0 "Resetting eggs!~%")
+
   ;;[ADD-EASTER-EGG]; Add default setting here
+  ; Annual
+  (set! (-> settings easter-eggs valentines active?) 'enabled)
+  (set! (-> settings easter-eggs christmas active?) 'enabled)
 
   (none)
 )

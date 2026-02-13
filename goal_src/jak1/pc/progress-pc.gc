@@ -158,13 +158,13 @@
       :param3 (game-option-menu mod-settings)
     )
 
-    ;; (new 'static 'game-option
-    ;;   :option-type (game-option-type menu)
-    ;;   :name (text-id easter-eggs)
-    ;;   :desc (text-id easter-eggs-desc)
-    ;;   :scale #t
-    ;;   :param3 (game-option-menu easter-egg-options)
-    ;; )
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id easter-eggs)
+      :desc (text-id easter-eggs-desc)
+      :scale #t
+      :param3 (game-option-menu easter-egg-options)
+    )
 
     (new 'static 'game-option
       :option-type (game-option-type confirmation)
@@ -263,13 +263,13 @@
       :param3 (game-option-menu mod-settings)
     )
 
-    ;; (new 'static 'game-option
-    ;;   :option-type (game-option-type menu)
-    ;;   :name (text-id easter-eggs)
-    ;;   :desc (text-id easter-eggs-desc)
-    ;;   :scale #t
-    ;;   :param3 (game-option-menu easter-egg-options)
-    ;; )
+    (new 'static 'game-option
+      :option-type (game-option-type menu)
+      :name (text-id easter-eggs)
+      :desc (text-id easter-eggs-desc)
+      :scale #t
+      :param3 (game-option-menu easter-egg-options)
+    )
 
     (new 'static 'game-option
       :option-type (game-option-type confirmation)
@@ -520,6 +520,19 @@
 (define *easter-egg-options*
   (new 'static 'boxed-array :type game-option
     ;;[ADD-EASTER-EGG]; Add option for toggling the easter egg here
+    (new 'static 'game-option
+      :option-type (game-option-type easter-egg)
+      :name (text-id egg-valentines-day)
+      :desc (text-id egg-valentines-day-desc)
+      :scale #t
+    )
+
+    (new 'static 'game-option
+      :option-type (game-option-type easter-egg)
+      :name (text-id egg-christmas)
+      :desc (text-id egg-christmas-desc)
+      :scale #t
+    )
 
     (new 'static 'game-option
       :option-type (game-option-type confirmation)
@@ -2365,8 +2378,12 @@
 
   ; Easter Egg options
   ;;[ADD-EASTER-EGG]; Set your easter egg's value-to-modify to `(&-> *progress-carousell* int-backup)` here
+  (set! (-> *easter-egg-options* 0 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *easter-egg-options* 1 value-to-modify) (&-> *progress-carousell* int-backup))
 
   ;;[ADD-EASTER-EGG]; Make sure these indices are still correct
+  (set! (-> *easter-egg-options* 0 easter-egg-to-modify) (&-> *pc-settings* easter-eggs valentines))
+  (set! (-> *easter-egg-options* 1 easter-egg-to-modify) (&-> *pc-settings* easter-eggs christmas))
   ;;[ADD-EASTER-EGG]; Set your easter egg's easter-egg-to-modify here
 
   ;; input options
@@ -2565,6 +2582,7 @@
 
                       ; Mod carousels!
                       (game-option-type easter-egg)
+                      (game-option-type unlockable-easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for the game-option-type here
                     )
@@ -2703,6 +2721,7 @@
                       
                       ; Mod carousels!
                       (game-option-type easter-egg)
+                      (game-option-type unlockable-easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for the game-option-type here
                     )
@@ -3297,8 +3316,11 @@
                     )
 
                     ; Mod carousels!
-                    (((game-option-type easter-egg))
-                      (case (-> (the (pointer symbol) (-> options (-> progress option-index) easter-egg-to-modify)))
+                    ((
+                      (game-option-type easter-egg)
+                      (game-option-type unlockable-easter-egg)
+                    )
+                      (case (-> (-> (the (pointer easter-egg) (-> options (-> progress option-index) easter-egg-to-modify))) active?)
                         (('disabled) (set! (-> *progress-carousell* int-backup) 0))
                         (('enabled) (set! (-> *progress-carousell* int-backup) 1))
                         (('permanent) (set! (-> *progress-carousell* int-backup) 2))
@@ -3362,7 +3384,10 @@
                           (set! (-> *progress-carousell* current-carousell) *text-languages*)
                         )
                         ; Mod carousels!
-                        (((game-option-type easter-egg))
+                        ((
+                          (game-option-type easter-egg)
+                          (game-option-type unlockable-easter-egg)
+                        )
                           (set! (-> *progress-carousell* current-carousell) *carousell-easter-egg*)
                           (set! (-> *progress-carousell* current-desc-carousell) *carousell-easter-egg-desc*)
                         )
@@ -3489,9 +3514,12 @@
                 )
 
                 ; Mod carousels!
-                (((game-option-type easter-egg))
+                ((
+                  (game-option-type easter-egg)
+                  (game-option-type unlockable-easter-egg)
+                )
                   (set!
-                    (-> (the (pointer symbol) (-> options (-> progress option-index) easter-egg-to-modify)))
+                    (-> (-> (the (pointer easter-egg) (-> options (-> progress option-index) easter-egg-to-modify))) active?)
                     (case (-> *progress-carousell* int-backup)
                       ((0) 'disabled)
                       ((1) 'enabled)
@@ -3933,6 +3961,7 @@
 
                       ; Mod carousels!
                       (game-option-type easter-egg)
+                      (game-option-type unlockable-easter-egg)
                       (game-option-type doublejump-ability)
                       ;;[ADD-MOD-OPTION-CAROUSEL]; Add case for game-option-type here
                     )
@@ -4025,6 +4054,12 @@
                     )
                      ;; slider and aspect ratio options just show their text
                      (set! option-str (lookup-text! *common-text* (-> options index name) #f))
+                    )
+                    (((game-option-type unlockable-easter-egg))
+                      (if (-> (-> (the (pointer unlockable-easter-egg) (-> options index easter-egg-to-modify))) unlocked?)
+                        (set! option-str (lookup-text! *common-text* (-> options index name) #f))
+                        (set! option-str locked-str)
+                      )
                     )
                     (((game-option-type on-off) (game-option-type aspect-native))
                      ;; on-off options show their text + on or off

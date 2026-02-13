@@ -3,4 +3,54 @@
 
 (require "pc/easter-eggs-h.gc")
 
-;;[ADD-EASTER-EGG]; Add easter egg type here
+(defun-extern scf-launch-year uint)
+(defun-extern scf-launch-month uint)
+(defun-extern scf-launch-day uint)
+
+(defun-extern scf-load-year uint)
+(defun-extern scf-load-month uint)
+(defun-extern scf-load-day uint)
+
+(defmethod is-active? ((self easter-egg))
+  (and
+    (not (-> *pc-settings* speedrunner-mode?))
+    (or
+      (= (-> self active?) 'permanent)
+      (and
+        (= (-> self active?) 'enabled)
+        (should-activate? self)
+      )
+    )
+  )
+)
+
+;;[ADD-EASTER-EGG]; Override should-activate? in your easter egg here
+
+(defmethod should-activate? ((self egg-valentines-day))
+  (let ((date (new 'stack-no-clear 'scf-time)))
+    (scf-get-time date)
+
+    ; Valentine's Day is on February 14th
+    (and
+      (= (scf-load-month) #x2)
+      (= (scf-load-day) #x14)
+    )
+  )
+)
+
+(defmethod should-activate? ((self egg-christmas))
+  (let ((date (new 'stack-no-clear 'scf-time)))
+    (scf-get-time date)
+
+    ; We activate the christmas easter egg for the latter half of December
+    (and
+      (= (scf-launch-month) #x12)
+      (or
+        (= (scf-launch-day) #x24)
+        (= (scf-launch-day) #x25)
+        (= (scf-launch-day) #x26)
+      )
+    )
+  )
+)
+

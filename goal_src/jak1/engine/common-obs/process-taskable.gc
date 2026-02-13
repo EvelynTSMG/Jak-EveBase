@@ -6,6 +6,9 @@
 (require "engine/game/task/task-control.gc")
 (require "engine/common-obs/collectables.gc")
 (require "engine/game/main.gc")
+
+(define-extern oracle type)
+
 (defmacro is-nan-hack (flt)
   `(and (< 0.0 ,flt) (< ,flt 0.0)))
 
@@ -562,45 +565,160 @@
         (logior! (-> self mask) (process-mask actor-pause))
         (process-entity-status! self (entity-perm-status bit-3) #f))
       (cond
-        ((not *target*))
+        ((not *target*)
+          (if (and
+            *valentines-heart*
+            *valentines-mark-name*
+            (= (-> self name) *valentines-mark-name*)
+          )
+            (set-valentines-mark (the-as process-drawable #f))
+          )
+        )
+
         ((not (-> self will-talk))
-         (if (>= (- (-> *display* game-frame-counter) (-> self last-talk)) (seconds 10)) (set! (-> self will-talk) #t)))
-        ((begin
-           (process-taskable-method-46 self)
-           (and (not (and (logtest? (-> *target* control unknown-surface00 flags) (surface-flags jump))
-                          (not (logtest? (-> *target* control status) (cshape-moving-flags onsurf)))))
+          (if (>= (- (-> *display* game-frame-counter) (-> self last-talk)) (seconds 10))
+            (set! (-> self will-talk) #t)
+          )
+
+          (if (and
+            *valentines-heart*
+            *valentines-mark-name*
+            (= (-> self name) *valentines-mark-name*)
+
+            (not
+              (and
                 (< (-> (target-pos 0) y) (+ 8192.0 (-> self root root-prim prim-core world-sphere y)))
                 ;; og:preserve-this
-                (less-than-hack (vector-vector-distance (target-pos 0) (the-as vector (-> self root root-prim prim-core))) 32768.0)
-                (= (-> *level* loading-level) (-> *level* level-default))
-                (not (movie?))
-                (not (level-hint-displayed?))
-                (none-reserved? *art-control*)
-                (not *progress-process*)
-                (and (not (handle->process (-> *game-info* other-camera-handle))) (close-anim-file! self))))
-         (first-any (-> self tasks) #t)
-         (when (target-above-threshold? self)
-           (case (current-status (-> self tasks))
-             (((task-status need-hint)
-               (task-status need-introduction)
-               (task-status need-reminder)
-               (task-status need-reminder-a)
-               (task-status need-reward-speech))
-              (kill-current-level-hint '() '(sidekick voicebox ambient) 'exit)
-              (level-hint-surpress!)
-              (hide-hud)
-              (when (and (hud-hidden?) (can-grab-display? self))
-                (let ((gp-1 (new 'stack 'font-context *font-default-matrix* 32 140 0.0 (font-color default) (font-flags shadow kerning))))
-                  (let ((v1-57 gp-1)) (set! (-> v1-57 width) (the float 440)))
-                  (let ((v1-58 gp-1)) (set! (-> v1-58 height) (the float 60)))
-                  (let ((v1-59 gp-1)) (set! (-> v1-59 scale) 0.9))
-                  (set! (-> gp-1 flags) (font-flags shadow kerning middle-vert large))
-                  (print-game-text (lookup-text! *common-text* (-> self talk-message) #f) gp-1 #f 128 22))
-                (when (and (cpad-pressed? 0 circle) (process-grab? *target*))
-                  (logclear! (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons circle))
-                  (logclear! (-> *cpad-list* cpads 0 button0-rel 0) (pad-buttons circle))
-                  (send-event *target* 'trans 'save (-> self old-target-pos))
-                  (go-virtual play-anim))))))))
+                (less-than-hack
+                  (vector-vector-distance (target-pos 0) (the-as vector (-> self root root-prim prim-core)))
+                  32768.0
+                )
+              )
+            )
+          )
+            (set-valentines-mark (the-as process-drawable #f))
+          )
+        )
+
+        ((begin
+          (process-taskable-method-46 self)
+
+          (and
+            (not
+              (and
+                (logtest? (-> *target* control unknown-surface00 flags) (surface-flags jump))
+                (not (logtest? (-> *target* control status) (cshape-moving-flags onsurf)))
+              )
+            )
+            (< (-> (target-pos 0) y) (+ 8192.0 (-> self root root-prim prim-core world-sphere y)))
+            ;; og:preserve-this
+            (less-than-hack
+              (vector-vector-distance (target-pos 0) (the-as vector (-> self root root-prim prim-core)))
+              32768.0
+            )
+            (= (-> *level* loading-level) (-> *level* level-default))
+            (not (movie?))
+            (none-reserved? *art-control*)
+            (not *progress-process*)
+            (and
+              (not (handle->process (-> *game-info* other-camera-handle)))
+              (close-anim-file! self)
+            )
+          )
+        )
+          (first-any (-> self tasks) #t)
+          (when (target-above-threshold? self)
+            (case (current-status (-> self tasks))
+              ((
+                (task-status need-hint)
+                (task-status need-introduction)
+                (task-status need-reminder)
+                (task-status need-reminder-a)
+                (task-status need-reward-speech)
+              )
+                (kill-current-level-hint '() '(sidekick voicebox ambient) 'exit)
+                (level-hint-surpress!)
+                (hide-hud)
+
+                (when (and
+                  (hud-hidden?)
+                  (can-grab-display? self)
+                )
+                  (let ((gp-1 (new 'stack 'font-context *font-default-matrix* 32 140 0.0 (font-color default) (font-flags shadow kerning))))
+                    (set! (-> gp-1 width) 440.0)
+                    (set! (-> gp-1 height) 60.0)
+                    (set! (-> gp-1 scale) 0.9)
+                    (set! (-> gp-1 flags) (font-flags shadow kerning middle-vert large))
+
+                    (if (and
+                      (= (-> self talk-message) (text-id press-to-talk))
+                      (is-active? (-> *pc-settings* easter-eggs valentines))
+                      (not (type-type? (-> self type) oracle))
+                    )
+                      (print-game-text (lookup-text! *common-text* (text-id press-to-flirt) #f) gp-1 #f 128 22)
+                      (print-game-text (lookup-text! *common-text* (-> self talk-message) #f) gp-1 #f 128 22)
+                    )
+                  )
+
+                  (if (and
+                    (= (-> self talk-message) (text-id press-to-talk))
+                    (is-active? (-> *pc-settings* easter-eggs valentines))
+                    (not (type-type? (-> self type) oracle))
+
+                    (or
+                      (not *valentines-heart*)
+                      (not (-> *valentines-heart* mark))
+                      (zero? (-> *valentines-heart* mark))
+                    )
+                  )
+                    (set-valentines-mark self)
+                  )
+
+                  (when (and
+                    (cpad-pressed? 0 circle)
+                    (process-grab? *target*)
+                  )
+                    (if (and
+                      *valentines-heart*
+                      *valentines-mark-name*
+                      (= (-> self name) *valentines-mark-name*)
+                    )
+                      (set-valentines-mark (the-as process-drawable #f))
+                    )
+
+                    (logclear! (-> *cpad-list* cpads 0 button0-abs 0) (pad-buttons circle))
+                    (logclear! (-> *cpad-list* cpads 0 button0-rel 0) (pad-buttons circle))
+                    (send-event *target* 'trans 'save (-> self old-target-pos))
+                    (go-virtual play-anim)
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        (else
+          (if (and
+            *valentines-heart*
+            *valentines-mark-name*
+            (= (-> self name) *valentines-mark-name*)
+
+            (not
+              (and
+                (< (-> (target-pos 0) y) (+ 8192.0 (-> self root root-prim prim-core world-sphere y)))
+                ;; og:preserve-this
+                (less-than-hack
+                  (vector-vector-distance (target-pos 0) (the-as vector (-> self root root-prim prim-core)))
+                  32768.0
+                )
+              )
+            )
+          )
+            (set-valentines-mark (the-as process-drawable #f))
+          )
+        )
+      )
+
       (if (= (-> *level* loading-level) (-> *level* level-default)) (process-taskable-method-33 self))
       (draw-npc-shadow self)
       (when (and (-> self been-kicked)

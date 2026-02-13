@@ -1163,6 +1163,37 @@
   (set! (-> v1-48 touch-hook) nothing)
   (set! (-> v1-48 active-hook) nothing))
 
+(let (
+  (surface
+    (new 'static 'surface
+      :name '*wet-ice-surface*
+      :turnv 0.5
+      :turnvv 1.0
+      :tiltv 1.0
+      :tiltvv 1.0
+      :transv-max 1.0
+      :target-speed 1.0
+      :seek0 (degrees 135.0)
+      :seek90 (degrees 135.0)
+      :seek180 (degrees 135.0)
+      :fric (meters 4.8)
+      :nonlin-fric-dist (meters 999.0)
+      :slip-factor 0.7
+      :slope-slip-angle (degrees 90.0)
+      :bend-speed 4.0
+      :alignv 1.0
+      :slope-up-traction 1.0
+      :align-speed 1.0
+      :flags (surface-flags no-turn-around no-rotate-toward-transv)
+    )
+  )
+)
+  (define *wet-ice-surface* surface)
+  (set! (-> surface mult-hook) (the-as (function surface surface surface int none) nothing))
+  (set! (-> surface touch-hook) nothing)
+  (set! (-> surface active-hook) nothing)
+)
+
 (let ((v1-49 (new 'static
                   'surface
                   :name '*tread-surface*

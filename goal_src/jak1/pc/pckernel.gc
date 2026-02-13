@@ -24,6 +24,19 @@
   (set! (-> *setting-control* default play-hints) (-> obj memcard-play-hints?))
   obj)
 
+(defmethod initialize-eggs ((settings pc-settings-jak1))
+  "Initialize easter eggs to their default values here"
+
+  (set! (-> settings easter-eggs) (new 'global 'easter-egg-settings))
+
+  (set! (-> settings easter-eggs valentines) (new 'global 'egg-valentines-day))
+  (set! (-> settings easter-eggs christmas) (new 'global 'egg-christmas))
+
+  (initialize (-> settings easter-eggs valentines))
+
+  (none)
+)
+
 (defmethod set-game-setting! ((obj pc-settings-jak1) (setting symbol) (value symbol))
   (case setting
     (('video-mode)
@@ -527,11 +540,11 @@
 )
 
 (defmethod handle-output-mod-settings ((settings mod-settings) (file file-stream))
-  (format file " (doublejump-ability ~A)~%" (-> settings doublejump-ability))
-  (format file " (always-max-jumps? ~A)~%" (-> settings always-max-jumps?))
-  (format file " (skip-cells? ~A)~%" (-> settings skip-cells?))
-  (format file " (skip-camera-pans? ~A)~%" (-> settings skip-camera-pans?))
-  (format file " (quick-mount? ~A)~%" (-> settings quick-mount?))
+  (format file "  (doublejump-ability ~A)~%" (-> settings doublejump-ability))
+  (format file "  (always-max-jumps? ~A)~%" (-> settings always-max-jumps?))
+  (format file "  (skip-cells? ~A)~%" (-> settings skip-cells?))
+  (format file "  (skip-camera-pans? ~A)~%" (-> settings skip-camera-pans?))
+  (format file "  (quick-mount? ~A)~%" (-> settings quick-mount?))
   ;;[ADD-MOD-OPTION]; Add writing to file here
 
   (none)
@@ -540,6 +553,8 @@
 (defmethod handle-input-easter-egg-settings ((eggs easter-egg-settings) (file file-stream))
   (case-str *pc-temp-string*
     ;;[ADD-EASTER-EGG]; Add reading from file here
+    (("egg-valentines-day") (set! (-> eggs valentines active?) (file-stream-read-symbol file)))
+    (("egg-christmas") (set! (-> eggs christmas active?) (file-stream-read-symbol file)))
   )
 
   (none)
@@ -547,6 +562,8 @@
 
 (defmethod handle-output-easter-egg-settings ((eggs easter-egg-settings) (file file-stream))
   ;;[ADD-EASTER-EGG]; Add writing to file here
+  (format file "  (egg-valentines-day ~A)~%" (-> eggs valentines active?))
+  (format file "  (egg-christmas ~A)~%" (-> eggs christmas active?))
 
   (none)
 )

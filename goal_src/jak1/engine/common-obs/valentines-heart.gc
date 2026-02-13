@@ -1,0 +1,160 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(deftype valentines-heart-bank (basic)
+  (
+    (offset-from-mark     meters)
+    (bob-height           meters)
+    (bobs-per-second       float)
+    (rotation-per-second degrees)
+  )
+)
+
+(define *VALENTINES-HEART-BANK*
+  (new 'static 'valentines-heart-bank
+    :offset-from-mark    (meters 1.0)
+    :bob-height          (meters 0.6)
+    :bobs-per-second     1.5
+    :rotation-per-second (degrees 270.0)
+  )
+)
+
+(def-art-elt valentines-heart-ag valentines-heart-lod0-jg 0)
+(def-art-elt valentines-heart-ag valentines-heart-lod0-mg 1)
+(def-art-elt valentines-heart-ag valentines-heart-lod0-ja 2)
+
+(defskelgroup *valentines-heart-sg*
+  valentines-heart
+  valentines-heart-lod0-jg
+  valentines-heart-lod0-ja
+  
+  (
+    (valentines-heart-lod0-mg (meters 9999999))
+  )
+
+  :bounds (static-spherem 0 0 0 3)
+  :texture-level 2
+)
+
+(deftype valentines-heart (process-drawable)
+  (
+    (mark            handle)
+    (bob-progress     float)
+    (mark-top-offset meters)
+  )
+
+  (:state-methods
+    idle
+    active
+  )
+)
+
+(define-perm *valentines-heart* valentines-heart #f)
+(define *valentines-mark-name* (the-as basic #f))
+
+(defbehavior valentines-heart-update-bob-progress valentines-heart ()
+  (let* (
+    (seconds-per-bob (fsec (/ 1.0 (-> *VALENTINES-HEART-BANK* bobs-per-second))))
+    (global-bob-timer-wrapping (fmod (the float (-> *display* real-frame-counter)) (* 2.0 seconds-per-bob)))
+    (global-bob-timer-bouncing
+      (if (> global-bob-timer-wrapping 0.5)
+        (- 1.0 global-bob-timer-wrapping)
+        global-bob-timer-wrapping
+      )
+    )
+  )
+    (set! (-> self bob-progress) (* global-bob-timer-bouncing 2.0))
+  )
+
+  (none)
+)
+
+(defbehavior valentines-heart-update-pos valentines-heart ()
+  (let ((mark (try-as process-drawable (handle->process (-> self mark)))))
+    (when mark
+      (valentines-heart-update-bob-progress)
+
+      (let (
+        (new-pos (new 'stack-no-clear 'vector))
+        (bob (coserp180 0.0 (-> *VALENTINES-HEART-BANK* bob-height) (-> self bob-progress)))
+      )
+        (vector-copy! new-pos (-> mark node-list data 3 bone position))
+        (+! (-> new-pos y) (-> self mark-top-offset))
+        (+! (-> new-pos y) (-> *VALENTINES-HEART-BANK* offset-from-mark))
+        (+! (-> new-pos y) bob)
+
+        (vector-copy! (-> self root trans) new-pos)
+      )
+    )
+  )
+
+  (quaternion-rotate-y!
+    (-> self root quat)
+    (-> self root quat)
+    (per-second (-> *VALENTINES-HEART-BANK* rotation-per-second))
+  )
+
+  (none)
+)
+
+(defstate idle (valentines-heart)
+  :virtual #t
+
+  :code (behavior ()
+    (loop
+      (valentines-heart-update-pos)
+      (suspend)
+    )
+  )
+
+  :post ja-post
+)
+
+(defbehavior valentines-heart-init valentines-heart ((mark process-drawable))
+  (set! (-> self root) (new 'process 'trsqv))
+  (initialize-skeleton self *valentines-heart-sg* '())
+
+  (set-vector! (-> self root scale) 0.2 0.2 0.2 1.0)
+
+  (set! (-> self mark) (process->handle mark))
+
+  (format 0 "Spawned Valentine's Day Heart!~%  Mark:~%    ~A~%  Handle:~%    ~A~%" mark (-> self mark))
+
+  ; Figure out the highest point on the mark
+  (let (
+    (top-point 0.0)
+    (max-i (- (-> mark node-list length) 1))
+  )
+    (dotimes (i max-i)
+      (let ((bone-height (-> mark node-list data i bone position y)))
+        (fmax! top-point bone-height)
+      )
+    )
+
+    (set! (-> self mark-top-offset) (- top-point (-> mark node-list data 3 bone position y)))
+  )
+
+  (set! *valentines-heart* self)
+
+  (go-virtual idle)
+)
+
+(defun set-valentines-mark ((mark process-drawable))
+  (when (process-by-name "valentines-heart" *active-pool*)
+    (deactivate (process-by-name "valentines-heart" *active-pool*))
+    (set! *valentines-heart* (the-as valentines-heart #f))
+    (set! *valentines-mark-name* (the-as basic #f))
+  )
+
+  (when mark
+    (process-spawn valentines-heart
+      :init valentines-heart-init
+      :name "valentines-heart"
+      :to *entity-pool*
+      mark
+    )
+    (set! *valentines-mark-name* (-> mark name))
+  )
+
+  (none)
+)

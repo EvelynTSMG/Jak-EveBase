@@ -660,13 +660,28 @@
   ;; set our pat
   (set! (-> obj cur-pat) arg0)
   (set! (-> obj poly-pat) arg0)
-  ;; set our surface
-  (case (-> arg0 material)
-    (((pat-material ice)) (set! (-> obj surf) *ice-surface*))
-    (((pat-material quicksand)) (set! (-> obj surf) *quicksand-surface*))
-    (((pat-material tube)) (set! (-> obj surf) *no-walk-surface*))
-    (((pat-material rotate)) (set! (-> obj surf) *rotate-surface*))
-    (else (set! (-> obj surf) *standard-ground-surface*)))
+
+  ; Christmas easter egg - every surface is very slippery ice!
+  (cond
+    ((is-active? (-> *pc-settings* easter-eggs christmas))
+      (set! (-> obj surf) *wet-ice-surface*)
+    )
+
+    (else
+      ;; set our surface
+      (set! (-> obj surf)
+        (case (-> arg0 material)
+          (((pat-material ice)) *ice-surface*)
+          (((pat-material quicksand)) *quicksand-surface*)
+          (((pat-material tube)) *no-walk-surface*)
+          (((pat-material rotate)) *rotate-surface*)
+          (else *standard-ground-surface*)
+        )
+      )
+    )
+  )
+
+
   ;; racer gets set whenever you get on the zoomer. If we are on the zoomer, just go to "race-track"
   (if (logtest? (-> obj root-prim prim-core action) (collide-action racer)) (set! (-> obj surf) *race-track-surface*))
   (when (nonzero? (-> arg0 event))

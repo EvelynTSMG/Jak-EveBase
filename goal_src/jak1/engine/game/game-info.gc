@@ -221,6 +221,7 @@
       )
     )
   )
+  (scf-get-time *last-load-time*)
   (case cause
     (('game 'try)
      ;; full restart, or ran out of lives

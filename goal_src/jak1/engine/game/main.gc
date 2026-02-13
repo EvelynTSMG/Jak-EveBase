@@ -12,6 +12,21 @@
 
 ;; DECOMP BEGINS
 
+(define *launch-time* (new 'static 'scf-time))
+
+(defun scf-launch-day ()
+  (-> *last-load-time* day)
+)
+
+(defun scf-launch-month ()
+  (-> *last-load-time* month)
+)
+
+(defun scf-launch-year ()
+  (-> *last-load-time* year)
+)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Letterbox and blackout
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -575,6 +590,7 @@
 (defun on ((release-mode symbol))
   "Turn the game on."
   (when (not *dproc*)
+    (scf-get-time *launch-time*)
     (unless release-mode
       (if (= (-> *level* level0 status) 'inactive) (bg 'halfpipe)))
     (set! *run* #t)

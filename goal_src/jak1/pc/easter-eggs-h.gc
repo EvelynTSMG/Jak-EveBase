@@ -1,27 +1,63 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
+
 (deftype easter-egg (basic)
   (
     (active? symbol)
   )
 
   (:methods
+    (new (symbol type) _type_)
+    (initialize (_type_) none)
     (should-activate? (_type_) symbol)
     (is-active? (_type_) symbol)
   )
 )
 
-(defmethod should-activate? easter-egg ((self easter-egg))
+(defmethod new easter-egg ((allocation symbol) (type-to-make type))
+  (let ((egg (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (initialize egg)
+
+    egg
+  )
+)
+
+(defmethod initialize ((self easter-egg))
+  (set! (-> self active?) 'enabled)
+
+  (none)
+)
+
+(defmethod should-activate? ((self easter-egg))
   #f
 )
 
-(defmethod is-active? easter-egg ((self easter-egg))
-  (or
-    (= (-> self active?) 'permanent)
-    (and
-      (= (-> self active?) 'enabled)
-      (should-activate? self)
-    )
+
+(deftype unlockable-easter-egg (easter-egg)
+  (
+    (unlocked? symbol)
   )
 )
+
+(defmethod initialize ((self unlockable-easter-egg))
+  ((method-of-type easter-egg initialize) self)
+  (set! (-> self unlocked?) #f)
+
+  (none)
+)
+
+
+(defmethod is-active? ((self unlockable-easter-egg))
+  (if (-> self unlocked?)
+    ((method-of-type easter-egg is-active?) (the-as easter-egg self))
+    #f
+  )
+)
+
+
+;;[ADD-EASTER-EGG]; Add your easter egg type here
+
+; Annual easter eggs
+(deftype egg-valentines-day (easter-egg) ())
+(deftype egg-christmas (easter-egg) ())

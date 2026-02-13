@@ -2656,9 +2656,18 @@
               (not (cpad-hold? (target-cpad) square))
               (time-elapsed? (-> self state-time) (seconds 0.05))
             )
-              (if (= (-> self control ground-pat material) (pat-material ice))
-                (set-forward-vel (fmax (meters 8.0) (* 0.8 (-> self control xz-vel-mag))))
-                (set-forward-vel (* 0.8 (-> self control xz-vel-mag)))
+              (cond
+                ; If it's christmas, we don't slow down so the player can slide easily
+                ((is-active? (-> *pc-settings* easter-eggs christmas))
+                  (set-forward-vel (-> self control xz-vel-mag))
+                )
+
+                (else
+                  (if (= (-> self control ground-pat material) (pat-material ice))
+                    (set-forward-vel (fmax (meters 8.0) (* 0.8 (-> self control xz-vel-mag))))
+                    (set-forward-vel (* 0.8 (-> self control xz-vel-mag)))
+                  )
+                )
               )
             )
 
