@@ -9,6 +9,8 @@ EveBase implements various changes and fixes to the vanilla game and the code ba
 to make both playing and developing mods more pleasant.
 
 ## Known Issues
+- The game may crash in Mountain Pass when trying to unload Rock Village
+  - There is no known workaround. I'm sorry, and good luck!
 - Exiting using the Exit Level button *may* crash in certain levels:
   - LPC, after the first slide.
     - Can be avoided by getting any checkpoint before the first slide and warping to it or dying.
