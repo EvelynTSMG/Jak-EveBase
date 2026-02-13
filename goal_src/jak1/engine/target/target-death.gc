@@ -32,6 +32,8 @@
                   (set! a1-0 (car a0-1))))
               #f))))
 
+(define-extern respawn-shadow-fly-lord (function continue-point none))
+
 (defstate target-continue (target)
   :event target-generic-event-handler
   :exit
@@ -143,6 +145,11 @@
             (suspend))))
       (set! *spawn-actors* #t)
       (set! *teleport* #t)
+
+      (when (is-active? (-> *pc-settings* easter-eggs fools26))
+        (respawn-shadow-fly-lord arg0)
+      )
+
       (set! (-> *ACTOR-bank* birth-max) 1000)
       (set-blackout-frames (seconds 0.1))
       (cond

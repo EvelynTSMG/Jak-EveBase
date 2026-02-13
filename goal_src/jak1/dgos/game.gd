@@ -380,4 +380,5 @@
   ; Easter Egg stuffs
   "valentines-heart.o"
   "valentines-heart-ag.go"
+  "shadow-fly.o"
  ))

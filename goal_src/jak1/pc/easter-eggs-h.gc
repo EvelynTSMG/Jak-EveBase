@@ -61,3 +61,13 @@
 ; Annual easter eggs
 (deftype egg-valentines-day (easter-egg) ())
 (deftype egg-christmas (easter-egg) ())
+
+; One-off easter eggs
+(deftype egg-fools26 (easter-egg) ())
+
+; Special easter eggs
+(deftype egg-lie-made-real (unlockable-easter-egg) ())
+
+
+; Extra globals to track various progress for unlockable easter eggs
+(define *geyser-rock-loops* 0)

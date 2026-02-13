@@ -1,0 +1,356 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+(bundles "ENGINE.CGO" "GAME.CGO")
+
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/game/game-info-h.gc")
+(require "engine/common-obs/collectables.gc")
+
+(deftype shadow-fly-lord-bank (basic)
+  (
+    (tick-length          float)
+    (standing-grace-dist meters)
+    (moving-grace-dist   meters)
+  )
+)
+
+(define *SHADOW-FLY-LORD-BANK*
+  (new 'static 'shadow-fly-lord-bank
+    :tick-length (fsec 0.15)
+    :standing-grace-dist (meters 0.5)
+    :moving-grace-dist (meters 4.0)
+  )
+)
+
+(deftype shadow-fly-lord (process)
+  (
+    (target-prev-pos vector :inline)
+    (target-prev-dir  float)
+    (base-tick          int)
+    (first-fly       handle)
+  )
+
+  (:methods
+    (spawn-fly (_type_) none)
+    (get-tick-t (_type_) float)
+  )
+
+  (:state-methods
+    (play continue-point)
+  )
+)
+
+(define-perm *shadow-fly-lord* shadow-fly-lord #f)
+
+(defmethod get-tick-t ((self shadow-fly-lord))
+  (fmod (the float (- (current-game-time) (-> self base-tick))) (-> *SHADOW-FLY-LORD-BANK* tick-length))
+)
+
+(defbehavior shadow-fly-lord-init shadow-fly-lord ((continue continue-point))
+  (logior! (-> self mask) (process-mask pause menu progress movie))
+
+  (set! *shadow-fly-lord* self)
+
+  (go-virtual play continue)
+
+  (none)
+)
+
+(defstate play (shadow-fly-lord)
+  :virtual #t
+
+  :code (behavior ((continue continue-point))
+    (until *target*
+      (suspend)
+    )
+
+    (let (
+      (target-prev-pos (new 'stack-no-clear 'vector))
+      (dist-moved (meters 0.0))
+      (grace
+        (if (logtest? (-> continue flags) (continue-flags warp))
+          (-> *SHADOW-FLY-LORD-BANK* moving-grace-dist)
+          (-> *SHADOW-FLY-LORD-BANK* standing-grace-dist)
+        )
+      )
+    )
+      (vector-copy! target-prev-pos (target-pos 0))
+
+      (until (> dist-moved grace)
+        (+! dist-moved (vector-vector-xz-distance target-prev-pos (target-pos 0)))
+        (vector-copy! target-prev-pos (target-pos 0))
+        (suspend)
+      )
+    )
+
+    (format 0 "Started flying!~%")
+
+    (set! (-> self base-tick) (current-game-time))
+
+    (loop
+      (let ((t (get-tick-t self)))
+        (when (zero? t)
+          ; A shadow fly tick has passed! Let's record the player's position
+          (vector-copy! (-> self target-prev-pos) (target-pos 0))
+          (set! (-> self target-prev-dir) (quaternion-y-angle (-> *target* root quat)))
+        )
+      )
+
+      (suspend)
+    )
+  )
+)
+
+(deftype shadow-fly (process-drawable)
+  (
+    (point-a      vector :inline)
+    (point-a-out  vector :inline)
+    (point-b-in   vector :inline)
+    (point-b      vector :inline)
+    (direction-a degrees) ; Only yaw
+    (direction-b degrees) ; Only yaw
+    (index           int)
+    (next-fly     handle)
+  )
+
+  (:methods
+    (shadow-fly-update-pos (_type_ float) none)
+  )
+
+  (:state-methods
+    await
+    follow
+  )
+)
+
+(defmethod shadow-fly-update-pos ((self shadow-fly) (t float))
+  (bezier-interpolate-vector
+    (-> self root trans)
+    (-> self point-a)
+    (-> self point-a-out)
+    (-> self point-b-in)
+    (-> self point-b)
+    t
+  )
+
+  (quaternion-identity! (-> self root quat))
+  (quaternion-rotate-y!
+    (-> self root quat)
+    (-> self root quat)
+    (lerp (-> self direction-a) (-> self direction-b) t)
+  )
+
+  (none)
+)
+
+(defstate await (shadow-fly)
+  :virtual #t
+
+  :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
+    (case message
+      (('update-t)
+        (shadow-fly-update-pos self (the-as float (-> block param 0)))
+      )
+    )
+  )
+
+  :code (behavior ()
+    (loop
+      (let ((a0-2 (-> self skel root-channel 0)))
+        (set! (-> a0-2 param 0) 1.0)
+        (joint-control-channel-group-eval! a0-2 (the-as art-joint-anim #f) num-func-loop!)
+      )
+
+      (spawn (-> self part) (vector<-cspace! (new 'stack-no-clear 'vector) (-> self node-list data 15)))
+
+      (if (nonzero? (-> self sound))
+        (update! (-> self sound))
+      )
+
+      (add-debug-text-sphere
+        *display-target-marks*
+        (bucket-id debug-no-zbuf)
+        (-> self root trans)
+        (meters 1.2)
+        ()
+        (new 'static 'rgba :r #xa0 :b #xff :g #x32 :a #x80)
+      )
+
+      (suspend)
+    )
+  )
+)
+
+(defstate follow (shadow-fly)
+  :virtual #t
+
+  :code (behavior ()
+
+  )
+)
+
+(defbehavior shadow-fly-init-by-lord shadow-fly ((lord shadow-fly-lord) (index int) (position vector) (direction degrees))
+  (format 0 "Fly #~D init!~%" index)
+
+  (let ((root (new 'process 'collide-shape-moving self (collide-list-enum hit-by-player))))
+    (set! (-> root dynam) (copy *standard-dynamics* 'process))
+    (set! (-> root reaction) default-collision-reaction)
+    (set! (-> root no-reaction) (the-as (function collide-shape-moving collide-shape-intersect vector vector none) nothing))
+
+    (let ((prim-sphere (new 'process 'collide-shape-prim-sphere root (the-as uint 0))))
+      (set! (-> prim-sphere prim-core collide-as) (collide-kind enemy))
+      (set! (-> prim-sphere collide-with) (collide-kind target))
+      (set! (-> prim-sphere prim-core action) (collide-action solid))
+      (set-vectorm! (-> prim-sphere local-sphere) 0.0 0.6 0.0 1.2)
+      (set-root-prim! root prim-sphere)
+    )
+    (set! (-> root nav-radius) (* 0.75 (-> root root-prim local-sphere w)))
+    (backup-collide-with-as root)
+
+    (set! (-> self root) root)
+  )
+
+  (initialize-skeleton self *buzzer-sg* '())
+
+  (set! (-> self part) (create-launch-control (part-group shadow-fly) self))
+
+  (set! (-> self index) index)
+
+  (vector-copy! (-> self root trans) position)
+
+  (quaternion-identity! (-> self root quat))
+  (quaternion-rotate-y!
+    (-> self root quat)
+    (-> self root quat)
+    direction
+  )
+
+  (go-virtual await)
+
+  (none)
+)
+
+(defmethod spawn-fly shadow-fly-lord ((self shadow-fly-lord))
+  (format 0 "Spawning fly!~%")
+  (format 0 "  Lord: ~A~%" self)
+  (format 0 "  First fly: ~A/~A~%" (-> self first-fly) (is-valid-handle? (-> self first-fly)))
+
+  (cond
+    ((is-valid-handle? (-> self first-fly))
+      (let (
+        (last-fly (the-as shadow-fly (handle->process (-> self first-fly))))
+        (next-index 1)
+      )
+        (while (is-valid-handle? (-> last-fly next-fly))
+          (set! last-fly (the-as shadow-fly (handle->process (-> last-fly next-fly))))
+          (+! next-index 1)
+        )
+
+        (let* (
+          (new-fly
+            (process-spawn shadow-fly
+              :init shadow-fly-init-by-lord
+              :name (string-format "shadow-fly-~D" next-index)
+              :to *entity-pool*
+              self
+              next-index
+              (-> last-fly root trans)
+              (quaternion-y-angle (-> last-fly root quat))
+            )
+          )
+        )
+          (set! (-> last-fly next-fly) (ppointer->handle new-fly))
+        )
+      )
+    )
+
+    ; No fly has been spawned yet
+    (else
+      (format 0 "Spawning first fly!~%")
+      (let (
+        (new-fly
+          (process-spawn shadow-fly
+            :init shadow-fly-init-by-lord
+            :name "shadow-fly-0"
+            :to *entity-pool*
+            self
+            0
+            (-> self target-prev-pos)
+            (-> self target-prev-dir)
+          )
+        )
+      )
+        (set! (-> self first-fly) (ppointer->handle new-fly))
+      )
+    )
+  )
+
+  (none)
+)
+
+(defun respawn-shadow-fly-lord ((continue continue-point))
+  (when (process-by-name "shadow-fly-lord" *active-pool*)
+    ; Deactivate all the flies first
+    (let* (
+      (lord (the-as shadow-fly-lord (process-by-name "shadow-fly-lord" *active-pool*)))
+      (fly
+        (if (is-valid-handle? (-> lord first-fly))
+          (the-as shadow-fly (handle->process (-> lord first-fly)))
+        )
+      )
+    )
+      (until (not fly)
+        (let ((next-fly (the-as shadow-fly (handle->process (-> fly next-fly)))))
+          (deactivate fly)
+          (set! fly next-fly)
+        )
+      )
+    )
+
+    (deactivate (process-by-name "shadow-fly-lord" *active-pool*))
+    (set! *shadow-fly-lord* (the-as shadow-fly-lord #f))
+  )
+
+  (format 0 "Spawning shadow lord!~%  Continue: ~S~%  Warp: ~A~%" (-> continue name) (logtest? (-> continue flags) (continue-flags warp)))
+
+  (when continue
+    (process-spawn shadow-fly-lord
+      :init shadow-fly-lord-init
+      :name "shadow-fly-lord"
+      :to *entity-pool*
+      continue
+    )
+  )
+
+  (none)
+)
+
+(defpartgroup group-shadow-fly
+  :id (part-group-id shadow-fly)
+  :bounds (static-bspherem 0.0 0.0 0.0 1.0)
+  :parts (
+    (sp-item (part-id shadow-fly-smoke))
+  )
+)
+
+(defpart (part-id shadow-fly-smoke)
+  :init-specs (
+    (:texture (bigpuff effects))
+    (:num 2.0)
+    (:y (meters 0.5) (meters 1))
+    (:scale-x (meters 1.2))
+    (:rot-z (degrees 0) (degrees 360))
+    (:scale-y :copy scale-x)
+    (:r 96.0 32.0)
+    (:g 32.0 32.0)
+    (:b 128.0 32.0)
+    (:a 16.0 16.0)
+    (:vel-y (meters -0.005) (meters -0.005))
+    (:fade-a -0.05)
+    (:timer (seconds 0.15))
+    (:flags (bit2 bit12 bit14))
+    (:conerot-x (degrees 40) (degrees 40))
+    (:conerot-y (degrees 0) (degrees 360))
+  )
+)

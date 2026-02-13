@@ -3,4 +3,6 @@
 
 (defenum part-id :type uint32
   (jungle-eco-beam-impact 825)
+
+  (shadow-fly-smoke #x1000)
 )

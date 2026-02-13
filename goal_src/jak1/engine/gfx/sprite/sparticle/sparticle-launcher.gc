@@ -59,7 +59,7 @@
 (define *part-id-table* (new 'global 'boxed-array sparticle-launcher 8192))
 
 ;; All the particle groups.
-(define *part-group-table* (new 'global 'boxed-array sparticle-launch-group 1024))
+(define *part-group-table* (new 'global 'boxed-array sparticle-launch-group 2048))
 
 (defmacro part-group (group-id)
   `(-> *part-group-table* (part-group-id ,group-id))

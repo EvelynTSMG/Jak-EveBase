@@ -31,8 +31,11 @@
 
   (set! (-> settings easter-eggs valentines) (new 'global 'egg-valentines-day))
   (set! (-> settings easter-eggs christmas) (new 'global 'egg-christmas))
+  (set! (-> settings easter-eggs fools26) (new 'global 'egg-fools26))
+  (set! (-> settings easter-eggs lie-made-real) (new 'global 'egg-lie-made-real))
 
   (initialize (-> settings easter-eggs valentines))
+  (initialize (-> settings easter-eggs lie-made-real))
 
   (none)
 )
@@ -555,6 +558,23 @@
     ;;[ADD-EASTER-EGG]; Add reading from file here
     (("egg-valentines-day") (set! (-> eggs valentines active?) (file-stream-read-symbol file)))
     (("egg-christmas") (set! (-> eggs christmas active?) (file-stream-read-symbol file)))
+    (("egg-fools26") (set! (-> eggs fools26 active?) (file-stream-read-symbol file)))
+
+    (("egg-lie-made-real-unlock") (set! (-> eggs lie-made-real unlocked?) (file-stream-read-symbol file)))
+    (("egg-lie-made-real")
+      (cond
+        ((-> eggs lie-made-real unlocked?)
+          (set! (-> eggs lie-made-real active?) (file-stream-read-symbol file))
+        )
+
+        (else
+          (set! (-> eggs lie-made-real active?) 'enabled)
+
+          ; Make sure to "handle" the symbol so the settings can load
+          (file-stream-read-symbol file)
+        )
+      )
+    )
   )
 
   (none)
@@ -564,6 +584,9 @@
   ;;[ADD-EASTER-EGG]; Add writing to file here
   (format file "  (egg-valentines-day ~A)~%" (-> eggs valentines active?))
   (format file "  (egg-christmas ~A)~%" (-> eggs christmas active?))
+  (format file "  (egg-fools26 ~A)~%" (-> eggs fools26 active?))
+  (format file "  (egg-lie-made-real-unlock ~A)~%" (-> eggs lie-made-real unlocked?))
+  (format file "  (egg-lie-made-real ~A)~%" (-> eggs lie-made-real active?))
 
   (none)
 )

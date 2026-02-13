@@ -54,3 +54,27 @@
   )
 )
 
+
+(defmethod should-activate? ((self egg-fools26))
+  (let ((date (new 'stack-no-clear 'scf-time)))
+    (scf-get-time date)
+
+    (and
+      (= (scf-launch-year) #x26)
+      (= (scf-launch-month) #x4)
+      (= (scf-launch-day) #x1)
+    )
+  )
+)
+
+
+(defmethod should-activate? ((self egg-lie-made-real))
+  (= *geyser-rock-loops* 43)
+)
+
+(defmethod is-active? ((self egg-lie-made-real))
+  (if (-> self unlocked?)
+    ((method-of-type easter-egg is-active?) (the-as easter-egg self))
+    (should-activate? self)
+  )
+)

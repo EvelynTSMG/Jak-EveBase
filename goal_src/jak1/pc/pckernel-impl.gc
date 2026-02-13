@@ -91,6 +91,12 @@
     ; Annual
     (valentines egg-valentines-day)
     (christmas egg-christmas)
+
+    ; One-off
+    (fools26 egg-fools26)
+
+    ; Special
+    (lie-made-real egg-lie-made-real)
   )
 
   (:methods
@@ -198,6 +204,12 @@
   ; Annual
   (set! (-> settings easter-eggs valentines active?) 'enabled)
   (set! (-> settings easter-eggs christmas active?) 'enabled)
+
+  ; One-off
+  (set! (-> settings easter-eggs fools26 active?) 'enabled)
+
+  ; Special
+  (set! (-> settings easter-eggs lie-made-real active?) 'enabled)
 
   (none)
 )

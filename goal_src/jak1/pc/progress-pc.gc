@@ -533,6 +533,23 @@
       :desc (text-id egg-christmas-desc)
       :scale #t
     )
+    
+    (new 'static 'game-option
+      :option-type (game-option-type easter-egg)
+      :name (text-id egg-fools26)
+      :desc (text-id egg-fools26-desc)
+      :scale #t
+    )
+    
+    (new 'static 'game-option
+      :option-type (game-option-type unlockable-easter-egg)
+      :name (text-id egg-lie-made-real)
+      :desc (text-id egg-lie-made-real-desc)
+      :scale #t
+      :option-disabled-func (lambda ()
+        (not (-> *pc-settings* easter-eggs lie-made-real unlocked?))
+      )
+    )
 
     (new 'static 'game-option
       :option-type (game-option-type confirmation)
@@ -2380,10 +2397,14 @@
   ;;[ADD-EASTER-EGG]; Set your easter egg's value-to-modify to `(&-> *progress-carousell* int-backup)` here
   (set! (-> *easter-egg-options* 0 value-to-modify) (&-> *progress-carousell* int-backup))
   (set! (-> *easter-egg-options* 1 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *easter-egg-options* 2 value-to-modify) (&-> *progress-carousell* int-backup))
+  (set! (-> *easter-egg-options* 3 value-to-modify) (&-> *progress-carousell* int-backup))
 
   ;;[ADD-EASTER-EGG]; Make sure these indices are still correct
   (set! (-> *easter-egg-options* 0 easter-egg-to-modify) (&-> *pc-settings* easter-eggs valentines))
   (set! (-> *easter-egg-options* 1 easter-egg-to-modify) (&-> *pc-settings* easter-eggs christmas))
+  (set! (-> *easter-egg-options* 2 easter-egg-to-modify) (&-> *pc-settings* easter-eggs fools26))
+  (set! (-> *easter-egg-options* 3 easter-egg-to-modify) (&-> *pc-settings* easter-eggs lie-made-real))
   ;;[ADD-EASTER-EGG]; Set your easter egg's easter-egg-to-modify here
 
   ;; input options

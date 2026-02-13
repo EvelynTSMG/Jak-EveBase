@@ -679,4 +679,6 @@
   (2d-big-door-whiteout 706)
   (part-screen1 707)
   (burn-death 708)
+
+  (shadow-fly #x400)
 )

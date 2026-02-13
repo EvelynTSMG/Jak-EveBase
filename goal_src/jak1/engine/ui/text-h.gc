@@ -841,6 +841,12 @@
   (egg-christmas #x180a)
   (egg-christmas-desc #x180b)
 
+  (egg-fools26 #x180c)
+  (egg-fools26-desc #x180d)
+
+  (egg-lie-made-real #x180e)
+  (egg-lie-made-real-desc #x180f)
+
   ;; mod text mod-base-change
   (pad-triangle #x2000)
   (pad-circle #x2001)

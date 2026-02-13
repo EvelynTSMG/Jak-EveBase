@@ -2007,6 +2007,7 @@
  "common-obs/water.gc"
  "common-obs/collectables-part.gc"
  "common-obs/collectables.gc"
+ "common-obs/shadow-fly.gc"
  "game/task/task-control.gc"
  "common-obs/process-taskable.gc"
  "camera/pov-camera.gc"
@@ -2098,6 +2099,7 @@
 (goal-src "pc/easter-eggs.gc" "easter-eggs-h")
 (goal-src "pc/pc-cheats.gc" "dma-buffer")
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
+;; (goal-src "pc/pckernel-impl.gc" "pckernel-h" "pc-cheats")
 (goal-src "pc/pckernel-impl.gc" "pckernel-h" "pc-cheats" "easter-eggs-h")
 (goal-src "pc/easter-eggs.gc" "easter-eggs-h")
 (goal-src "pc/util/pc-anim-util.gc" "target-h")

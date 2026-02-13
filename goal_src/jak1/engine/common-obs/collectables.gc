@@ -1295,6 +1295,9 @@
         (animate self)
         (suspend))))
 
+(declare-type shadow-fly-lord process)
+(define-extern *shadow-fly-lord* shadow-fly-lord)
+
 (defstate pickup (buzzer)
   :virtual #t
   :event
@@ -1311,6 +1314,11 @@
       (process-entity-status! self (entity-perm-status complete) #t)
       (sound-play "buzzer-pickup")
       (runs-on-fly-pickup)
+
+      (when (is-active? (-> *pc-settings* easter-eggs fools26))
+        ((method-of-object *shadow-fly-lord* spawn-fly) *shadow-fly-lord*)
+      )
+
       (case (-> (level-get-target-inside *level*) name)
         (('training)
          (level-hint-spawn (text-id training-buzzer-hint) "asstvb44" (the-as entity #f) *entity-pool* (game-task none)))
