@@ -15,15 +15,15 @@
 (define *launch-time* (new 'static 'scf-time))
 
 (defun scf-launch-day ()
-  (-> *last-load-time* day)
+  (-> *launch-time* day)
 )
 
 (defun scf-launch-month ()
-  (-> *last-load-time* month)
+  (-> *launch-time* month)
 )
 
 (defun scf-launch-year ()
-  (-> *last-load-time* year)
+  (-> *launch-time* year)
 )
 
 
