@@ -56,3 +56,4 @@ Search for one of the terms below to begin!
   - `[ADD-MOD-OPTION-CAROUSEL]` for adding carousels
 - `[ADD-EASTER-EGG]` for adding occasionally/seasonally occuring easter eggs
 - `[ADD-FISH-TYPE]` for adding new fish to the fishing minigame
+- `[ADD-FONT-COLOR]` for adding new font colors for text rendering
