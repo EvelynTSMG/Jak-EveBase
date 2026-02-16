@@ -9,11 +9,6 @@ EveBase implements various changes and fixes to the vanilla game and the code ba
 to make both playing and developing mods more pleasant.
 
 ## Known Issues
-- The game may crash:
-  - in Mountain Pass when trying to unload Rock Village
-  - in Volcanic Crater when trying to unload Mountain Pass
-  - These crashes do not seem to occur in Debug Mode.
-    To restart in Debug Mode, press Alt, then navigate to Debugging > Reboot In Debug Mode!
 - Skipping the Fisherman's cell cutscene causes the player to be spawned inside of the bridge.
   The player does *not* become stuck and is free to move around.
 
