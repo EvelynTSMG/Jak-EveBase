@@ -1894,14 +1894,20 @@
               (shader (the-as adgif-shader (* (-> link-arr 0 shader) 16)))
             )
               (while (nonzero? (the-as int shader))
-                (if (or
-                  ; If we are below the start or past the end
-                  (< (the-as int shader) mem-start)
-                  (>= (the-as int shader) mem-end)
+                (let ((dist-past-end (the-as uint (- (the-as int shader) mem-end))))
+                  (if (or
+                    ; If we are below the start or past the end
+                    (< (- (the-as int shader) mem-start) 0)
+                    (>= (the-as int dist-past-end) 0)
+                  )
+                    (set! link-slot (&-> shader next)) ; not splicing, so we advance the link slot
+                    (set! (-> link-slot 0) (-> shader next)) ; heap, splice this adgif shader out
+                  )
+
+                  ; Move on to the next shader regardless of whether we spliced or not
+                  (set! shader (the-as adgif-shader (* (-> shader next shader) 16)))
                 )
-                  (set! link-slot (&-> shader next)) ; not splicing, so we advance the link slot
-                  (set! (-> link-slot 0) (-> shader next)) ; heap, splice this adgif shader out
-                )
+
               )
             )
 
