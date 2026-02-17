@@ -1363,6 +1363,10 @@
 (defbehavior mod-var-jump target ((arg0 symbol) (arg1 symbol) (committing? symbol) (init-transv vector))
   (local-vars (v0-2 vector))
 
+  (when (-> *pc-settings* mod always-max-jumps?)
+    (set! committing? #t)
+  )
+
   (let ((f30-0 (/ (the float (- (current-time) (-> self state-time))) (seconds 0.1))))
     (cond
       ((or
