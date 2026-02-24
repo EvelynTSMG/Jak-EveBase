@@ -44,6 +44,7 @@ add_library(common
         formatter/formatter_tree.cpp
         formatter/rules/formatting_rules.cpp
         formatter/rules/rule_config.cpp
+        formatter/src/formatter2.cpp
         global_profiler/GlobalProfiler.cpp
         goos/Interpreter.cpp
         goos/Object.cpp

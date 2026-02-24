@@ -7,6 +7,7 @@
 #include <queue>
 
 #include "common/formatter/formatter.h"
+#include "common/formatter/inc/formatter2.h"
 #include "common/log/log.h"
 #include "common/util/FileUtil.h"
 #include "common/util/json_util.h"
@@ -53,20 +54,24 @@ int main(int argc, char** argv) {
   // TODO - support recursing directories
   // Read in source code
   const auto source_code = file_util::read_text_file(file_path);
-  const auto result = formatter::format_code(source_code);
+  // const auto result = formatter::format_code(source_code);
 
-  if (result) {
-    // TODO - i don't like this implementation, return a new string instead
-    if (write_inplace) {
-      file_util::write_text_file(file_path, result.value());
-    } else if (write_newfile) {
-      if (str_util::replace(file_path, ".gc", ".new.gc")) {
-        file_util::write_text_file(file_path, result.value());
-      }
-    }
-    return 0;
-  } else {
-    lg::error("Could not format file");
-    return 1;
-  }
+  // if (result) {
+  //   // TODO - i don't like this implementation, return a new string instead
+  //   if (write_inplace) {
+  //     file_util::write_text_file(file_path, result.value());
+  //   } else if (write_newfile) {
+  //     if (str_util::replace(file_path, ".gc", ".new.gc")) {
+  //       file_util::write_text_file(file_path, result.value());
+  //     }
+  //   }
+  //   return 0;
+  // } else {
+  //   lg::error("Could not format file");
+  //   return 1;
+  // }
+
+  Formatter2::create_visualize_fmt_tree(source_code);
+
+  return 0;
 }
