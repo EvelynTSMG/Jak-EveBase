@@ -179,7 +179,7 @@
         (moving-xz?
           (or
             (= (-> *cpad-list* cpads (target-cpad) stick0-speed) 0.0)
-            (< (-> self control xz-vel-mag) (meters 15.0))
+            (< (-> self control ctrl-xz-vel) (meters 15.0))
           )
         )
         (f30-0
@@ -281,7 +281,7 @@
 
     ((and
       (= (-> self control ground-pat material) (pat-material ice))
-      (< (meters 4.0) (-> self control xz-vel-mag))
+      (< (meters 4.0) (-> self control ctrl-xz-vel))
     ))
 
     ((or
@@ -417,30 +417,30 @@
   :event target-standard-event-handler
 
   :enter (behavior ()
-    (set! (-> self control unknown-surface00) *walk-mods*)
+    (set! (-> self control mod-surface) *walk-mods*)
     (set-time! (-> self state-time))
   )
 
   :exit (behavior ()
-    (set! (-> self control unknown-float81) 0.0)
+    (set! (-> self control bend-target) 0.0)
     (target-state-hook-exit)
   )
 
   :trans (behavior ()
     ((-> self state-hook))
 
-    (if (logtest? (-> self water flags) (water-flags wt10))
+    (if (logtest? (-> self water flag) (water-flag wading))
       (go target-wade-stance)
     )
 
     (when (= (-> self control ground-pat material) (pat-material ice))
-      (set! (-> self control unknown-float81) 0.0)
+      (set! (-> self control bend-target) 0.0)
       (remove-exit)
       (go target-ice-stance)
     )
 
     (when (move-legs?)
-      (set! (-> self control unknown-float81) 0.0)
+      (set! (-> self control bend-target) 0.0)
       (remove-exit)
       (go target-walk)
     )
@@ -449,7 +449,7 @@
       (can-duck?)
       (cpad-hold? (target-cpad) l1 r1)
     )
-      (set! (-> self control unknown-float81) 0.0)
+      (set! (-> self control bend-target) 0.0)
       (remove-exit)
       (go target-duck-stance)
     )
@@ -542,8 +542,8 @@
         )
 
         ((ja-group? eichar-attack-punch-ja)
-          (set! (-> self control unknown-float81) (-> self control unknown-float80))
-          (set! (-> self control unknown-surface00) *walk-no-turn-mods*)
+          (set! (-> self control bend-target) (-> self control bend-amount))
+          (set! (-> self control mod-surface) *walk-no-turn-mods*)
 
           (ja-no-eval
             :group! (if (rand-vu-percent? 0.3)
@@ -554,13 +554,13 @@
             :frame-num 0.0
           )
           (until (ja-done? 0)
-            (seek! (-> self control unknown-float81) 0.0 (seconds-per-frame))
+            (seek! (-> self control bend-target) 0.0 (seconds-per-frame))
             (suspend)
             (ja :num! (seek!))
           )
 
-          (set! (-> self control unknown-surface00) *walk-mods*)
-          (set! (-> self control unknown-float81) 0.0)
+          (set! (-> self control mod-surface) *walk-mods*)
+          (set! (-> self control bend-target) 0.0)
           (rot->dir-targ! (-> self control))
         )
 
@@ -628,7 +628,7 @@
 
           (dotimes (s4-2 3)
             (until (ja-done? 0)
-              (ground-tween-update gtween (-> self control unknown-float61) (-> self control unknown-float62))
+              (ground-tween-update gtween (-> self control local-slope-z) (-> self control local-slope-x))
               (suspend)
 
               (ja :num! (seek!))
@@ -649,7 +649,7 @@
           )
 
           (until (ja-done? 0)
-            (ground-tween-update gtween (-> self control unknown-float61) (-> self control unknown-float62))
+            (ground-tween-update gtween (-> self control local-slope-z) (-> self control local-slope-x))
             (suspend)
 
             (ja :num! (seek!))
@@ -660,7 +660,7 @@
 
         ((and
           (ja-group? eichar-walk-ja)
-          (>= (-> self control xz-vel-mag) (meters 1.4))
+          (>= (-> self control ctrl-xz-vel) (meters 1.4))
         )
           (set! s5-0 45)
         )
@@ -685,7 +685,7 @@
       )
 
       (loop
-        (ground-tween-update gtween (-> self control unknown-float61) (-> self control unknown-float62))
+        (ground-tween-update gtween (-> self control local-slope-z) (-> self control local-slope-x))
         (suspend)
 
         (ja :num! (loop!))
@@ -707,7 +707,7 @@
 
   :enter (behavior ()
     (set-time! (-> self state-time))
-    (set! (-> self control unknown-surface00) *walk-mods*)
+    (set! (-> self control mod-surface) *walk-mods*)
   )
 
   :exit  (behavior ()
@@ -782,7 +782,7 @@
       (turn-around?)
       (time-elapsed? (-> self state-time) (seconds 0.3))
     )
-      (set! (-> self control transv quad) (-> self control unknown-vector-array10 (-> self control unknown-int10) quad))
+      (set! (-> self control transv quad) (-> self control transv-history (-> self control idx-of-fastest-xz-vel) quad))
       (set! (-> self control transv w) 1.0)
       (go target-turn-around)
     )
@@ -794,7 +794,7 @@
   :code (behavior ()
     (let (
       (f28-0 0.0)
-      (f30-0 (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 4.0)) (meters 5.0)))))
+      (f30-0 (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 4.0)) (meters 5.0)))))
       (gp-0 #f)
     )
       (cond
@@ -809,11 +809,11 @@
         )
 
         ((ja-group? eichar-attack-from-stance-ja)
-          (let ((f30-1 (fmax 0.8 (fmin 1.0 (/ (-> self control xz-vel-mag) (meters 5))))))
+          (let ((f30-1 (fmax 0.8 (fmin 1.0 (/ (-> self control ctrl-xz-vel) (meters 5))))))
             (cond
               ((and
                 (rand-vu-percent? 0.3)
-                (< (meters 5.0) (-> self control xz-vel-mag))
+                (< (meters 5.0) (-> self control ctrl-xz-vel))
               )
                 (ja-no-eval
                   :group! eichar-attack-from-stance-alt-end-ja
@@ -916,7 +916,7 @@
                   (< 30.0 (ja-aframe-num 0))
                 )
               )
-              (< (meters 3.0) (-> self control xz-vel-mag))
+              (< (meters 3.0) (-> self control ctrl-xz-vel))
             )
               (let ((impact-vel (-> self control ground-impact-vel)))
                 (case (ja-group)
@@ -991,7 +991,7 @@
                   :num! (seek! max
                     (/
                       (*
-                        (fmax (meters 5.0) (-> self control xz-vel-mag))
+                        (fmax (meters 5.0) (-> self control ctrl-xz-vel))
                         (if (= (-> *setting-control* current video-mode) 'custom)
                           0.016666668
                           (-> *display* seconds-per-frame)
@@ -1085,12 +1085,12 @@
       )
         (loop
           (let (
-            (f22-0 (fmax -1.0 (fmin 1.0 (* 2.0 (-> self control unknown-float61)))))
-            (f24-0 (fmax -1.0 (fmin 1.0 (* 1.6 (-> self control unknown-float62)))))
+            (f22-0 (fmax -1.0 (fmin 1.0 (* 2.0 (-> self control local-slope-z)))))
+            (f24-0 (fmax -1.0 (fmin 1.0 (* 1.6 (-> self control local-slope-x)))))
           )
             (set! f30-0
               (seek f30-0
-                (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 4.0)) (meters 5.0))))
+                (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 4.0)) (meters 5.0))))
                 (per-second 2.0)
               )
             )
@@ -1137,7 +1137,7 @@
             (f1-19 (current-cycle-distance (-> self skel)))
             (f0-92
               (/
-                (-> self control xz-vel-mag)
+                (-> self control ctrl-xz-vel)
                 (* 60.0 (/ f1-19 (-> *TARGET-bank* run-cycle-length)))
               )
             )
@@ -1172,19 +1172,19 @@
 
   :enter (behavior ()
     (vector-turn-to (-> self control transv))
-    (set! (-> self control unknown-surface00) *turn-around-mods*)
-    (set! (-> self control unknown-float81) 1.0)
+    (set! (-> self control mod-surface) *turn-around-mods*)
+    (set! (-> self control bend-target) 1.0)
   )
 
   :exit (behavior ()
     (target-state-hook-exit)
 
     (set-forward-vel (meters 0.0))
-    (set! (-> self control xz-vel-mag) (meters 0.0))
+    (set! (-> self control ctrl-xz-vel) (meters 0.0))
 
     (set-quaternion! (-> self control) (-> self control dir-targ))
 
-    (set! (-> self control unknown-float81) 0.0)
+    (set! (-> self control bend-target) 0.0)
   )
 
   :trans (behavior ()
@@ -1215,7 +1215,7 @@
 
     (if (and
       (not (logtest? (-> self control status) (cshape-moving-flags onsurf)))
-      (time-elapsed? (-> self control last-ground-time) (seconds 0.08))
+      (time-elapsed? (-> self control last-time-on-surface) (seconds 0.08))
     )
       (go target-falling #f)
     )
@@ -1245,10 +1245,10 @@
 
     (remove-exit)
 
-    (set! (-> self control unknown-float81) 0.0)
+    (set! (-> self control bend-target) 0.0)
 
     (set-forward-vel (meters 10.0))
-    (set! (-> self control xz-vel-mag) (meters 10.0))
+    (set! (-> self control ctrl-xz-vel) (meters 10.0))
 
     (target-state-hook-exit)
     (go target-walk)
@@ -1261,7 +1261,7 @@
   :event target-walk-event-handler
 
   :enter (behavior ()
-    (set! (-> self control unknown-surface00) *jump-mods*)
+    (set! (-> self control mod-surface) *jump-mods*)
   )
 
   :exit (behavior ()
@@ -1296,7 +1296,7 @@
 )
 
 (defbehavior init-var-jump target ((height-min float) (height-max float) (arg2 symbol) (arg3 symbol) (init-transv vector))
-  (logclear! (-> self control status) (cshape-moving-flags csmf14))
+  (logclear! (-> self control status) (cshape-moving-flags t-ceil-sticky))
   (delete-back-vel)
 
   (when (not (time-elapsed? (-> self control rider-time) (seconds 0.05)))
@@ -1306,7 +1306,7 @@
     )
 
     (when (or
-      (logtest? (-> self control unknown-surface01 flags) (surface-flags moving-ground))
+      (logtest? (-> self control current-surface flags) (surface-flags moving-ground))
       (= (-> self control poly-pat material) (pat-material rotate))
     )
       (+! (-> self control transv x) (-> self control rider-last-move x))
@@ -1320,12 +1320,12 @@
   (cond
     (arg3
       (set! (-> self control unknown-uint20) (the-as uint (- height-min (- (-> *TARGET-bank* jump-collide-offset) (meters 0.1)))))
-      (set! (-> self control unknown-int21) (the-as int (- height-max (-> *TARGET-bank* jump-collide-offset))))
+      (set! (-> self control did-move-to-pole-or-max-jump-height) (the-as int (- height-max (-> *TARGET-bank* jump-collide-offset))))
     )
 
     (else
       (set! (-> self control unknown-uint20) (the-as uint height-min))
-      (set! (-> self control unknown-int21) (the-as int height-max))
+      (set! (-> self control did-move-to-pole-or-max-jump-height) (the-as int height-max))
     )
   )
 
@@ -1444,8 +1444,8 @@
   :event target-standard-event-handler
 
   :enter (behavior ()
-    (set! (-> self control unknown-float81) 1.0)
-    (set! (-> self control unknown-surface00) *duck-mods*)
+    (set! (-> self control bend-target) 1.0)
+    (set! (-> self control mod-surface) *duck-mods*)
     (target-collide-set! 'duck 1.0)
   )
 
@@ -1569,10 +1569,10 @@
   :event target-standard-event-handler
 
   :enter (behavior ()
-    (set! (-> self control unknown-float81) 1.0)
+    (set! (-> self control bend-target) 1.0)
     (target-collide-set! 'duck 1.0)
     (if (not (ja-group? eichar-duck-roll-ja))
-      (set! (-> self control unknown-surface00) *duck-mods*)
+      (set! (-> self control mod-surface) *duck-mods*)
     )
   )
 
@@ -1587,7 +1587,7 @@
         (not (cpad-hold? (target-cpad) l1 r1))
         (logtest? (-> self state-flags) (state-flags prevent-duck))
         (and
-          (logtest? (-> self water flags) (water-flags wt10))
+          (logtest? (-> self water flag) (water-flag wading))
           (>=
             (-
               (-
@@ -1660,14 +1660,14 @@
 
     (loop
       (if (= (-> self skel root-channel 0) (-> self skel channel))
-        (set! (-> self control unknown-surface00) *duck-mods*)
+        (set! (-> self control mod-surface) *duck-mods*)
       )
 
       (ja
         :num! (loop!
           (fmin 1.0
             (/
-              (-> self control xz-vel-mag)
+              (-> self control ctrl-xz-vel)
               (*
                 60.0
                 (/
@@ -1724,13 +1724,13 @@
       (set! mods *jump-mods*)
     )
 
-    (set! (-> self control unknown-surface00) mods)
+    (set! (-> self control mod-surface) mods)
 
     (set! (-> self control unknown-float123)
-      (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 2.8)) (meters 5.6))))
+      (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 2.8)) (meters 5.6))))
     )
     (set! (-> self control unknown-float122)
-      (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 2.5)) (meters 5.0))))
+      (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 2.5)) (meters 5.0))))
     )
   )
 
@@ -1766,7 +1766,7 @@
         )
       )
       (and
-        (not (logtest? (-> self water flags) (water-flags wt09)))
+        (not (logtest? (-> self water flag) (water-flag touch-water)))
         (not (logtest? (-> self state-flags) (state-flags prevent-jump)))
       )
     )
@@ -1781,9 +1781,9 @@
       (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 6.5))
       (and
         (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
-        (time-elapsed? (-> self control unknown-dword36) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
+        (time-elapsed? (-> self control last-time-of-stuck) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
         (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
-        (not (logtest? (-> self control unknown-surface01 flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
+        (not (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
       )
     )
       (go target-flop
@@ -1802,7 +1802,7 @@
 
     (seek!
       (-> self control unknown-float122)
-      (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 2.5)) (meters 5.0))))
+      (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 2.5)) (meters 5.0))))
       (seconds-per-frame)
     )
   )
@@ -1852,7 +1852,7 @@
 
   :enter (behavior ((height-min float) (height-max float))
     ((-> target-jump enter) height-min height-max (the-as surface #f))
-    (set! (-> self control unknown-surface00) *forward-jump-mods*)
+    (set! (-> self control mod-surface) *forward-jump-mods*)
   )
 
   :exit target-exit
@@ -1900,7 +1900,7 @@
     (init-var-jump arg0 arg1 #t #t (-> self control transv))
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
     
-    (set! (-> self control unknown-surface00) *double-jump-mods*)
+    (set! (-> self control mod-surface) *double-jump-mods*)
   )
 
   :exit target-exit
@@ -1919,9 +1919,9 @@
       (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 5.4))
       (and
         (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
-        (time-elapsed? (-> self control unknown-dword36) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
+        (time-elapsed? (-> self control last-time-of-stuck) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
         (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
-        (not (logtest? (-> self control unknown-surface01 flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
+        (not (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
       )
     )
       (go target-flop
@@ -1939,7 +1939,7 @@
     )
 
     (seek! (-> self control unknown-float122)
-      (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 2.5)) (meters 5.0))))
+      (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 2.5)) (meters 5.0))))
       (seconds-per-frame)
     )
   )
@@ -2002,7 +2002,7 @@
 
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
 
-    (set! (-> self control unknown-surface00)
+    (set! (-> self control mod-surface)
       (cond
         ((= arg2 'flip) *flip-jump-mods*)
         ((= arg2 'flop-forward) *forward-high-jump-mods*)
@@ -2011,7 +2011,7 @@
     )
 
     (set! (-> self control unknown-float122)
-      (fmax 0.0 (fmin 0.5 (/ (- (-> self control xz-vel-mag) (meters 0.1)) (meters 3.0))))
+      (fmax 0.0 (fmin 0.5 (/ (- (-> self control ctrl-xz-vel) (meters 0.1)) (meters 3.0))))
     )
   )
 
@@ -2032,9 +2032,9 @@
       (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 18.0))
       (and
         (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
-        (time-elapsed? (-> self control unknown-dword36) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
+        (time-elapsed? (-> self control last-time-of-stuck) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
         (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
-        (not (logtest? (-> self control unknown-surface01 flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
+        (not (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
       )
     )
       (go target-flop
@@ -2049,7 +2049,7 @@
     (mod-var-jump #t #t (cpad-hold? (target-cpad) x) (-> self control transv))
 
     (seek! (-> self control unknown-float122)
-      (fmax 0.0 (fmin 1.0 (/ (- (-> self control xz-vel-mag) (meters 0.5)) (meters 2.0))))
+      (fmax 0.0 (fmin 1.0 (/ (- (-> self control ctrl-xz-vel) (meters 0.5)) (meters 2.0))))
       (seconds-per-frame)
     )
   )
@@ -2065,7 +2065,7 @@
   :enter (behavior ((height-min float) (height-max float) (arg2 symbol))
     (set-time! (-> self state-time))
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
-    (set! (-> self control unknown-surface00) *turn-around-mods*)
+    (set! (-> self control mod-surface) *turn-around-mods*)
   )
 
   :exit target-exit
@@ -2145,11 +2145,11 @@
     (cond
       ((= arg2 'launch)
         (set! (-> self neck flex-blend) 0.0)
-        (set! (-> self control unknown-surface00) *launch-jump-mods*)
+        (set! (-> self control mod-surface) *launch-jump-mods*)
       )
 
       (else
-        (set! (-> self control unknown-surface00) *high-jump-mods*)
+        (set! (-> self control mod-surface) *high-jump-mods*)
       )
     )
   )
@@ -2256,7 +2256,7 @@
   :event target-jump-event-handler
 
   :enter (behavior ((arg0 symbol))
-    (set! (-> self control unknown-surface00) *jump-mods*)
+    (set! (-> self control mod-surface) *jump-mods*)
     (set! (-> self control unknown-uint20) (the-as uint arg0))
     (set-time! (-> self state-time))
   )
@@ -2291,17 +2291,17 @@
          (cpad-set-buzz! (-> *cpad-list* cpads 0) 1 255 (seconds 0.3)))
         (else
          (let ((f0-1 (vector-dot (-> self control dynam gravity-normal)
-                                 (vector-! (new 'stack-no-clear 'vector) (-> self control unknown-vector52) (-> self control trans)))))
+                                 (vector-! (new 'stack-no-clear 'vector) (-> self control last-trans-any-surf) (-> self control trans)))))
            (if (and (< (-> *TARGET-bank* fall-far) f0-1) (not (logtest? (-> self control status) (cshape-moving-flags on-water))))
              (go target-hit-ground-hard f0-1)))))
       (cond
         ((= arg0 'stuck))
         (else (target-land-effect)))
       (set! (-> self control unknown-dword31) 0)
-      (set! (-> self control unknown-dword33) 0)
+      (set! (-> self control last-attack-end-time) 0)
       (if (>= (-> self control ground-impact-vel) (-> *TARGET-bank* fall-stumble-threshold)) (set-forward-vel 0.0))
       (if (!= (-> self control ground-pat material) (pat-material ice)) (delete-back-vel))
-      (set! (-> self control unknown-surface00) *walk-mods*)
+      (set! (-> self control mod-surface) *walk-mods*)
       (start-bobbing! (-> self water)
                       (lerp-scale 0.0
                                   4096.0
@@ -2331,7 +2331,7 @@
     )
 
     (when (!= (-> *cpad-list* cpads (target-cpad) stick0-speed) 0.0)
-      (if (logtest? (-> self water flags) (water-flags wt10))
+      (if (logtest? (-> self water flag) (water-flag wading))
         (go target-wade-walk)
         (go target-walk)
       )
@@ -2374,14 +2374,14 @@
     (set-time! (-> self state-time))
     (target-start-attack)
     (target-danger-set! 'spin #f)
-    (set! (-> self control unknown-surface00) *attack-mods*)
+    (set! (-> self control mod-surface) *attack-mods*)
 
     (set! (-> self water drip-mult) 4.0)
     (set! (-> self neck flex-blend) 0.0)
   )
 
   :exit (behavior ()
-    (set-time! (-> self control unknown-dword33))
+    (set-time! (-> self control last-attack-end-time))
     (target-exit)
   )
 
@@ -2389,7 +2389,7 @@
     (ja-channel-push! 1 (seconds 0.05))
     (ja-no-eval
       :group! eichar-attack-from-stance-ja
-      :num! (seek! max (-> self control unknown-surface01 align-speed))
+      :num! (seek! max (-> self control current-surface align-speed))
       :frame-num 0.0
     )
     (until (ja-done? 0)
@@ -2412,8 +2412,9 @@
       )
 
       (suspend)
-      (ja :num! (seek! max (-> self control unknown-surface01 align-speed)))
+      (ja :num! (seek! max (-> self control current-surface align-speed)))
     )
+
     (go target-stance)
   )
 
@@ -2433,10 +2434,10 @@
             (let (
               (gp-1
                 (target-send-attack proc
-                  (the-as uint (-> self control unknown-symbol30))
+                  (the-as uint (-> self control danger-mode))
                   (the-as touching-shapes-entry (-> block param 0))
-                  (-> self control unknown-dword50)
-                  (-> self control unknown-dword51)
+                  (-> self control target-attack-id)
+                  (-> self control attack-count)
                 )
               )
             )
@@ -2479,7 +2480,7 @@
                 
                 (when (or (= gp-1 'die) (= gp-1 'push))
                   (let ((current-time (current-time)))
-                    (set! (-> self control unknown-int21) current-time)
+                    (set! (-> self control did-move-to-pole-or-max-jump-height) current-time)
                     (the-as object current-time)
                   )
                 )
@@ -2508,25 +2509,25 @@
 
     (set-time! (-> self state-time))
     (set! (-> self control unknown-uint20) (the-as uint 0))
-    (set! (-> self control unknown-int21) 0)
+    (set! (-> self control did-move-to-pole-or-max-jump-height) 0)
     (set! (-> self control unknown-uint31) (the-as uint 0))
-    (set! (-> self control unknown-surface00) *run-attack-mods*)
+    (set! (-> self control mod-surface) *run-attack-mods*)
     (set! (-> *run-attack-mods* turnv) (degrees 3600.0))
     (set! (-> *run-attack-mods* turnvv) (degrees 3600.0))
     (target-start-attack)
     (target-danger-set! 'punch #f)
 
     (if (or
-      (< (fabs (-> self control unknown-float62)) 0.3)
-      (< 0.3 (fabs (-> self control unknown-float61)))
+      (< (fabs (-> self control local-slope-x)) 0.3)
+      (< 0.3 (fabs (-> self control local-slope-z)))
     )
-      (set! (-> self control unknown-float81) 1.0)
+      (set! (-> self control bend-target) 1.0)
     )
   )
 
   :exit (behavior ()
-    (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-    (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+    (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
+    (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
     (set! (-> *run-attack-mods* turnv) 0.0)
     (set! (-> *run-attack-mods* turnvv) 0.0)
     (set-time! (-> self control unknown-dword31))
@@ -2538,12 +2539,12 @@
       (when (or
         (smack-surface? #t)
         (and
-          (>= (-> self control unknown-float63) 0.7)
+          (>= (-> self control surface-slope-z) 0.7)
           (not (logtest? (-> self control status) (cshape-moving-flags t-act)))
         )
       )
-        (set! (-> self control unknown-int21) (the-as int (current-time)))
-        (set! (-> self control unknown-float81) 0.0)
+        (set! (-> self control did-move-to-pole-or-max-jump-height) (the-as int (current-time)))
+        (set! (-> self control bend-target) 0.0)
         (let (
           (gp-0 (new-stack-vector0))
           (f30-0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
@@ -2582,14 +2583,14 @@
       (if (and
         (cpad-pressed? (target-cpad) x)
         (and
-          (< (meters 1.0) (-> self control xz-vel-mag))
+          (< (meters 1.0) (-> self control ctrl-xz-vel))
           (or
             (time-elapsed? (-> self state-time) (seconds 0.1))
             (not (cpad-hold? (target-cpad) square))
             (not (logtest? (-> *cpad-list* cpads (target-cpad) button0-abs 0) (pad-buttons square)))
           )
           (not (logtest? (-> self state-flags) (state-flags prevent-jump prevent-attack)))
-          (not (logtest? (-> self control unknown-surface01 flags) (surface-flags prevent-attacks-during-launch-jump)))
+          (not (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump)))
         )
       )
         (go target-attack-uppercut
@@ -2599,7 +2600,7 @@
       )
 
       (if (and
-        (logtest? (-> self water flags) (water-flags wt09))
+        (logtest? (-> self water flag) (water-flag touch-water))
         (zero? (mod (- (current-time) (-> self state-time)) 21))
       )
         (create-splash (-> self water)
@@ -2619,7 +2620,7 @@
   )
 
   :code (behavior ()
-    (if (logtest? (-> self water flags) (water-flags wt09))
+    (if (logtest? (-> self water flag) (water-flag touch-water))
       (sound-play "swim-stroke")
     )
 
@@ -2663,13 +2664,13 @@
               (cond
                 ; If it's christmas, we don't slow down so the player can slide easily
                 ((is-active? (-> *pc-settings* easter-eggs christmas))
-                  (set-forward-vel (-> self control xz-vel-mag))
+                  (set-forward-vel (-> self control ctrl-xz-vel))
                 )
 
                 (else
                   (if (= (-> self control ground-pat material) (pat-material ice))
-                    (set-forward-vel (fmax (meters 8.0) (* 0.8 (-> self control xz-vel-mag))))
-                    (set-forward-vel (* 0.8 (-> self control xz-vel-mag)))
+                    (set-forward-vel (fmax (meters 8.0) (* 0.8 (-> self control ctrl-xz-vel))))
+                    (set-forward-vel (* 0.8 (-> self control ctrl-xz-vel)))
                   )
                 )
               )
@@ -2687,13 +2688,13 @@
         )
 
         (let ((s5-1 (new-stack-vector0)))
-          (vector-matrix*! s5-1 (-> self control transv) (-> self control unknown-matrix00))
+          (vector-matrix*! s5-1 (-> self control transv) (-> self control w-R-c))
           (set! (-> s5-1 y) 0.0)
-          (vector-matrix*! (-> self control unknown-vector120) s5-1 (-> self control unknown-matrix01))
+          (vector-matrix*! (-> self control unknown-vector120) s5-1 (-> self control c-R-w))
         )
         (suspend)
 
-        (ja :num! (seek! max (-> self control unknown-surface01 align-speed)))
+        (ja :num! (seek! max (-> self control current-surface align-speed)))
 
         (if (time-elapsed? (-> self state-time) (seconds 0.1))
           (set! (-> *run-attack-mods* turnvv) 0.0)
@@ -2730,7 +2731,7 @@
 
     (target-start-attack)
     (target-danger-set! 'spin-air #f)
-    (set! (-> self control unknown-surface00) *jump-attack-mods*)
+    (set! (-> self control mod-surface) *jump-attack-mods*)
 
     (let ((f0-1 (vector-dot (-> self control dynam gravity-normal) (-> self control transv))))
       (cond
@@ -2774,7 +2775,7 @@
                       (-> self control dynam gravity-normal)
                       (vector-! (new 'stack-no-clear 'vector)
                         (-> self control trans)
-                        (-> self control unknown-vector52)
+                        (-> self control last-trans-any-surf)
                       )
                     )
                   )
@@ -2807,12 +2808,12 @@
     )
 
     (set! (-> self control dynam gravity-length) (meters 30.0))
-    (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
+    (set! (-> self control last-trans-any-surf quad) (-> self control trans quad))
   )
 
   :exit (behavior ()
-      (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-      (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+      (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
+      (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
 
       ((-> target-attack exit))
   )
@@ -2825,7 +2826,7 @@
 
     (if (time-elapsed? (-> self state-time) (seconds 0.5))
       (seek! (-> self control dynam gravity-length)
-        (-> self control unknown-dynamics00 gravity-length)
+        (-> self control standard-dynamics gravity-length)
         (per-second (meters 60.0))
       )
     )
@@ -2833,12 +2834,12 @@
     (when (and
       (time-elapsed? (-> self state-time) (seconds 0.05))
       (<
-        (vector-dot (-> self control dynam gravity-normal) (-> self control unknown-vector10))
+        (vector-dot (-> self control dynam gravity-normal) (-> self control last-transv))
         (vector-dot (-> self control dynam gravity-normal) (-> self control transv))
       )
     )
-      (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-      (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+      (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
+      (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
     )
 
     (when (has-eco? (pickup-type eco-red))
@@ -2878,8 +2879,8 @@
             (time-elapsed? (-> self state-time) (seconds 1.7))
           )
         )
-          (quaternion-rotate-y! (-> self control unknown-quaternion00)
-                                (-> self control unknown-quaternion00)
+          (quaternion-rotate-y! (-> self control quat-for-control)
+                                (-> self control quat-for-control)
                                 (* f30-0 (seconds-per-frame)))
           (suspend)
           (ja :num! (loop!))
@@ -2892,8 +2893,8 @@
         (cond
           ((< (ja-aframe-num 0) 32.0)
             (quaternion-rotate-y!
-              (-> self control unknown-quaternion00)
-              (-> self control unknown-quaternion00)
+              (-> self control quat-for-control)
+              (-> self control quat-for-control)
               (* f30-0 (seconds-per-frame))
             )
           )
@@ -2902,14 +2903,14 @@
             (let (
               (f0-22
                 (deg-diff
-                  (quaternion-y-angle (-> self control unknown-quaternion00))
+                  (quaternion-y-angle (-> self control quat-for-control))
                   (quaternion-y-angle (-> self control dir-targ))
                 )
               )
             )
               (quaternion-rotate-y!
-                (-> self control unknown-quaternion00)
-                (-> self control unknown-quaternion00)
+                (-> self control quat-for-control)
+                (-> self control quat-for-control)
                 (* 0.2 (fabs f0-22))
               )
             )
@@ -2934,7 +2935,7 @@
     (set-time! (-> self state-time))
     (target-start-attack)
     (target-danger-set! 'uppercut #f)
-    (set! (-> self control unknown-surface00) *turn-around-mods*)
+    (set! (-> self control mod-surface) *turn-around-mods*)
   )
 
   :exit target-exit
@@ -2968,7 +2969,7 @@
   :enter (behavior ((height-min float) (height-max float))
     (if (and
       (= (-> self control ground-pat material) (pat-material ice))
-      (< (meters 8.0) (-> self control xz-vel-mag))
+      (< (meters 8.0) (-> self control ctrl-xz-vel))
     )
       (set-forward-vel (meters 8.0))
     )
@@ -2976,7 +2977,7 @@
     (init-var-jump height-min height-max #t #f (-> self control transv))
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
 
-    (set! (-> self control unknown-surface00) *uppercut-jump-mods*)
+    (set! (-> self control mod-surface) *uppercut-jump-mods*)
     (target-start-attack)
     (target-danger-set! 'uppercut #f)
   )
@@ -2993,9 +2994,9 @@
       (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters 5.4))
       (and
         (< (meters -15.0) (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
-        (time-elapsed? (-> self control unknown-dword36) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
+        (time-elapsed? (-> self control last-time-of-stuck) (the-as time-frame (-> *TARGET-bank* stuck-timeout)))
         (not (logtest? (-> self state-flags) (state-flags prevent-attack)))
-        (not (logtest? (-> self control unknown-surface01 flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
+        (not (logtest? (-> self control current-surface flags) (surface-flags prevent-attacks-during-launch-jump surf08)))
       )
     )
       (set-quaternion! (-> self control) (-> self control dir-targ))
@@ -3028,7 +3029,7 @@
     )
 
     (if (and
-      (= (-> self control unknown-symbol30) 'uppercut)
+      (= (-> self control danger-mode) 'uppercut)
       (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) (meters -2.0))
     )
       (target-danger-set! 'harmless #f)
@@ -3055,7 +3056,7 @@
         )
       )
         (when (= a1-2 2)
-          (set! (-> self control unknown-surface00) *double-jump-mods*)
+          (set! (-> self control mod-surface) *double-jump-mods*)
         )
 
         (align! (-> self align) (the-as align-opts a1-2) 1.0 0.95 1.0)
@@ -3105,12 +3106,12 @@
 
     (if (= init-vel 0.0)
       (set-forward-vel init-vel)
-      (set-forward-vel (-> self control xz-vel-mag))
+      (set-forward-vel (-> self control ctrl-xz-vel))
     )
 
     (set-time! (-> self state-time))
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
-    (set! (-> self control unknown-surface00) *flop-mods*)
+    (set! (-> self control mod-surface) *flop-mods*)
     (set! (-> self control unknown-uint20) (the-as uint 0))
 
     (set! (-> self control dynam gravity-max) (meters 60.0))
@@ -3139,9 +3140,9 @@
 
   :exit (behavior ()
     (target-danger-set! 'harmless #f)
-    (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-    (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
-    (set! (-> self control dynam gravity quad) (-> self control unknown-dynamics00 gravity quad))
+    (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
+    (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
+    (set! (-> self control dynam gravity quad) (-> self control standard-dynamics gravity quad))
   )
 
   :trans (behavior ()
@@ -3164,7 +3165,7 @@
           (not (logtest? (-> self control status) (cshape-moving-flags t-act)))
           (>= (-> self control unknown-uint20) (the-as uint 2))
         )
-          (set-time! (-> self control unknown-dword36))
+          (set-time! (-> self control last-time-of-stuck))
           (set! gp-1 'stuck)
         )
       )
@@ -3226,7 +3227,7 @@
     )
 
     (when (and
-      (not (-> self control unknown-symbol30))
+      (not (-> self control danger-mode))
       (ja-group? eichar-flop-down-ja)
       (>= (ja-aframe-num 0) 8.0)
     )
@@ -3248,14 +3249,14 @@
         :num! (seek!)
         :frame-interp (lerp-scale
           0.0 1.0
-          (-> self control xz-vel-mag)
+          (-> self control ctrl-xz-vel)
           (meters 0.0) (meters 10.0)
         )
       )
     )
 
-    (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
-    (set! (-> self control dynam gravity quad) (-> self control unknown-dynamics00 gravity quad))
+    (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
+    (set! (-> self control dynam gravity quad) (-> self control standard-dynamics gravity quad))
 
     (target-danger-set! 'flop-down #f)
 
@@ -3313,7 +3314,7 @@
           :num! (chan 0)
           :frame-interp (lerp-scale
             0.0 1.0
-            (-> self control xz-vel-mag)
+            (-> self control ctrl-xz-vel)
             (meters 0.0) (meters 10.0)
           )
         )
@@ -3328,8 +3329,8 @@
             (f1-5 (vector-length gp-6))
             (f0-34 f1-5)
           )
-            (if (< (-> self control unknown-surface01 transv-max) f1-5)
-              (set! f1-5 (-> self control unknown-surface01 transv-max))
+            (if (< (-> self control current-surface transv-max) f1-5)
+              (set! f1-5 (-> self control current-surface transv-max))
             )
 
             (vector+! (-> self control transv)
@@ -3371,7 +3372,7 @@
       (f0-1
         (vector-dot
           (-> self control dynam gravity-normal)
-          (vector-! (new 'stack-no-clear 'vector) (-> self control unknown-vector111) (-> self control trans))
+          (vector-! (new 'stack-no-clear 'vector) (-> self control highest-jump-mark) (-> self control trans))
         )
       )
     )
@@ -3388,7 +3389,7 @@
 
     (set-forward-vel 0.0)
 
-    (set! (-> self control unknown-surface00) *flop-land-mods*)
+    (set! (-> self control mod-surface) *flop-land-mods*)
     (logclear! (-> *flop-land-mods* flags) (surface-flags allow-edge-grab))
     (logior! (-> self state-flags) (state-flags flop-hit-ground))
   )
@@ -3452,7 +3453,7 @@
 
   :enter (behavior ()
     (set-time! (-> self state-time))
-    (set! (-> self control unknown-surface00) *wheel-mods*)
+    (set! (-> self control mod-surface) *wheel-mods*)
 
     (+! (-> self control unknown-int50) 1)
 
@@ -3468,14 +3469,14 @@
     )
 
     (if (or
-      (< (fabs (-> self control unknown-float62)) 0.3)
-      (< 0.3 (fabs (-> self control unknown-float61)))
+      (< (fabs (-> self control local-slope-x)) 0.3)
+      (< 0.3 (fabs (-> self control local-slope-z)))
     )
-      (set! (-> self control unknown-float81) 1.0)
+      (set! (-> self control bend-target) 1.0)
     )
 
     (set! (-> self control unknown-uint20) (the-as uint 0))
-    (set! (-> self control unknown-int21) 0)
+    (set! (-> self control did-move-to-pole-or-max-jump-height) 0)
 
     (target-collide-set! 'duck 1.0)
   )
@@ -3506,7 +3507,7 @@
           (when (and
             (or
               (smack-surface? #f)
-              (>= (-> self control unknown-float63) 0.7)
+              (>= (-> self control surface-slope-z) 0.7)
             )
             (>=
               (- (current-time) (the-as int (-> self control unknown-uint20)))
@@ -3539,9 +3540,9 @@
             (else
               (align! (-> self align) (align-opts adjust-xz-vel) 1.0 1.0 f30-0)
               (let ((s4-1 (new-stack-vector0)))
-                (vector-matrix*! s4-1 (-> self control transv) (-> self control unknown-matrix00))
+                (vector-matrix*! s4-1 (-> self control transv) (-> self control w-R-c))
                 (set! (-> s4-1 y) 0.0)
-                (vector-matrix*! (-> self control unknown-vector120) s4-1 (-> self control unknown-matrix01))
+                (vector-matrix*! (-> self control unknown-vector120) s4-1 (-> self control c-R-w))
               )
             )
           )
@@ -3603,7 +3604,7 @@
   :event target-standard-event-handler
 
   :enter (behavior ((arg0 float) (arg1 float))
-      (set! (-> self control unknown-surface00) *wheel-flip-mods*)
+      (set! (-> self control mod-surface) *wheel-flip-mods*)
       (target-collide-set! 'duck 1.0)
   )
 
@@ -3657,7 +3658,7 @@
       )
         (when (and
           (>= (ja-aframe-num 0) 3.0)
-          (not (-> self control unknown-symbol30))
+          (not (-> self control danger-mode))
         )
           (set! (-> self event-hook) target-dangerous-event-handler)
           (target-start-attack)
@@ -3682,9 +3683,9 @@
         )
 
         (let ((s4-1 (new-stack-vector0)))
-          (vector-matrix*! s4-1 (-> self control transv) (-> self control unknown-matrix00))
+          (vector-matrix*! s4-1 (-> self control transv) (-> self control w-R-c))
           (set! (-> s4-1 y) 0.0)
-          (vector-matrix*! (-> self control unknown-vector120) s4-1 (-> self control unknown-matrix01))
+          (vector-matrix*! (-> self control unknown-vector120) s4-1 (-> self control c-R-w))
         )
 
         (suspend)

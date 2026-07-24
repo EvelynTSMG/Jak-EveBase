@@ -172,7 +172,7 @@
     (pitch
       (lerp-scale
         -0.3 0.3
-        (-> self control xz-vel-mag)
+        (-> self control ctrl-xz-vel)
         (meters 0.0) (meters 30.0)
       )
     )
@@ -201,20 +201,20 @@
       (new 'static 'rgba :g #xff :a #x80)
     )
 
-    (vector-matrix*! s4-1 s4-1 (-> self control unknown-matrix00))
+    (vector-matrix*! s4-1 s4-1 (-> self control w-R-c))
     (vector-float*! s4-1 s4-1 2.0)
 
-    (if (< (-> self control unknown-surface01 target-speed) (vector-length s4-1))
-      (vector-normalize! s4-1 (-> self control unknown-surface01 target-speed))
+    (if (< (-> self control current-surface target-speed) (vector-length s4-1))
+      (vector-normalize! s4-1 (-> self control current-surface target-speed))
     )
 
-    (vector-v++! (-> self control unknown-vector00) s4-1)
+    (vector-v++! (-> self control transv-ctrl) s4-1)
 
     ; We collided with something
     (when (logtest? (-> self control status) (cshape-moving-flags twall))
       (let ((old-transv (-> self tube old-transv)))
         ; Bounce off of the wall
-        (vector-reflect! s4-1 old-transv (-> self control wall-hit-poly-normal))
+        (vector-reflect! s4-1 old-transv (-> self control wall-contact-poly-normal))
 
         (let (
           (f30-1 (vector-dot (-> self tube sidetube) old-transv))
@@ -252,7 +252,7 @@
         (let (
           (downward-vel (new-stack-vector0))
           (f0-11 (vector-dot (-> self tube downtube) s4-1))
-          (f2-5 (fmax (-> self control xz-vel-mag) (vector-dot old-transv (-> self tube downtube))))
+          (f2-5 (fmax (-> self control ctrl-xz-vel) (vector-dot old-transv (-> self tube downtube))))
         )
           (vector-! downward-vel
             s4-1
@@ -266,11 +266,11 @@
         )
       )
 
-      (vector-matrix*! s4-1 s4-1 (-> self control unknown-matrix00))
+      (vector-matrix*! s4-1 s4-1 (-> self control w-R-c))
 
-      (let ((f0-14 (-> self control unknown-vector00 y)))
-        (set! (-> self control unknown-vector00 quad) (-> s4-1 quad))
-        (set! (-> self control unknown-vector00 y) f0-14)
+      (let ((f0-14 (-> self control transv-ctrl y)))
+        (set! (-> self control transv-ctrl quad) (-> s4-1 quad))
+        (set! (-> self control transv-ctrl y) f0-14)
       )
     )
   )
@@ -290,9 +290,9 @@
         (new 'static 'rgba :r #xff :g #xff :a #x80)
       )
 
-      (vector-matrix*! s3-1 s3-1 (-> self control unknown-matrix00))
-      (vector-normalize! s3-1 (* input-x (-> self control unknown-surface01 seek90)))
-      (vector-v++! (-> self control unknown-vector00) s3-1)
+      (vector-matrix*! s3-1 s3-1 (-> self control w-R-c))
+      (vector-normalize! s3-1 (* input-x (-> self control current-surface seek90)))
+      (vector-v++! (-> self control transv-ctrl) s3-1)
     )
 
     (vector-flatten! s4-2 s4-2 (-> self control local-normal))
@@ -305,43 +305,43 @@
       (new 'static 'rgba :r #xff :g #x80 :b #x40 :a #x80)
     )
 
-    (vector-matrix*! s4-2 s4-2 (-> self control unknown-matrix00))
+    (vector-matrix*! s4-2 s4-2 (-> self control w-R-c))
     (vector-normalize! s4-2
       (*
-        (-> self control unknown-surface01 slope-down-factor)
+        (-> self control current-surface slope-down-factor)
         (fmax 0.2 (-> self control surface-angle))
       )
     )
-    (vector-v++! (-> self control unknown-vector00) s4-2)
+    (vector-v++! (-> self control transv-ctrl) s4-2)
   )
 
   (let* (
-    (f1-6 (-> self control unknown-surface01 fric))
+    (f1-6 (-> self control current-surface fric))
     (f1-9 (- 1.0 (* 60.0 (seconds-per-frame) (- 1.0 f1-6))))
     (f0-21 (* 0.5 (+ 1.0 f1-9)))
   )
-    (*! (-> self control unknown-vector00 x) f0-21)
-    (*! (-> self control unknown-vector00 z) f0-21)
+    (*! (-> self control transv-ctrl x) f0-21)
+    (*! (-> self control transv-ctrl z) f0-21)
   )
 
   (let (
     (f30-2
       (-
-        (-> self control unknown-surface01 transv-max)
+        (-> self control current-surface transv-max)
         (if (< input-y 0.0)
-          (* input-y (-> self control unknown-surface01 seek0))
-          (* input-y (-> self control unknown-surface01 seek180))
+          (* input-y (-> self control current-surface seek0))
+          (* input-y (-> self control current-surface seek180))
         )
       )
     )
   )
-    (if (>= (vector-xz-length (-> self control unknown-vector00)) f30-2)
-      (vector-xz-normalize! (-> self control unknown-vector00) f30-2)
+    (if (>= (vector-xz-length (-> self control transv-ctrl)) f30-2)
+      (vector-xz-normalize! (-> self control transv-ctrl) f30-2)
     )
   )
 
   (let ((gp-1 (new-stack-vector0)))
-    (vector-matrix*! gp-1 (-> self control unknown-vector00) (-> self control unknown-matrix01))
+    (vector-matrix*! gp-1 (-> self control transv-ctrl) (-> self control c-R-w))
     (vector-float*! gp-1 gp-1 0.5)
     (add-debug-vector
       *display-target-marks*
@@ -362,7 +362,7 @@
       (new 'static 'rgba :g #xff :b #xff :a #x80)
     )
 
-    (vector-matrix*! gp-1 (new 'static 'vector :z (meters 10.0) :w 1.0) (-> self control unknown-matrix01))
+    (vector-matrix*! gp-1 (new 'static 'vector :z (meters 10.0) :w 1.0) (-> self control c-R-w))
     (vector-float*! gp-1 gp-1 0.5)
     (vector+! gp-1 gp-1 (-> self control trans))
     (add-debug-text-sphere
@@ -385,14 +385,14 @@
     (set-time-ratios *display* 1.0)
 
     (countdown (s5-0 gp-0)
-      (set! (-> self control unknown-int40) s5-0)
+      (set! (-> self control remaining-ctrl-iterations) s5-0)
       (set! (-> self tube old-transv quad) (-> self control transv quad))
 
       (flag-setup)
       (build-conversions (-> self control transv))
 
       (if (logtest? (-> self state-flags) (state-flags timed-invulnerable))
-        (*! (-> self control unknown-surface01 turnv) 3.0)
+        (*! (-> self control current-surface turnv) 3.0)
       )
 
       (forward-up-nopitch->quaternion (-> self control dir-targ)
@@ -415,11 +415,11 @@
       )
       (vector-normalize! (-> self tube downhill) 1.0)
 
-      (set! (-> self control unknown-float12) 1.0)
+      (set! (-> self control turn-to-magnitude) 1.0)
 
       (let (
-        (input-x (analog-input (the-as int (-> self control unknown-cpad-info00 leftx)) 128.0 32.0 110.0 1.0))
-        (input-y (analog-input (the-as int (-> self control unknown-cpad-info00 lefty)) 128.0 32.0 110.0 1.0))
+        (input-x (analog-input (the-as int (-> self control cpad leftx)) 128.0 32.0 110.0 1.0))
+        (input-y (analog-input (the-as int (-> self control cpad lefty)) 128.0 32.0 110.0 1.0))
       )
         (set! (-> self tube mod-x) input-x)
         (set! (-> self tube mod-y) input-y)
@@ -554,10 +554,10 @@
       )
 
       (logclear! (-> self control root-prim prim-core action) (collide-action tube))
-      (set! (-> self control unknown-surface00) *walk-mods*)
+      (set! (-> self control mod-surface) *walk-mods*)
 
-      (set! (-> self control dynam gravity-max) (-> self control unknown-dynamics00 gravity-max))
-      (set! (-> self control dynam gravity-length) (-> self control unknown-dynamics00 gravity-length))
+      (set! (-> self control dynam gravity-max) (-> self control standard-dynamics gravity-max))
+      (set! (-> self control dynam gravity-length) (-> self control standard-dynamics gravity-length))
 
       (target-collide-set! 'normal 0.0)
       (set! (-> self control reaction) target-collision-reaction)
@@ -602,7 +602,7 @@
     (target-collide-set! 'tube 0.0)
 
     (set! (-> self control transv quad) (the-as uint128 0))
-    (set! (-> self control xz-vel-mag) 0.0)
+    (set! (-> self control ctrl-xz-vel) 0.0)
     (logior! (-> self control root-prim prim-core action) (collide-action tube))
 
     (remove-exit)
@@ -651,7 +651,7 @@
     (set-time-ratios *display* 1.0)
 
     (countdown (s5-0 gp-0)
-      (set! (-> self control unknown-int40) s5-0)
+      (set! (-> self control remaining-ctrl-iterations) s5-0)
       (fclamp! (-> self tube turn-anim-targ) -20.0 20.0)
 
       ;; (or
@@ -680,7 +680,7 @@
                 30.0
                 60.0
               )
-              (-> self control xz-vel-mag)
+              (-> self control ctrl-xz-vel)
               (meters 0.0) (meters 9.0)
             )
           )
@@ -690,7 +690,7 @@
       (*! (-> self tube turn-anim-vel)
         (lerp-scale
           0.96 0.9
-          (-> self control xz-vel-mag)
+          (-> self control ctrl-xz-vel)
           (meters 0.0) (meters 9.0)
         )
       )
@@ -731,7 +731,7 @@
   :event (-> target-tube-start event)
 
   :enter (behavior ()
-    (set! (-> self control unknown-surface00) *tube-mods*)
+    (set! (-> self control mod-surface) *tube-mods*)
     (set! (-> self control surf) *tube-surface*)
   )
 
@@ -790,7 +790,7 @@
     (init-var-jump height-min height-max #t #f (-> self control transv))
     (logclear! (-> self control status) (cshape-moving-flags onsurf onground tsurf))
 
-    (set! (-> self control unknown-surface00) *tube-jump-mods*)
+    (set! (-> self control mod-surface) *tube-jump-mods*)
   )
 
   :exit (-> target-tube-start exit)
@@ -803,7 +803,7 @@
     (mod-var-jump #t #t (cpad-hold? (target-cpad) x) (-> self control transv))
 
     (seek! (-> self control unknown-float122)
-      (fclamp (/ (- (-> self control xz-vel-mag) (meters 0.5)) (meters 2.0)) 0.0 1.0)
+      (fclamp (/ (- (-> self control ctrl-xz-vel) (meters 0.5)) (meters 2.0)) 0.0 1.0)
       (per-second 1.0)
     )
   )
@@ -890,9 +890,9 @@
 
       (let (
         (s3-2 (new-stack-vector0))
-        (f30-0 (vector-dot (-> self control wall-hit-poly-normal) (-> atk-info vector)))
+        (f30-0 (vector-dot (-> self control wall-contact-poly-normal) (-> atk-info vector)))
       )
-        (vector-! s3-2 (-> atk-info vector) (vector-float*! s3-2 (-> self control wall-hit-poly-normal) f30-0))
+        (vector-! s3-2 (-> atk-info vector) (vector-float*! s3-2 (-> self control wall-contact-poly-normal) f30-0))
         (let* (
           (f0-3 (vector-length s3-2))
           (f1-0 f0-3)
@@ -901,7 +901,7 @@
             (/! f30-0 2)
           )
           (vector+! (-> atk-info vector)
-            (vector-float*! (-> atk-info vector) (-> self control wall-hit-poly-normal) f30-0)
+            (vector-float*! (-> atk-info vector) (-> self control wall-contact-poly-normal) f30-0)
             (vector-float*! s3-2 s3-2 (/ f0-3 f1-0))
           )
         )
@@ -938,7 +938,7 @@
       (target-hit-effect (-> self attack-info))
     )
 
-    (set! (-> self control unknown-surface00) *smack-mods*)
+    (set! (-> self control mod-surface) *smack-mods*)
     (target-hit-setup-anim (-> self attack-info))
     (target-hit-move
       (-> self attack-info)
@@ -1010,7 +1010,7 @@
     (apply-settings *setting-control*)
 
     (set! (-> self control transv quad) (the-as uint128 0))
-    (set! (-> self control unknown-surface00) *neutral-mods*)
+    (set! (-> self control mod-surface) *neutral-mods*)
 
     (ja-channel-push! 1 (seconds 0.1))
     (ja-no-eval :group! eichar-deatha-ja :num! (seek! (ja-aframe 134.0 0)) :frame-num 0.0)
@@ -1019,7 +1019,7 @@
 
       (let ((gp-2 (new 'stack-no-clear 'vector)))
         (when (not (logtest? (-> self align flags) (align-flags disabled)))
-          (vector-matrix*! gp-2 (the-as vector (-> self align delta)) (-> self control unknown-matrix01))
+          (vector-matrix*! gp-2 (-> self align delta trans) (-> self control c-R-w))
           (vector-float*! (-> self control transv) gp-2 (-> *display* frames-per-second))
         )
       )
