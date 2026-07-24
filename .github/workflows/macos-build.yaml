@@ -24,7 +24,7 @@ jobs:
       # minimal checkout if we're NOT uploading artifacts
       - name: Checkout Repository
         if: ${{ ! inputs.uploadArtifacts }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           fetch-tags: false
@@ -32,7 +32,7 @@ jobs:
       # full checkout with tags if we ARE uploading artifacts
       - name: Checkout Repository with Tags
         if: ${{ inputs.uploadArtifacts }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Setup sccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.23
         with:
           variant: sccache
           key: macos-15-intel-${{ inputs.cachePrefix }}-${{ inputs.cmakePreset }}-${{ github.sha }}
@@ -82,7 +82,7 @@ jobs:
           strip ./build/lsp/lsp
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         if: ${{ inputs.uploadArtifacts }}
         with:
           name: opengoal-macos-${{ inputs.cachePrefix }}

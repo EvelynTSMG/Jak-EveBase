@@ -458,7 +458,7 @@
 ["warpgate-ag",                                     "warpgate",                                        4, ["CIT", "TRA", "VI1", "VI2", "VI3"], ""],
 ["yellowsage-ag",                                   "yellowsage",                                      4, ["CIT"], ""],
 ["citadel-vis",                                     "citadel-vis",                                     4, ["CIT"], ""],
-["ticky",                                           "ticky",                                           3, ["COMMON", "L1"], ""],
+["ticky",                                           "ticky",                                           3, ["GAME", "COMMON", "L1"], ""],
 ["darkcave-obs",                                    "darkcave-obs",                                    3, ["DAR", "L1"], ""],
 ["tpage-1306",                                      "tpage-1306",                                      4, ["DAR"], ""],
 ["tpage-1307",                                      "tpage-1307",                                      4, ["DAR"], ""],

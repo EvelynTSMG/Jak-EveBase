@@ -62,7 +62,6 @@
    (initialize (_type_) _type_)
    (initialize-params (_type_ time-frame float) none)))
 
-
 (defmethod initialize-params ((this collectable) (arg0 time-frame) (arg1 float))
   (logclear! (-> this mask) (process-mask crate enemy platform ambient))
   (logior! (-> this mask) (process-mask collectable))
@@ -116,7 +115,6 @@
    (initialize-eco (_type_ entity-actor pickup-type float) object)
    (animate (_type_) none)
    (blocked () _type_ :state)))
-
 
 (defmethod initialize ((this eco-collectable))
   (stack-size-set! (-> this main-thread) 192) ;; og:preserve-this hack increased from 128
@@ -553,7 +551,6 @@
 
 (deftype eco (eco-collectable) ())
 
-
 (defmethod animate ((this eco))
   (let ((a0-1 (-> this part))
         (a1-0 (-> this root root-prim prim-core)))
@@ -592,13 +589,11 @@
 
 (deftype eco-yellow (eco) ())
 
-
 (defmethod init-from-entity! ((this eco-yellow) (arg0 entity-actor))
   (initialize-eco this arg0 (pickup-type eco-yellow) (-> *FACT-bank* eco-single-inc))
   (none))
 
 (deftype eco-red (eco) ())
-
 
 (defmethod init-from-entity! ((this eco-red) (arg0 entity-actor))
   (initialize-eco this arg0 (pickup-type eco-red) (-> *FACT-bank* eco-single-inc))
@@ -606,13 +601,11 @@
 
 (deftype eco-blue (eco) ())
 
-
 (defmethod init-from-entity! ((this eco-blue) (arg0 entity-actor))
   (initialize-eco this arg0 (pickup-type eco-blue) (-> *FACT-bank* eco-single-inc))
   (none))
 
 (deftype health (eco-collectable) ())
-
 
 (defmethod animate ((this health))
   (let ((a0-1 (-> this part))
@@ -627,7 +620,6 @@
   (none))
 
 (deftype eco-pill (eco-collectable) ())
-
 
 (defmethod animate ((this eco-pill))
   (let ((a0-1 (-> this part))
@@ -684,7 +676,6 @@
   :texture-level 2)
 
 (deftype money (eco-collectable) ())
-
 
 (defmethod run-logic? ((this money))
   (or (not (logtest? (-> this mask) (process-mask actor-pause)))
@@ -845,7 +836,6 @@
   (:states (fuel-cell-clone-anim handle)
    (fuel-cell-spline-slider handle float float)))
 
-
 (defun fuel-cell-pick-anim ((arg0 process-drawable))
   (let* ((gp-0 (-> arg0 entity extra trans))
          (a0-2 (res-lump-value (-> arg0 entity) 'movie-mask uint128 :time (the-as float -1000000000.0)))
@@ -988,7 +978,6 @@
             (send-event *camera* 'teleport-to-other-start-string)))))
   :code
     (behavior ((arg0 object) (arg1 handle))
-      (local-vars (sv-96 res-tag))
       (sound-play "pu-powercell")
       (clear-collide-with-as (-> self root))
       (logclear! (-> self mask) (process-mask actor-pause))
@@ -1009,11 +998,16 @@
           (spool-push *art-control* (-> self victory-anim name) 0 self (the-as float -99.0))
           (format #t "WARNING: fuel-cell stall on not cloning.~%")
           (suspend))
-        (set! sv-96 (new 'static 'res-tag))
-        (let* ((v1-34 (res-lump-data (-> self entity) 'movie-pos (inline-array vector) :tag-ptr (& sv-96) :time (the-as float -1000000000.0)))
-              (gp-1 (if (and v1-34 (< (-> self movie-pos-index) (the-as int (-> sv-96 elt-count))))
-                      (-> v1-34 (-> self movie-pos-index))
-                      (the-as vector #f))))
+        (let* (
+          (sv-96 (new 'static 'res-tag))
+          (v1-34 (res-lump-data (-> self entity) 'movie-pos (inline-array vector) :tag-ptr (& sv-96) :time (the-as float -1000000000.0)))
+          (gp-1
+            (if (and v1-34 (< (-> self movie-pos-index) (the-as int (-> sv-96 elt-count))))
+              (-> v1-34 (-> self movie-pos-index))
+              (the-as vector #f)
+            )
+          )
+        )
           (cond
             ((and *debug-segment* (< (-> *fuel-cell-tune-pos* w) 1000000000.0))
             (move-to-point! (-> self root) *fuel-cell-tune-pos*)
@@ -1268,7 +1262,6 @@
 (deftype buzzer (eco-collectable)
   ((victory-anim spool-anim)))
 
-
 (defmethod animate ((this buzzer))
   (quaternion-rotate-y! (-> this root quat) (-> this root quat) (* 40049.777 (seconds-per-frame)))
   (let ((a0-2 (-> this skel root-channel 0)))
@@ -1437,25 +1430,13 @@
     (v1-58 symbol)
     (v1-64 symbol)
     (v1-71 symbol)
-    (sv-32 fact-info)
-    (sv-48 int)
-    (sv-64 process)
-    (sv-80 process)
-    (sv-96 process)
-    (sv-112 process)
-    (sv-128 process)
-    (sv-144 process)
-    (sv-160 process)
-    (sv-176 process)
-    (sv-192 (pointer process))
   )
 
-  (set! sv-32 info)
-
-  (let ((s1-0 (new-stack-vector0)))
+  (let ((sv-32 info)
+        (s1-0 (new-stack-vector0))
+        (t9-0 (method-of-type res-lump get-property-value-float)))
     (let ((v1-1 sv-32))
-      (b!
-        (not v1-1)
+      (b! (not v1-1)
         cfg-3
         :likely-delay (set! v1-2 sv-32)
       )
@@ -1463,7 +1444,6 @@
     (set! v1-2 (nonzero? (-> sv-32 process)))
 
     (label cfg-3)
-
     (let (
       (circle-radius
         (get-property-value-float
@@ -1484,12 +1464,12 @@
           *res-static-buf*
         )
       )
+      (sv-192 (the-as (pointer process) #f))
     )
-
-      (set! sv-192 (the-as (pointer process) #f))
-      (set! sv-48 (the int arg2))
-
-      (let ((s0-0 (new 'static 'fact-info)))
+      (let (
+        (sv-48 (the int arg2))
+        (s0-0 (new 'static 'fact-info))
+      )
         (set! (-> s0-0 options) (fact-options))
 
         (if sv-32
@@ -1500,7 +1480,7 @@
         (set! (-> s0-0 pickup-spawn-amount) 1.0)
 
         (while (> sv-48 0)
-          (set! sv-48 (+ sv-48 -1))
+          (+! sv-48 -1)
 
           (when spawn-in-circle?
             (set-vector! s1-0 0.0 57001.605 circle-radius 1.0)
@@ -1510,15 +1490,18 @@
           (let ((v1-25 type))
             (cond
               ((= v1-25 (pickup-type eco-yellow))
-                (set! sv-64 (get-process *pickup-dead-pool* eco-yellow #x4000))
-                (set! v1-28
-                  (when sv-64
-                    (set! sv-192 (the-as (pointer process) v1-28))
-                    (activate (the-as eco-yellow sv-64) proc 'eco-yellow (the-as pointer #x70004000))
-                    (run-now-in-process sv-64 initialize-eco-by-other birth-point s1-0 s0-0)
-                    (set! sv-192 (-> sv-64 ppointer))
-                    v1-28
-                    
+                (let (
+                  (sv-64 (get-process *pickup-dead-pool* eco-yellow #x4000))
+                )
+                  (set! v1-28
+                    (when sv-64
+                      (set! sv-192 (the-as (pointer process) v1-28))
+                      (activate (the-as eco-yellow sv-64) proc 'eco-yellow (the-as pointer #x70004000))
+                      (run-now-in-process sv-64 initialize-eco-by-other birth-point s1-0 s0-0)
+                      (set! sv-192 (-> sv-64 ppointer))
+                      v1-28
+                      
+                    )
                   )
                 )
 
@@ -1526,15 +1509,18 @@
               )
 
               ((= v1-25 (pickup-type eco-red))
-                (set! sv-80 (get-process *pickup-dead-pool* eco-red #x4000))
-                (set! v1-34
-                  (when sv-80
-                    (set! sv-192 (the-as (pointer process) v1-34))
-                    (activate (the-as eco-red sv-80) proc 'eco-red (the-as pointer #x70004000))
-                    (run-now-in-process sv-80 initialize-eco-by-other birth-point s1-0 s0-0)
-                    (set! sv-192 (-> sv-80 ppointer))
+                (let (
+                  (sv-80 (get-process *pickup-dead-pool* eco-red #x4000))
+                )
+                  (set! v1-34
+                    (when sv-80
+                      (set! sv-192 (the-as (pointer process) v1-34))
+                      (activate (the-as eco-red sv-80) proc 'eco-red (the-as pointer #x70004000))
+                      (run-now-in-process sv-80 initialize-eco-by-other birth-point s1-0 s0-0)
+                      (set! sv-192 (-> sv-80 ppointer))
 
-                    v1-34
+                      v1-34
+                    )
                   )
                 )
                 
@@ -1542,15 +1528,18 @@
               )
 
               ((= v1-25 (pickup-type eco-blue))
-                (set! sv-96 (get-process *pickup-dead-pool* eco-blue #x4000))
-                (set! v1-40
-                  (when sv-96
-                    (set! sv-192 (the-as (pointer process) v1-40))
-                    (activate (the-as eco-blue sv-96) proc 'eco-blue (the-as pointer #x70004000))
-                    (run-now-in-process sv-96 initialize-eco-by-other birth-point s1-0 s0-0)
-                    (set! sv-192 (-> sv-96 ppointer))
+                (let (
+                  (sv-96 (get-process *pickup-dead-pool* eco-blue #x4000))
+                )
+                  (set! v1-40
+                    (when sv-96
+                      (set! sv-192 (the-as (pointer process) v1-40))
+                      (activate (the-as eco-blue sv-96) proc 'eco-blue (the-as pointer #x70004000))
+                      (run-now-in-process sv-96 initialize-eco-by-other birth-point s1-0 s0-0)
+                      (set! sv-192 (-> sv-96 ppointer))
 
-                    v1-40
+                      v1-40
+                    )
                   )
                 )
 
@@ -1558,15 +1547,18 @@
               )
 
               ((= v1-25 (pickup-type eco-green))
-                (set! sv-112 (get-process *pickup-dead-pool* health #x4000))
-                (set! v1-46
-                  (when sv-112
-                    (set! sv-192 (the-as (pointer process) v1-46))
-                    (activate (the-as health sv-112) proc 'health (the-as pointer #x70004000))
-                    (run-now-in-process sv-112 initialize-eco-by-other birth-point s1-0 s0-0)
-                    (set! sv-192 (-> sv-112 ppointer))
+                (let (
+                  (sv-112 (get-process *pickup-dead-pool* health #x4000))
+                )
+                  (set! v1-46
+                    (when sv-112
+                      (set! sv-192 (the-as (pointer process) v1-46))
+                      (activate (the-as health sv-112) proc 'health (the-as pointer #x70004000))
+                      (run-now-in-process sv-112 initialize-eco-by-other birth-point s1-0 s0-0)
+                      (set! sv-192 (-> sv-112 ppointer))
 
-                    v1-46
+                      v1-46
+                    )
                   )
                 )
 
@@ -1574,15 +1566,18 @@
               )
 
               ((= v1-25 (pickup-type eco-pill))
-                (set! sv-128 (get-process *pickup-dead-pool* eco-pill #x4000))
-                (set! v1-52
-                  (when sv-128
-                    (set! sv-192 (the-as (pointer process) v1-52))
-                    (activate (the-as eco-pill sv-128) proc 'eco-pill (the-as pointer #x70004000))
-                    (run-now-in-process sv-128 initialize-eco-by-other birth-point s1-0 s0-0)
-                    (set! sv-192 (-> sv-128 ppointer))
-                    
-                    v1-52
+                (let (
+                  (sv-128 (get-process *pickup-dead-pool* eco-pill #x4000))
+                )
+                  (set! v1-52
+                    (when sv-128
+                      (set! sv-192 (the-as (pointer process) v1-52))
+                      (activate (the-as eco-pill sv-128) proc 'eco-pill (the-as pointer #x70004000))
+                      (run-now-in-process sv-128 initialize-eco-by-other birth-point s1-0 s0-0)
+                      (set! sv-192 (-> sv-128 ppointer))
+                      
+                      v1-52
+                    )
                   )
                 )
 
@@ -1590,15 +1585,18 @@
               )
 
               ((= v1-25 (pickup-type money))
-                (set! sv-144 (get-process *pickup-dead-pool* money #x4000))
-                (set! v1-58
-                  (when sv-144
-                    (set! sv-192 (the-as (pointer process) v1-58))
-                    (activate (the-as money sv-144) proc 'money (the-as pointer #x70004000))
-                    (run-now-in-process sv-144 money-init-by-other birth-point s1-0 s0-0 (-> self entity))
-                    (set! sv-192 (-> sv-144 ppointer))
-                    
-                    v1-58
+                (let (
+                  (sv-144 (get-process *pickup-dead-pool* money #x4000))
+                )
+                  (set! v1-58
+                    (when sv-144
+                      (set! sv-192 (the-as (pointer process) v1-58))
+                      (activate (the-as money sv-144) proc 'money (the-as pointer #x70004000))
+                      (run-now-in-process sv-144 money-init-by-other birth-point s1-0 s0-0 (-> self entity))
+                      (set! sv-192 (-> sv-144 ppointer))
+                      
+                      v1-58
+                    )
                   )
                 )
 
@@ -1607,17 +1605,21 @@
 
               ((= v1-25 (pickup-type fuel-cell))
                 (set! (-> s0-0 pickup-spawn-amount) arg2)
-                (set! sv-160 (get-process *pickup-dead-pool* fuel-cell #x4000))
-                (set! v1-64
-                  (when sv-160
-                    (set! sv-192 (the-as (pointer process) v1-64))
-                    (activate (the-as fuel-cell sv-160) proc 'fuel-cell (the-as pointer #x70004000))
-                    (run-now-in-process sv-160 fuel-cell-init-by-other birth-point s1-0 s0-0 (-> self entity))
-                    (set! sv-192 (-> sv-160 ppointer))
-                    
-                    v1-64
+                (let (
+                  (sv-160 (get-process *pickup-dead-pool* fuel-cell #x4000))
+                )
+                  (set! v1-64
+                    (when sv-160
+                      (set! sv-192 (the-as (pointer process) v1-64))
+                      (activate (the-as fuel-cell sv-160) proc 'fuel-cell (the-as pointer #x70004000))
+                      (run-now-in-process sv-160 fuel-cell-init-by-other birth-point s1-0 s0-0 (-> self entity))
+                      (set! sv-192 (-> sv-160 ppointer))
+                      
+                      v1-64
+                    )
                   )
                 )
+
                 (set! sv-48 0)
 
                 sv-48
@@ -1625,17 +1627,21 @@
 
               ((= v1-25 (pickup-type buzzer))
                 (set! (-> s0-0 pickup-spawn-amount) arg2)
-                (set! sv-176 (get-process *pickup-dead-pool* buzzer #x4000))
-                (set! v1-71
-                  (when sv-176
-                    (set! sv-192 (the-as (pointer process) v1-71))
-                    (activate (the-as buzzer sv-176) proc 'buzzer (the-as pointer #x70004000))
-                    (run-now-in-process sv-176 buzzer-init-by-other birth-point s1-0 s0-0 (-> self entity))
-                    (set! sv-192 (-> sv-176 ppointer))
+                (let (
+                  (sv-176 (get-process *pickup-dead-pool* buzzer #x4000))
+                )
+                  (set! v1-71
+                    (when sv-176
+                      (set! sv-192 (the-as (pointer process) v1-71))
+                      (activate (the-as buzzer sv-176) proc 'buzzer (the-as pointer #x70004000))
+                      (run-now-in-process sv-176 buzzer-init-by-other birth-point s1-0 s0-0 (-> self entity))
+                      (set! sv-192 (-> sv-176 ppointer))
 
-                    v1-71
+                      v1-71
+                    )
                   )
                 )
+
                 (set! sv-48 0)
 
                 sv-48
@@ -1650,10 +1656,10 @@
           )
         )
       )
+
+      sv-192
     )
   )
-
-  sv-192
 )
 
 (defmethod drop-pickup ((this fact-info) (arg0 symbol) (arg1 process-tree) (arg2 fact-info) (arg3 int))
@@ -1700,7 +1706,6 @@
    (block-func    (function vent symbol)))
   (:states
    ecovalve-idle))
-
 
 (defskelgroup *ecovalve-sg*
   ecovalve
@@ -1772,7 +1777,6 @@
    vent-blocked
    (vent-pickup handle)
    vent-wait-for-touch))
-
 
 (defmethod initialize ((this vent) (arg0 entity-actor) (arg1 pickup-type))
   (stack-size-set! (-> this main-thread) 128)
@@ -1916,13 +1920,11 @@
 
 (deftype ventyellow (vent) ())
 
-
 (defmethod init-from-entity! ((this ventyellow) (arg0 entity-actor))
   (initialize this arg0 (pickup-type eco-yellow))
   (none))
 
 (deftype ventred (vent) ())
-
 
 (defmethod init-from-entity! ((this ventred) (arg0 entity-actor))
   (initialize this arg0 (pickup-type eco-red))
@@ -1930,13 +1932,11 @@
 
 (deftype ventblue (vent) ())
 
-
 (defmethod init-from-entity! ((this ventblue) (arg0 entity-actor))
   (initialize this arg0 (pickup-type eco-blue))
   (none))
 
 (deftype ecovent (vent) ())
-
 
 (defmethod init-from-entity! ((this ecovent) (arg0 entity-actor))
   (initialize this arg0 (pickup-type eco-blue))

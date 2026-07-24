@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -37,7 +37,7 @@ jobs:
             sudo update-alternatives --set g++ /usr/bin/g++-10
 
       - name: Setup sccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.23
         with:
           variant: sccache
           key: linux-ubuntu-22.04-${{ inputs.cachePrefix }}-${{ inputs.cmakePreset }}-${{ github.sha }}

@@ -769,9 +769,9 @@ s32 find_or_add_texture_to_level(tfrag3::Level& out,
   }
 
   // check eyes
-  u32 eye_tpage = PerGameVersion<u32>(0x1cf, 0x70c, 0x3)[version];
-  u32 left_id = PerGameVersion<u32>(0x6f, 0x7, 0x2)[version];
-  u32 right_id = PerGameVersion<u32>(0x70, 0x8, 0x3)[version];
+  u32 eye_tpage = PerGameVersion<u32>(0x1cf, 0x70c, 0x3, 0x3)[version];
+  u32 left_id = PerGameVersion<u32>(0x6f, 0x7, 0x2, 0x2)[version];
+  u32 right_id = PerGameVersion<u32>(0x70, 0x8, 0x3, 0x3)[version];
 
   if (eye_out && (pc_combo_tex_id >> 16) == eye_tpage) {
     auto tex_it = tex_db.textures.find(pc_combo_tex_id);
@@ -859,7 +859,8 @@ ConvertedMercEffect convert_merc_effect(const MercEffect& input_effect,
         u32 tidx = 2;
         tex_combo = (((u32)tpage) << 16) | tidx;
       } break;
-      case GameVersion::Jak3: {
+      case GameVersion::Jak3:
+      case GameVersion::JakX: {
         // (define *generic-envmap-texture* (get-texture pal-environment-front environment-generic))
         // (defconstant environment-generic 2) tpage
         // (def-tex pal-environment-front environment-generic 1) texture
@@ -1528,6 +1529,7 @@ void create_modifiable_vertex_data(
               vtx_to_mod_vtx[vidx] = idx;
               // add the vertex
               effect.mod.vertices.push_back(out.vertices.at(vidx));
+              effect.mod.mod_to_global_vertex_idx.push_back(vidx);
               // look up where this one came from in the EE memory layout
               auto src = vtx_srcs.at(vidx - first_out_vertex);
               ASSERT(src.combined_lump4 < UINT16_MAX);
